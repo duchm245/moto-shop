@@ -1,12 +1,12 @@
-# Hướng dẫn chạy CRKing7 ở môi trường local
+# Hướng dẫn chạy MotoShop ở môi trường local
 
 ## 1. Mục tiêu
 
 Tài liệu này hướng dẫn chạy toàn bộ hệ thống trên máy local gồm:
 
-- Backend: `CKing7_BE` (Spring Boot, cổng `8081`)
-- Frontend khách hàng: `CRKing7_FE` (Vite)
-- Frontend quản trị: `CRKing7_ADMIN` (Vite)
+- Backend: `MotoShop_BE` (Spring Boot, cổng `8081`)
+- Frontend khách hàng: `MotoShop_FE` (Vite)
+- Frontend quản trị: `MotoShop_ADMIN` (Vite)
 
 ## 2. Yêu cầu cài đặt trước
 
@@ -48,18 +48,18 @@ CREATE DATABASE motorbike_shop CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 ### 3.2 Import dữ liệu mẫu
 
-Repo có file `crking7.sql` ở thư mục gốc. Import bằng một trong hai cách:
+Repo có file `motorbike_shop.sql` ở thư mục gốc. Import bằng một trong hai cách:
 
 - Dùng MySQL Workbench: mở file SQL rồi chạy toàn bộ script.
 - Hoặc dùng CLI:
 
 ```powershell
-mysql -u root -p motorbike_shop < .\crking7.sql
+mysql -u root -p motorbike_shop < .\motorbike_shop.sql
 ```
 
 ## 4. Cấu hình backend
 
-File cấu hình chính: `CKing7_BE/src/main/resources/application.yaml`.
+File cấu hình chính: `MotoShop_BE/src/main/resources/application.yaml`.
 
 Các giá trị mặc định hiện tại:
 
@@ -74,34 +74,34 @@ Nếu máy bạn dùng thông tin DB khác, sửa trực tiếp trong `applicati
 
 Khuyến nghị mở 3 terminal độc lập.
 
-### 5.1 Chạy backend (`CKing7_BE`)
+### 5.1 Chạy backend (`MotoShop_BE`)
 
 ```powershell
-cd .\CKing7_BE
+cd .\MotoShop_BE
 .\mvnw.cmd spring-boot:run
 ```
 
 Hoặc nếu đã có Maven global:
 
 ```powershell
-cd .\CKing7_BE
+cd .\MotoShop_BE
 mvn spring-boot:run
 ```
 
 Backend chạy mặc định tại: `http://localhost:8081`.
 
-### 5.2 Chạy frontend khách hàng (`CRKing7_FE`)
+### 5.2 Chạy frontend khách hàng (`MotoShop_FE`)
 
 ```powershell
-cd .\CRKing7_FE
+cd .\MotoShop_FE
 npm install
 npm run dev
 ```
 
-### 5.3 Chạy frontend admin (`CRKing7_ADMIN`)
+### 5.3 Chạy frontend admin (`MotoShop_ADMIN`)
 
 ```powershell
-cd .\CRKing7_ADMIN
+cd .\MotoShop_ADMIN
 npm install
 npm run dev
 ```
@@ -115,15 +115,15 @@ npm run dev
 
 ### 6.2 Kiểm tra frontend
 
-- Mở URL Vite hiển thị trên terminal của `CRKing7_FE` (thường là `http://localhost:5173`).
-- Mở URL Vite hiển thị trên terminal của `CRKing7_ADMIN` (nếu trùng cổng sẽ tự nhảy sang cổng khác, ví dụ `5174`).
+- Mở URL Vite hiển thị trên terminal của `MotoShop_FE` (thường là `http://localhost:5173`).
+- Mở URL Vite hiển thị trên terminal của `MotoShop_ADMIN` (nếu trùng cổng sẽ tự nhảy sang cổng khác, ví dụ `5174`).
 
 ### 6.3 Kiểm tra kết nối API
 
 Cả FE và ADMIN đều đang cấu hình:
 
-- `CRKing7_FE/src/constants/utils.ts` -> `API_URL = "http://localhost:8081"`
-- `CRKing7_ADMIN/src/constants/utils.ts` -> `API_URL = "http://localhost:8081"`
+- `MotoShop_FE/src/constants/utils.ts` -> `API_URL = "http://localhost:8081"`
+- `MotoShop_ADMIN/src/constants/utils.ts` -> `API_URL = "http://localhost:8081"`
 
 Nếu backend chạy cổng khác, cần sửa lại 2 file trên.
 
@@ -154,10 +154,10 @@ npm install
 
 ## 8. Quy trình khởi động nhanh (tóm tắt)
 
-1. Tạo DB `motorbike_shop` và import `crking7.sql`.
-2. Chạy backend tại `CKing7_BE`.
-3. Chạy frontend khách hàng tại `CRKing7_FE`.
-4. Chạy frontend admin tại `CRKing7_ADMIN`.
+1. Tạo DB `motorbike_shop` và import `motorbike_shop.sql`.
+2. Chạy backend tại `MotoShop_BE`.
+3. Chạy frontend khách hàng tại `MotoShop_FE`.
+4. Chạy frontend admin tại `MotoShop_ADMIN`.
 5. Mở các URL Vite và kiểm tra gọi API về `http://localhost:8081`.
 
 ## 9. Bảo mật – Cấu hình biến môi trường
@@ -177,7 +177,7 @@ npm install
 Spring Boot tự nạp `application-local.yaml` khi `SPRING_PROFILES_ACTIVE=local` (mặc định):
 
 ```powershell
-cd .\CKing7_BE
+cd .\MotoShop_BE
 .\mvnw.cmd spring-boot:run
 ```
 

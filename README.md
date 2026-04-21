@@ -1,16 +1,16 @@
-# CRKing7 - Tổng quan dự án
+# MotoShop - Tổng quan dự án
 
 ## 1. Tóm tắt cấu trúc repo
 
 Dự án được tổ chức theo mô hình monorepo với 3 ứng dụng chính:
 
-- `CKing7_BE`: Backend API (Spring Boot) xử lý nghiệp vụ, xác thực, thanh toán, truy cập CSDL.
-- `CRKing7_FE`: Frontend cho khách hàng (website bán hàng).
-- `CRKing7_ADMIN`: Frontend quản trị (dashboard quản lý sản phẩm, đơn hàng, nội dung...).
+- `MotoShop_BE`: Backend API (Spring Boot) xử lý nghiệp vụ, xác thực, thanh toán, truy cập CSDL.
+- `MotoShop_FE`: Frontend cho khách hàng (website bán hàng).
+- `MotoShop_ADMIN`: Frontend quản trị (dashboard quản lý sản phẩm, đơn hàng, nội dung...).
 
-Ngoài ra có file `crking7.sql` cho thấy có script/dữ liệu CSDL để khởi tạo hoặc backup.
+Ngoài ra có file `motorbike_shop.sql` cho thấy có script/dữ liệu CSDL để khởi tạo hoặc backup.
 
-## 2. Tổng quan Backend (`CKing7_BE`)
+## 2. Tổng quan Backend (`MotoShop_BE`)
 
 ### 2.1 Công nghệ chính
 
@@ -33,8 +33,8 @@ Backend phân lớp khá rõ:
 
 ### 2.3 Entry point backend
 
-- Chạy ứng dụng: `CKing7_BE/src/main/java/com/crking7/datn/CRKing7Application.java`.
-- Cấu hình runtime: `CKing7_BE/src/main/resources/application.yaml` (port `8081`, datasource MySQL, JPA, JWT, mail).
+- Chạy ứng dụng: `MotoShop_BE/src/main/java/com/motoshop/MotoShopApplication.java`.
+- Cấu hình runtime: `MotoShop_BE/src/main/resources/application.yaml` (port `8081`, datasource MySQL, JPA, JWT, mail).
 
 ### 2.4 Đầu mối tích hợp/thanh toán/CSDL
 
@@ -45,7 +45,7 @@ Backend phân lớp khá rõ:
   - `ZaloPayPaymentController`, `ZaloPayConfig`
 - Email: `EmailConfig` + `spring.mail` trong `application.yaml`.
 
-## 3. Tổng quan Frontend khách hàng (`CRKing7_FE`)
+## 3. Tổng quan Frontend khách hàng (`MotoShop_FE`)
 
 ### 3.1 Công nghệ chính
 
@@ -56,8 +56,8 @@ Backend phân lớp khá rõ:
 
 ### 3.2 Entry point frontend
 
-- Bootstrap app: `CRKing7_FE/src/main.tsx` (Provider Redux + `App`).
-- Router tổng: `CRKing7_FE/src/App.tsx`.
+- Bootstrap app: `MotoShop_FE/src/main.tsx` (Provider Redux + `App`).
+- Router tổng: `MotoShop_FE/src/App.tsx`.
 
 ### 3.3 Nhóm tính năng nổi bật (theo folder)
 
@@ -66,7 +66,7 @@ Backend phân lớp khá rõ:
 - Nội dung: `articles`, `detailArticle`, `contact`, `searchProduct`.
 - Có API liên quan thanh toán: `src/apis/paymentMethod.apis.ts`.
 
-## 4. Tổng quan Frontend quản trị (`CRKing7_ADMIN`)
+## 4. Tổng quan Frontend quản trị (`MotoShop_ADMIN`)
 
 ### 4.1 Công nghệ chính
 
@@ -78,8 +78,8 @@ Backend phân lớp khá rõ:
 
 ### 4.2 Entry point admin
 
-- Bootstrap app: `CRKing7_ADMIN/src/main.tsx`.
-- Router/auth gate: `CRKing7_ADMIN/src/App.tsx` (kiểm tra token, điều hướng login).
+- Bootstrap app: `MotoShop_ADMIN/src/main.tsx`.
+- Router/auth gate: `MotoShop_ADMIN/src/App.tsx` (kiểm tra token, điều hướng login).
 
 ### 4.3 Nhóm tính năng quản trị
 
