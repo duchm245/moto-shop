@@ -15,8 +15,8 @@ public interface ProductService {
      */
     Pair<List<ProductResponse>, Integer> getProducts(int pageNo, int pageSize, String sortBy);
 
-    Pair<List<ProductResponse>, Integer> getALLProducts(List<String> valueSize, List<String> valueColor, Integer minPrice, Integer maxPrice,
-                                          Long categoryId,Long saleId, int pageNo, int pageSize, String sortBy,boolean desc);
+    Pair<List<ProductResponse>, Integer> getALLProducts(String brand, String vehicleType, String condition, Integer minPrice, Integer maxPrice,
+                                          Long categoryId, Long saleId, int pageNo, int pageSize, String sortBy, boolean desc);
 
     Pair<List<ProductResponse>, Integer> getALLProductsAdmin(String keyword, Integer status, Integer minPrice, Integer maxPrice,
                                                              Long categoryId, int pageNo, int pageSize, String sortBy, boolean desc);
@@ -27,8 +27,6 @@ public interface ProductService {
 
     ProductResponse getProductAdmin(long productId);
 
-    ProductResponse getProductBySize(long sizeId);
-
     List<ProductResponse> getProductBySaleAdmin(String Keyword, Long saleId);
 
     List<ProductResponse> getProductBySale();
@@ -37,13 +35,9 @@ public interface ProductService {
 
     Pair<List<ProductResponse>, Integer> getProductsByCategory(long categoryId, int pageNo, int pageSize, String sortBy);
 
-    Pair<List<ProductResponse>, Integer> getProductsByValueSize(String valueSize, int pageNo, int pageSize, String sortBy);
-
-    Pair<List<ProductResponse>, Integer> getProductsByValueColor(String valueColor, int pageNo, int pageSize, String sortBy);
-
     Pair<List<ProductResponse>, Integer> getProductsByPrice(int minPrice, int maxPrice, int pageNo, int pageSize, String sortBy);
 
-    Pair<List<ProductResponse>, Integer> searchProduct(String valueSize, String valueColor, Integer minPrice, Integer maxPrice, long categoryId, int pageNo, int pageSize, String sortBy);
+    Pair<List<ProductResponse>, Integer> searchProduct(String brand, String vehicleType, Integer minPrice, Integer maxPrice, long categoryId, int pageNo, int pageSize, String sortBy);
 
     //    List<ProductResponse> getProductByColorSizePriceCategory(String valueSize, String valueColor, int minPrice, int maxPrice, long categoryId, int pageNo, int pageSize, String sortBy);
     ProductResponse createProduct(ProductRequest productRequest);

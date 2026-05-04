@@ -50,8 +50,9 @@ public class ProductRest {
     }
 
     @GetMapping("/allProduct")
-    public ResponseEntity<?> getALLProducts(@RequestParam(value = "valueSize", required = false) List<String> valueSize,
-                                            @RequestParam(value = "valueColor", required = false) List<String> valueColor,
+    public ResponseEntity<?> getALLProducts(@RequestParam(value = "brand", required = false) String brand,
+                                            @RequestParam(value = "vehicleType", required = false) String vehicleType,
+                                            @RequestParam(value = "condition", required = false) String condition,
                                             @RequestParam(value = "minPrice", required = false) Integer minPrice,
                                             @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
                                             @RequestParam(value = "categoryId", required = false) Long categoryId,
@@ -61,8 +62,12 @@ public class ProductRest {
                                             @RequestParam(value = "sortBy", defaultValue = "id") String sortBy,
                                             @RequestParam(value = "sortDirection", defaultValue = "desc") String sortDirection) {
 
+        // Fallback nếu FE gửi empty string
+        if (sortBy == null || sortBy.isBlank()) sortBy = "id";
+        if (sortDirection == null || sortDirection.isBlank()) sortDirection = "desc";
+
         try {
-            Pair<List<ProductResponse>, Integer> result = productService.getALLProducts(valueSize, valueColor, minPrice, maxPrice, categoryId, saleId, pageNo, pageSize, sortBy, sortDirection.equals("desc"));
+            Pair<List<ProductResponse>, Integer> result = productService.getALLProducts(brand, vehicleType, condition, minPrice, maxPrice, categoryId, saleId, pageNo, pageSize, sortBy, sortDirection.equals("desc"));
             List<ProductResponse> productResponses = result.getFirst();
             int total = result.getSecond();
             if (!productResponses.isEmpty()) {
@@ -75,6 +80,7 @@ public class ProductRest {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi " + e.getMessage());
         }
     }
+
 
     /**
      * get products by categoryId and pagination
@@ -168,62 +174,6 @@ public class ProductRest {
         }
     }
 
-    @GetMapping("/size/{id}")
-    private ResponseEntity<?> getProductBySize(@PathVariable("id") long sizeId) {
-        try {
-            ProductResponse productResponse = productService.getProductBySize(sizeId);
-            if (productResponse == null) {
-                return new ResponseEntity<>(ApiResponse.build(201, false, "thất bại", null), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(ApiResponse.build(200, true, "Lấy dữ liệu thành công", productResponse), HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(ApiResponse.build(404, true, e.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/search/size")
-    public ResponseEntity<?> getProductByValueSize(@RequestParam String valueSize,
-                                                   @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-                                                   @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
-                                                   @RequestParam(value = "sortBy", defaultValue = "id") String sortBy) {
-
-        try {
-            Pair<List<ProductResponse>, Integer> result = productService.getProductsByValueSize(valueSize, pageNo, pageSize, sortBy);
-            List<ProductResponse> productResponses = result.getFirst();
-            int total = result.getSecond();
-            if (!productResponses.isEmpty()) {
-                List<Object> data = new ArrayList<>(productResponses);
-                return new ResponseEntity<>(ApiResponsePage.build(200, true, pageNo, pageSize, total, "Lấy danh sách thành công", data), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(ApiResponsePage.build(201, false, pageNo, pageSize, total, "thất bại", null), HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(ApiResponsePage.builder(500, false, e.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/search/color")
-    public ResponseEntity<?> getProductByValueColor(@RequestParam String valueColor,
-                                                    @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-                                                    @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
-                                                    @RequestParam(value = "sortBy", defaultValue = "id") String sortBy) {
-
-        try {
-            Pair<List<ProductResponse>, Integer> result = productService.getProductsByValueColor(valueColor, pageNo, pageSize, sortBy);
-            List<ProductResponse> productResponses = result.getFirst();
-            int total = result.getSecond();
-            if (!productResponses.isEmpty()) {
-                List<Object> data = new ArrayList<>(productResponses);
-                return new ResponseEntity<>(ApiResponsePage.build(200, true, pageNo, pageSize, total, "Lấy danh sách thành công", data), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(ApiResponsePage.build(201, false, pageNo, pageSize, total, "thất bại", null), HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(ApiResponsePage.builder(500, false, e.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @GetMapping("/search/price")
     public ResponseEntity<?> getProductByPrice(@RequestParam int minPrice,
                                                @RequestParam int maxPrice,
@@ -247,8 +197,8 @@ public class ProductRest {
     }
 
     @GetMapping("/searchPro")
-    public ResponseEntity<?> searchProduct(@Param("valueSize") String valueSize,
-                                           @Param("valueColor") String valueColor,
+    public ResponseEntity<?> searchProduct(@Param("brand") String brand,
+                                           @Param("vehicleType") String vehicleType,
                                            @Param("minPrice") Integer minPrice,
                                            @Param("maxPrice") Integer maxPrice,
                                            @Param("categoryId") long categoryId,
@@ -257,7 +207,7 @@ public class ProductRest {
                                            @RequestParam(value = "sortBy", defaultValue = "id") String sortBy) {
 
         try {
-            Pair<List<ProductResponse>, Integer> result = productService.searchProduct(valueSize, valueColor, minPrice, maxPrice, categoryId, pageNo, pageSize, sortBy);
+            Pair<List<ProductResponse>, Integer> result = productService.searchProduct(brand, vehicleType, minPrice, maxPrice, categoryId, pageNo, pageSize, sortBy);
             List<ProductResponse> productResponses = result.getFirst();
             int total = result.getSecond();
             if (!productResponses.isEmpty()) {

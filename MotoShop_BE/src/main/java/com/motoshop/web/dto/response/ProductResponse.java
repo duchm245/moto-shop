@@ -1,6 +1,7 @@
 package com.motoshop.web.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.motoshop.models.dtos.VariantDto;
 import lombok.Data;
 
 import java.sql.Date;
@@ -16,7 +17,39 @@ public class ProductResponse {
 
     private String sku;
 
-    private String material;
+    // ── Day 2 - Tuần 1: Tình trạng xe ────────────────────────────────────────
+    /** "new" | "used" */
+    private String condition;
+    /** Năm sản xuất */
+    private Integer manufacturingYear;
+    /** Số km đã đi */
+    private int mileage;
+    // ─────────────────────────────────────────────────────────────────────────
+
+    // ══ Day 3 - Tuần 1: Thông số kỹ thuật xe máy ══════════════════════════════
+    private String brand;
+    private String vehicleType;
+    private String engineType;
+    private Integer displacement;
+    private String maxPower;
+    private String maxTorque;
+    private String transmission;
+    private String fuelSystem;
+    private Double fuelCapacity;
+    private String fuelConsumption;
+    private String dimensions;
+    private Integer weight;
+    private Integer seatHeight;
+    private Integer groundClearance;
+    private String warrantyInfo;
+    private String origin;
+    private boolean isNew;
+
+    // ══ Day 3 - Tuần 1: Trả góp ══════════════════════════════════════════════
+    private boolean installmentSupported;
+    private int installmentMonths;
+    private int downPaymentPercent;
+    // ══════════════════════════════════════════════════════════════════════════
 
     private int visited;
 
@@ -38,7 +71,7 @@ public class ProductResponse {
 
     private long sale;
 
-    private List<ColorResponse> colors;
+    private List<VariantDto> variants;
 
     private List<ProductImageResponse> images;
 }
