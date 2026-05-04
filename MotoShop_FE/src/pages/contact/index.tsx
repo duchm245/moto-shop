@@ -24,10 +24,9 @@ const Contact = () => {
           <div className="container">
             <div className="row">
               <div className="col-lg-6 col-md-12 col-12 column-left">
-                <h2>Gửi thắc mắc cho chúng tôi</h2>
+                <h2>Yêu cầu tư vấn xe</h2>
                 <p>
-                  Nếu bạn có thắc mắc gì, có thể gửi yêu cầu cho chúng tôi, và chúng tôi sẽ liên lạc lại với bạn sớm
-                  nhất có thể .
+                  Bạn muốn tư vấn mua xe, hỏi về trả góp hoặc đặt xe? Để lại thông tin, chúng tôi sẽ liên hệ lại sớm nhất.
                 </p>
                 <div className="contact-form">
                   <div className="contact-form">
@@ -117,9 +116,11 @@ const Contact = () => {
                         </span>
                       </div>
                       <div className="right">
-                        <strong>Địa chỉ</strong>
+                        <strong>Showroom MotoShop</strong>
                         <br />
                         Số 19, nghách 103/80 Xuân Phương, phường Phương Canh, quận Nam Từ Liêm, Tp.Hà Nội
+                        <br />
+                        <span style={{ color: '#e53e3e', fontSize: '13px' }}>★ Đại lý ủy quyền Honda, Yamaha, Suzuki</span>
                       </div>
                     </div>
                     <div className="contact-info__item">
@@ -187,10 +188,12 @@ const Contact = () => {
                         </span>
                       </div>
                       <div className="right">
-                        <strong>Thời gian làm việc</strong>
+                        <strong>Giờ mở cửa Showroom</strong>
                         <br />
-                        Thứ 2 đến Thứ 6: từ 8h đến 18h;
-                        <br /> Thứ 7 và Chủ nhật: từ 8h00 đến 17h00
+                        Thứ 2 đến Thứ 6: 8h00 – 18h00
+                        <br /> Thứ 7 và Chủ nhật: 8h00 – 17h00
+                        <br />
+                        <span style={{ fontSize: '13px', color: '#666' }}>Tư vấn mua xe & trả góp tại showroom</span>
                       </div>
                     </div>
                     <div className="contact-info__item">

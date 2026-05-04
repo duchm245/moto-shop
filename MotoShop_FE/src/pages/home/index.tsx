@@ -52,29 +52,22 @@ const Home = () => {
     getSlideHome();
   }, []);
   //getcategory
-  const [category1, setCategory1] = React.useState<Category[]>([]);
+  const [category, setCategory] = React.useState<Category[]>([]);
 
-  const [category2, setCategory2] = React.useState<Category[]>([]);
-  const getCategory = async (id: number) => {
+  const getAllCategories = async () => {
     try {
-      const res = await categoryApi.getCategoryParent(id);
+      const res = await categoryApi.getAllCategory();
       if (res.data.status) {
-        const category = res.data.data;
-        if (id === 28) {
-          setCategory1(category);
-        } else if (id === 29) {
-          setCategory2(category);
-        }
+        const raw: any = res.data.data;
+        setCategory(Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []));
       }
     } catch (error) {
       console.error(error);
     }
   };
-  const category: Category[] = [...category1, ...category2];
 
   React.useEffect(() => {
-    getCategory(28);
-    getCategory(29);
+    getAllCategories();
   }, []);
   // swiper
   const [activeSlide, setActiveSlide] = React.useState(0);
@@ -106,10 +99,11 @@ const Home = () => {
     try {
       const res = await productApi.getBestSellerProduct();
       if (res.data.status) {
-        const productBestSeller = res.data.data.data;
+        const raw: any = res.data.data;
+        const productBestSeller = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
         setProductBestSeller(productBestSeller);
       } else {
-        toast.error(`${res.data.data.data}`, {
+        toast.error(`${res.data.data}`, {
           position: 'top-right',
           pauseOnHover: false,
           theme: 'dark',
@@ -151,7 +145,7 @@ const Home = () => {
     }
   };
   React.useEffect(() => {
-    if (productBestSeller.length > 0) {
+    if (Array.isArray(productBestSeller) && productBestSeller.length > 0) {
       productBestSeller.forEach(async (item) => {
         if (item.sale != null && item.sale !== 0) {
           await getSale(item.sale);
@@ -198,7 +192,7 @@ const Home = () => {
     }
   }, [activeTab]);
   React.useEffect(() => {
-    if (productColection.length > 0) {
+    if (Array.isArray(productColection) && productColection.length > 0) {
       productColection.forEach(async (item) => {
         if (item.sale != null && item.sale !== 0) {
           await getSale(item.sale);
@@ -258,7 +252,7 @@ const Home = () => {
   });
   let countdownInterval;
   React.useEffect(() => {
-    const targetDate = new Date('2023-12-24T10:00:00').getTime();
+    const targetDate = new Date('2026-01-29T08:00:00').getTime();
     const calculateCountdown = () => {
       const now = new Date().getTime();
       const timeDifference = targetDate - now;
@@ -326,7 +320,7 @@ const Home = () => {
     getProductSale();
   }, []);
   React.useEffect(() => {
-    if (productSale.length > 0) {
+    if (Array.isArray(productSale) && productSale.length > 0) {
       productSale.forEach(async (item) => {
         if (item.sale != null && item.sale !== 0) {
           await getSale(item.sale);
@@ -490,7 +484,7 @@ const Home = () => {
           <div className="section-title">
             <h2 className="text-start">
               <a className="cursor-pointer" onClick={() => navigate(path.product)}>
-                Sản phẩm khuyến mãi
+                Xe máy khuyến mãi
               </a>
             </h2>
             {/* đếm ngược  */}
@@ -623,8 +617,8 @@ const Home = () => {
                       name={item.name}
                       price={item.price}
                       salePrice={item.salePrice}
-                      img1={item.images[0].url}
-                      img2={item.images[1].url}
+                      img1={item.images?.[0]?.url ?? ''}
+                      img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                       sale={`${salesProduct[item.sale]}`}
                       slide={true}
                     />
@@ -647,7 +641,7 @@ const Home = () => {
               <ul className="nav tabs-navigation">
                 <li className="nav-item tab-header">
                   <a className="tab-title nav-link active" onClick={() => navigate(path.product)}>
-                    SẢN PHẨM NỔI BẬT
+                    XE MÁY NỔI BẬT
                   </a>
                 </li>
               </ul>
@@ -663,8 +657,8 @@ const Home = () => {
                     name={item.name}
                     price={item.price}
                     salePrice={item.salePrice}
-                    img1={item.images[0].url}
-                    img2={item.images[1].url}
+                    img1={item.images?.[0]?.url ?? ''}
+                    img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                     sale={`${sales[item.sale]}`}
                     slide={false}
                   />
@@ -673,7 +667,7 @@ const Home = () => {
           </div>
           <div className="see-more-product d-flex " onClick={() => navigate(path.product)}>
             <a className="button btnlight btn-see-more cursor-pointer">
-              Xem tất cả <strong className="coll-title">SẢN PHẨM NỔI BẬT</strong>
+              Xem tất cả <strong className="coll-title">XE MÁY NỔI BẬT</strong>
             </a>
           </div>
         </div>
@@ -760,8 +754,8 @@ const Home = () => {
                         name={item.name}
                         price={item.price}
                         salePrice={item.salePrice}
-                        img1={item.images[0].url}
-                        img2={item.images[1].url}
+                        img1={item.images?.[0]?.url ?? ''}
+                        img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                         sale={`${salesColection[item.sale]}`}
                         slide={false}
                       />
@@ -925,8 +919,8 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="policy-item__info">
-                  <h3 className="info-title">Miễn phí vận chuyển</h3>
-                  <div className="infor-des">Miễn phí đơn hàng từ 500.000đ</div>
+                  <h3 className="info-title">Giao xe tận nơi</h3>
+                  <div className="infor-des">Giao xe miễn phí toàn quốc</div>
                 </div>
               </div>
             </div>
@@ -943,8 +937,8 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="policy-item__info">
-                  <h3 className="info-title">Miễn phí cước đổi hàng</h3>
-                  <div className="infor-des">Đổi trả hàng sau 7 ngày nếu không vừa ý</div>
+                  <h3 className="info-title">Bảo hành chính hãng</h3>
+                  <div className="infor-des">Bảo hành theo phiếu bảo hành của nhà sản xuất</div>
                 </div>
               </div>
             </div>

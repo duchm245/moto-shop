@@ -291,7 +291,7 @@ const Cart = () => {
                                   <div className="media-left">
                                     <div className="item-img">
                                       <Link to={'#'}>
-                                        <img src={`${API_URL_IMAGE}${product?.images[0]?.url}`} />
+                                        <img src={`${API_URL_IMAGE}${product?.images?.[0]?.url ?? ''}`} />
                                       </Link>
                                     </div>
                                     <div className="item-remove" onClick={() => deleteItemFromCart(item.id)}>
@@ -305,7 +305,7 @@ const Cart = () => {
                                       </h3>
                                       <div className="item--variant">
                                         <span>
-                                          {item.valueColor} / {item.valueSize}
+                                          {item.valueSize}{item.valueColor ? ` — ${item.valueColor}` : ''}
                                         </span>
                                       </div>
                                     </div>
@@ -483,8 +483,8 @@ const Cart = () => {
                                   name={item.name}
                                   price={item.price}
                                   salePrice={item.salePrice}
-                                  img1={item.images[0].url}
-                                  img2={item.images[1].url}
+                                  img1={item.images?.[0]?.url ?? ''}
+                                  img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                                   sale={`${sales[item.sale]}`}
                                   slide
                                 />

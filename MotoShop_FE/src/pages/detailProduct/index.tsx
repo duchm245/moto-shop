@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { User } from '~/types/user.type';
 import { RootState } from '~/redux/reducers';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Color, Product, ProductImages, Size } from '~/types/product.type';
+import { Product, ProductImages, Variant } from '~/types/product.type';
 import cartApi from '~/apis/cart.apis';
 import CartAction from '~/redux/actions/cartAction';
 import { toast } from 'react-toastify';
@@ -37,12 +37,9 @@ const DetailProduct = () => {
   const id = location.state;
   const [sale, setSale] = React.useState<Sale>();
   const [product, setProduct] = React.useState<Product>();
-  const [colors, setColors] = React.useState<Color[]>([]);
-  const [sizes, setSizes] = React.useState<Size[]>([]);
-  const [selectedColorI, setSelectedColorI] = React.useState(0);
-  const [selectedColor, setSelectedColor] = React.useState('');
-  const [selectedSizeI, setSelectedSizeI] = React.useState(0);
-  const [selectedSize, setSelectedSize] = React.useState('');
+  const [selectedVariantI, setSelectedVariantI] = React.useState(0);
+  const [selectedVariant, setSelectedVariant] = React.useState<Variant | null>(null);
+  const [showInstallment, setShowInstallment] = React.useState(false);
   const [quantity, setQuantity] = React.useState(1);
   const [productImage, setProductImage] = React.useState<ProductImages[]>([]);
   const [relatedProduct, setRelatedProduct] = React.useState<Product[]>([]);
@@ -50,18 +47,9 @@ const DetailProduct = () => {
   const [activeTab, setActiveTab] = React.useState<number>(1);
   const [isShow, setIsShow] = React.useState(false);
   const tabs = [
-    {
-      id: 1,
-      label: 'Mô tả sản phẩm',
-    },
-    {
-      id: 2,
-      label: 'Chính sách đổi trả',
-    },
-    {
-      id: 3,
-      label: 'Điều khoản dịch vụ',
-    },
+    { id: 1, label: 'Mô tả sản phẩm' },
+    { id: 2, label: 'Bảo hành & Bảo dưỡng' },
+    { id: 3, label: 'Điều khoản dịch vụ' },
   ];
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex);
@@ -118,66 +106,19 @@ const DetailProduct = () => {
   const handlePlusClick = () => {
     setQuantity(quantity + 1);
   };
-  React.useEffect(() => {
-    // Lọc các kích thước dựa trên màu sắc được chọn
-    if (selectedColor) {
-      const sizesForSelectedColor = colors.find((item) => item.value === selectedColor)?.sizes || [];
-      const filteredSizes = sizesForSelectedColor.filter((size) => size.total > 0 || size.total === 0);
-      setSizes(filteredSizes);
-    } else {
-      // Nếu không có màu sắc nào được chọn, hiển thị tất cả các kích thước có tổng lớn hơn 0
-      const sizes = colors.flatMap((color) => color.sizes);
-      const filteredSizes = sizes.filter((size) => size.total > 0);
-      setSizes(filteredSizes);
-    }
-  }, [selectedColor, colors]);
+  const handleVariantChoose = (i: number) => {
+    const variants = product?.variants || [];
+    if (variants[i]?.stock === 0) return;
+    setSelectedVariantI(i);
+    setSelectedVariant(variants[i]);
+  };
 
-  const handleColorChoose = (i) => {
-    setSelectedColorI(i);
-    setSelectedColor(product?.colors[i]?.value || '');
-  };
-  const handleSizeChoose = (i) => {
-    if (sizes[i]?.total === 0) {
-      // Nếu size đã hết hàng, không thực hiện gì cả
-      return;
-    }
-    setSelectedSizeI(i);
-    setSelectedSize(sizes[i]?.value);
-  };
   React.useEffect(() => {
-    if (sizes.length > 0) {
-      if (sizes[0]?.total === 0) {
-        const nextAvailableSizeIndex = sizes.findIndex((size, index) => index !== 0 && size.total > 0);
-        if (nextAvailableSizeIndex !== -1) {
-          setSelectedSizeI(nextAvailableSizeIndex);
-          setSelectedSize(sizes[nextAvailableSizeIndex]?.value);
-        }
-      } else {
-        setSelectedSize(sizes[0]?.value || '');
-      }
-    }
-  }, [sizes]);
-  const getColor = async () => {
-    try {
-      const res = await productApi.getColor(product?.id);
-      if (res.data.status) {
-        const colors = res.data.data;
-        setColors(colors);
-      } else {
-        toast.error(`${res.data.data}`, {
-          position: 'top-right',
-          pauseOnHover: false,
-          theme: 'dark',
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  React.useEffect(() => {
-    if (!!product && product !== null) {
-      getColor();
-      setSelectedColor(product.colors[0].value);
+    if (product?.variants?.length > 0) {
+      const firstAvailable = product.variants.findIndex((v) => v.stock > 0);
+      const idx = firstAvailable >= 0 ? firstAvailable : 0;
+      setSelectedVariantI(idx);
+      setSelectedVariant(product.variants[idx]);
     }
   }, [product]);
   const addToCart = async () => {
@@ -187,8 +128,8 @@ const DetailProduct = () => {
           quantity: quantity,
           sellPrice: product?.salePrice,
           productName: product?.name,
-          valueColor: selectedColor,
-          valueSize: selectedSize,
+          valueColor: selectedVariant?.colorName || '',
+          valueSize: selectedVariant?.name || '',
         };
         const res = await cartApi.addToCart(user.id, data);
         if (res.data.status) {
@@ -388,66 +329,37 @@ const DetailProduct = () => {
                                 </>
                               )}
                             </div>
+                            {/* chọn phiên bản xe */}
                             <div className="product-variants">
                               <div id="add-item-form">
                                 <div className="select-swatch">
-                                  {/* chọn màu sắc */}
-                                  <div
-                                    id="variant-swatch-0"
-                                    className="- swatch clearfix is-color"
-                                    data-option="option1"
-                                    data-option-index={0}
-                                  >
-                                    <div className="pro-title">Màu sắc:</div>
+                                  <div className="- swatch clearfix is-color">
+                                    <div className="pro-title">Phiên bản:</div>
                                     <div className="select-swap">
-                                      {product?.colors.map((item, i) => (
+                                      {product?.variants?.map((v, i) => (
                                         <div
-                                          className="n-sd swatch-element"
+                                          className={`n-sd swatch-element ${v.stock === 0 ? 'soldout' : ''}`}
                                           key={i}
-                                          onClick={() => handleColorChoose(i)}
+                                          onClick={() => handleVariantChoose(i)}
                                         >
-                                          <input
-                                            className={`variant-${i}`}
-                                            id={`swatch-${i}-${item.value}-qv`}
-                                            type="radio"
-                                            readOnly
-                                          />
-                                          <label
-                                            className={`${selectedColorI === i ? 'sd' : ''}`}
-                                            htmlFor={`swatch-${i}-${item.value}-qv`}
-                                          >
-                                            <span>{item.value}</span>
-                                          </label>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                  {/* chọn size */}
-                                  <div
-                                    id="variant-swatch-1"
-                                    className="- swatch clearfix "
-                                    data-option="option2"
-                                    data-option-index={1}
-                                  >
-                                    <div className="pro-title">Kích thước: </div>
-                                    <div className="select-swap">
-                                      {sizes.map((size, i) => (
-                                        <div
-                                          className={`n-sd swatch-element ${size.total === 0 ? 'soldout' : ''}`}
-                                          key={i}
-                                          onClick={() => handleSizeChoose(i)}
-                                        >
-                                          <input
-                                            className={`variant-${i}`}
-                                            id={`swatch-${i}-${size.value}-qv`}
-                                            type="radio"
-                                            readOnly
-                                          />
-                                          <label
-                                            htmlFor={`swatch-${i}-${size.value}-qv`}
-                                            className={`${selectedSizeI === i ? 'sd' : ''}`}
-                                          >
-                                            <span>{size.value}</span>
+                                          <input className={`variant-${i}`} id={`swatch-v-${i}`} type="radio" readOnly />
+                                          <label className={`${selectedVariantI === i ? 'sd' : ''}`} htmlFor={`swatch-v-${i}`}>
+                                            {v.colorCode && (
+                                              <span
+                                                style={{
+                                                  display: 'inline-block',
+                                                  width: 12,
+                                                  height: 12,
+                                                  borderRadius: '50%',
+                                                  background: v.colorCode,
+                                                  marginRight: 4,
+                                                  verticalAlign: 'middle',
+                                                  border: '1px solid #ccc',
+                                                }}
+                                              />
+                                            )}
+                                            <span>{v.name}{v.colorName ? ` — ${v.colorName}` : ''}</span>
+                                            {v.stock === 0 && <span style={{ fontSize: 11, color: '#999' }}> (hết hàng)</span>}
                                           </label>
                                         </div>
                                       ))}
@@ -456,6 +368,68 @@ const DetailProduct = () => {
                                 </div>
                               </div>
                             </div>
+
+                            {/* bảng thông số kỹ thuật */}
+                            {product?.displacement && (
+                              <div className="product-specs" style={{ marginTop: 16 }}>
+                                <div className="pro-title" style={{ marginBottom: 8 }}>Thông số kỹ thuật:</div>
+                                <table className="specs-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                                  <tbody>
+                                    {product.brand && <tr><td style={{ padding: '4px 8px', color: '#666', width: '45%' }}>Hãng xe</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.brand}</td></tr>}
+                                    {product.vehicleType && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Loại xe</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.vehicleType}</td></tr>}
+                                    {product.displacement && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Phân khối</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.displacement} CC</td></tr>}
+                                    {product.engineType && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Loại động cơ</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.engineType}</td></tr>}
+                                    {product.maxPower && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Công suất tối đa</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.maxPower}</td></tr>}
+                                    {product.maxTorque && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Mô men xoắn</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.maxTorque}</td></tr>}
+                                    {product.transmission && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Hộp số</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.transmission}</td></tr>}
+                                    {product.fuelSystem && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Hệ thống nhiên liệu</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.fuelSystem}</td></tr>}
+                                    {product.fuelCapacity && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Dung tích bình xăng</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.fuelCapacity} lít</td></tr>}
+                                    {product.fuelConsumption && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Mức tiêu thụ nhiên liệu</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.fuelConsumption}</td></tr>}
+                                    {product.dimensions && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Kích thước (D×R×C)</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.dimensions} mm</td></tr>}
+                                    {product.weight && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Khối lượng</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.weight} kg</td></tr>}
+                                    {product.seatHeight && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Chiều cao yên</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.seatHeight} mm</td></tr>}
+                                    {product.warrantyInfo && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Bảo hành</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.warrantyInfo}</td></tr>}
+                                    {product.origin && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Xuất xứ</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.origin}</td></tr>}
+                                    <tr>
+                                      <td style={{ padding: '4px 8px', color: '#666' }}>Tình trạng</td>
+                                      <td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.condition === 'used' ? 'Xe đã qua sử dụng' : 'Xe mới'}</td>
+                                    </tr>
+                                    {product.manufacturingYear && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Năm sản xuất</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.manufacturingYear}</td></tr>}
+                                    {product.condition === 'used' && product.mileage > 0 && (
+                                      <tr><td style={{ padding: '4px 8px', color: '#666' }}>Số km đã đi</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.mileage.toLocaleString('vi-VN')} km</td></tr>
+                                    )}
+                                  </tbody>
+                                </table>
+                              </div>
+                            )}
+
+                            {/* trả góp */}
+                            {product?.installmentSupported && (
+                              <div className="product-installment" style={{ marginTop: 12, borderTop: '1px solid #eee', paddingTop: 12 }}>
+                                <button
+                                  type="button"
+                                  className="button btnborder"
+                                  style={{ fontSize: 13, padding: '6px 14px' }}
+                                  onClick={() => setShowInstallment(!showInstallment)}
+                                >
+                                  {showInstallment ? 'Ẩn thông tin trả góp' : 'Xem trả góp'}
+                                </button>
+                                {showInstallment && (
+                                  <div className="installment-info" style={{ marginTop: 10, background: '#f9f9f9', padding: 12, borderRadius: 6, fontSize: 13 }}>
+                                    <p><strong>Trả góp {product.name}</strong></p>
+                                    <p>Giá xe: <strong>{formatPrice(product.salePrice)}</strong></p>
+                                    <p>Trả trước {product.downPaymentPercent}%: <strong>{formatPrice(product.salePrice * product.downPaymentPercent / 100)}</strong></p>
+                                    {[24, 36].filter(m => m <= product.installmentMonths).map((months) => {
+                                      const loan = product.salePrice * (1 - product.downPaymentPercent / 100);
+                                      const rate = 0.012;
+                                      const monthly = Math.round(loan * rate * Math.pow(1 + rate, months) / (Math.pow(1 + rate, months) - 1));
+                                      return <p key={months}>Góp {months} tháng: ~<strong>{formatPrice(monthly)}</strong>/tháng</p>;
+                                    })}
+                                    <p style={{ color: '#999', fontSize: 11 }}>* Lãi suất tham khảo 1.2%/tháng. Liên hệ showroom để được tư vấn.</p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
                             {/* thay đổi số lượng */}
                             <div className="product-quantity ">
                               <div className="pro-qty d-flex align-items-center">
@@ -746,7 +720,7 @@ const DetailProduct = () => {
                                   alt="Miễn phí giao hàng cho đơn hàng từ 800K"
                                 />
                               </div>
-                              <div className="item--text">Miễn phí giao hàng cho đơn hàng từ 800K</div>
+                              <div className="item--text">Giao xe tận nơi toàn quốc</div>
                             </div>
                             <div className="item">
                               <div className="item--img">
@@ -788,7 +762,7 @@ const DetailProduct = () => {
                                     nếu sản phẩm lỗi"
                                 />
                               </div>
-                              <div className="item--text">Đổi trả trong 7 ngày nếu sản phẩm lỗi</div>
+                              <div className="item--text">Bảo hành chính hãng theo phiếu bảo hành</div>
                             </div>
                             <div className="item">
                               <div className="item--img">
@@ -861,51 +835,22 @@ const DetailProduct = () => {
                         </div>
                       </div>
                     </div>
-                    {/* tab chính sách đổi chả */}
+                    {/* tab bảo hành */}
                     <div className={`tab-pane fade product-policy-1 ${activeTab === 2 ? 'active show' : ''}`}>
-                      <p>
-                        <strong>1. Điều kiện đổi trả</strong>
-                      </p>
-                      <p>
-                        Quý Khách hàng cần kiểm tra tình trạng hàng hóa và có thể đổi hàng/ trả lại hàng&nbsp;ngay tại
-                        thời điểm giao/nhận hàng&nbsp;trong những trường hợp sau:
-                      </p>
+                      <p><strong>1. Chính sách bảo hành</strong></p>
                       <ul>
-                        <li>
-                          Hàng không đúng chủng loại, mẫu mã trong đơn hàng đã đặt hoặc như trên website tại thời điểm
-                          đặt hàng.
-                        </li>
-                        <li>Không đủ số lượng, không đủ bộ như trong đơn hàng.</li>
-                        <li>Tình trạng bên ngoài bị ảnh hưởng như rách bao bì, bong tróc, bể vỡ…</li>
+                        <li>Xe máy được bảo hành theo chính sách của nhà sản xuất (thường 12-24 tháng hoặc theo km).</li>
+                        <li>Bảo hành áp dụng cho các lỗi kỹ thuật từ nhà sản xuất, không áp dụng cho hư hỏng do tai nạn, sử dụng không đúng cách.</li>
+                        <li>Mang phiếu bảo hành khi đến trạm bảo hành ủy quyền của hãng.</li>
                       </ul>
-                      <p>
-                        &nbsp;Khách hàng có trách nhiệm trình giấy tờ liên quan chứng minh sự thiếu sót trên để hoàn
-                        thành việc&nbsp;hoàn trả/đổi trả hàng hóa.&nbsp;
-                      </p>
-                      <p>
-                        <br />
-                      </p>
-                      <p>
-                        <strong>2. Quy định về thời gian thông báo và gửi sản phẩm đổi trả</strong>
-                      </p>
+                      <p><strong>2. Lịch bảo dưỡng định kỳ</strong></p>
                       <ul>
-                        <li>
-                          <strong>Thời gian thông báo đổi trả</strong>:&nbsp;trong vòng 48h kể từ khi nhận sản phẩm đối
-                          với trường hợp sản phẩm thiếu phụ kiện, quà tặng hoặc bể vỡ.
-                        </li>
-                        <li>
-                          <strong>Thời gian gửi chuyển trả sản phẩm</strong>: trong vòng 14 ngày kể từ khi nhận sản
-                          phẩm.
-                        </li>
-                        <li>
-                          <strong>Địa điểm đổi trả sản phẩm</strong>: Khách hàng có thể mang hàng trực tiếp đến văn
-                          phòng/ cửa hàng của chúng tôi hoặc chuyển qua đường bưu điện.
-                        </li>
+                        <li>Bảo dưỡng lần 1: 1.000 km hoặc 1 tháng (tùy điều kiện nào đến trước).</li>
+                        <li>Bảo dưỡng định kỳ: mỗi 3.000 km hoặc 3 tháng.</li>
+                        <li>Kiểm tra dầu máy, bộ lọc gió, lốp xe, phanh theo hướng dẫn của nhà sản xuất.</li>
                       </ul>
-                      <p>
-                        Trong trường hợp Quý Khách hàng có ý kiến đóng góp/khiếu nại liên quan đến chất lượng sản phẩm,
-                        Quý Khách hàng vui lòng liên hệ đường dây chăm sóc khách hàng&nbsp;của chúng tôi.
-                      </p>
+                      <p><strong>3. Hỗ trợ sau bán hàng</strong></p>
+                      <p>Liên hệ hotline showroom để được hỗ trợ kỹ thuật và đặt lịch bảo dưỡng.</p>
                     </div>
                     {/* hướng dẫn chọn size */}
                     <div className={`tab-pane fade product-policy-2 ${activeTab === 3 ? 'active show' : ''}`}>
@@ -1033,8 +978,8 @@ const DetailProduct = () => {
                                     name={item.name}
                                     price={item.price}
                                     salePrice={item.salePrice}
-                                    img1={item.images[0].url}
-                                    img2={item.images[1].url}
+                                    img1={item.images?.[0]?.url ?? ''}
+                                    img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                                     sale={`${saleRelated[item.sale]}`}
                                     slide
                                   />
@@ -1084,34 +1029,16 @@ const DetailProduct = () => {
             <div className="sticky-atc__vrt">
               <form id="add-item-form-sb">
                 <div className="select-swatch">
-                  <div id="variant-swatch-0-sb" className="swatch clearfix">
-                    <div className="header hide">Màu sắc:</div>
-                    <div className="select-swap">
-                      {product?.colors.map((item, i) => (
-                        <div className="n-sd swatch-element" key={i} onClick={() => handleColorChoose(i)}>
-                          <input className={`variant-${i}`} id={`swatch-${i}-${item.value}-qv`} type="radio" readOnly />
-                          <label
-                            className={`${selectedColorI === i ? 'sd' : ''}`}
-                            htmlFor={`swatch-${i}-${item.value}-qv`}
-                          >
-                            <span>{item.value}</span>
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div id="variant-swatch-1-sb" className="swatch clearfix choose-size">
-                    <div className="header hide">Kích thước:</div>
+                  <div className="swatch clearfix choose-size">
+                    <div className="header hide">Phiên bản:</div>
                     <select
                       className="select-swap"
-                      name="select-swap-sb"
-                      id="select-swap-sb"
-                      onChange={(e) => handleSizeChoose(e.target.value)}
-                      value={selectedColorI}
+                      value={selectedVariantI}
+                      onChange={(e) => handleVariantChoose(Number(e.target.value))}
                     >
-                      {sizes.map((item, i) => (
-                        <option className={`n-sd swatch-element ${item.total === 0 ? 'hide' : ''}`} key={i} value={i}>
-                          {item.value}
+                      {product?.variants?.map((v, i) => (
+                        <option key={i} value={i} disabled={v.stock === 0}>
+                          {v.name}{v.colorName ? ` — ${v.colorName}` : ''}{v.stock === 0 ? ' (hết hàng)' : ''}
                         </option>
                       ))}
                     </select>

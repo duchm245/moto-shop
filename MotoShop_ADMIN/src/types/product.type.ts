@@ -9,23 +9,21 @@ export interface ProductImages {
   id: number;
   url: string | null;
 }
-export interface Size {
+
+export interface Variant {
   id: number;
-  value: string;
-  total: number;
+  name: string;
+  colorName: string;
+  colorCode: string;
+  stock: number;
   sold: number;
 }
-export interface Color {
-  id: number;
-  value: string;
-  sizes: Size;
-}
+
 export interface Product {
   id: number;
   name: string;
   description: string;
   sku: string;
-  material: string;
   visited: number;
   price: number;
   salePrice: number;
@@ -35,22 +33,36 @@ export interface Product {
   author: number;
   category: number | null;
   sale: number | null;
-  colors: Color;
+
+  // Tình trạng xe
+  condition: string;           // "new" | "used"
+  manufacturingYear: number | null;
+  mileage: number;
+
+  // Thông số kỹ thuật
+  brand: string;
+  vehicleType: string;
+  engineType: string;
+  displacement: number | null;
+  maxPower: string;
+  maxTorque: string;
+  transmission: string;
+  fuelSystem: string;
+  fuelCapacity: number | null;
+  fuelConsumption: string;
+  dimensions: string;
+  weight: number | null;
+  seatHeight: number | null;
+  groundClearance: number | null;
+  warrantyInfo: string;
+  origin: string;
+  isNew: boolean;
+
+  // Trả góp
+  installmentSupported: boolean;
+  installmentMonths: number;
+  downPaymentPercent: number;
+
+  variants: Variant[];
   images: ProductImages[];
 }
-// const bb = {
-//   "id": 1,
-//                 "name": "test sản phẩm sale",
-//                 "description": "Đầm sát nách, dáng thắt eo, phom đầm suông dập ly tăm, chi tiết hoa cắt laser đính 3D nổi phần ngực, cài cúc sau.",
-//                 "sku": "OB1YJe0",
-//                 "material": "Tơ",
-//                 "visited": 3,
-//                 "price": 1500000,
-//                 "salePrice": 1050000,
-//                 "modifiedDate": "18:52:19 08-08-2023",
-//                 "createdDate": "18:52:19 08-08-2023",
-//                 "status": 1,
-//                 "author": 1,
-//                 "category": 1,
-//                 "sale": 1,
-// }

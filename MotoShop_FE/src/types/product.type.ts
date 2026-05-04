@@ -9,23 +9,21 @@ export interface ProductImages {
   id: number;
   url: string;
 }
-export interface Size {
+
+export interface Variant {
   id: number;
-  value: string;
-  total: number;
+  name: string;
+  colorName: string;
+  colorCode: string;
+  stock: number;
   sold: number;
 }
-export interface Color {
-  id: number;
-  value: string;
-  sizes: Size[];
-}
+
 export interface Product {
   id: number;
   name: string;
   description: string;
   sku: string;
-  material: string;
   visited: number;
   price: number;
   salePrice: number;
@@ -35,6 +33,36 @@ export interface Product {
   author: number;
   category: number;
   sale: number;
-  colors: Color[];
+
+  // Tình trạng xe
+  condition: string;          // "new" | "used"
+  manufacturingYear: number;
+  mileage: number;
+
+  // Thông số kỹ thuật
+  brand: string;
+  vehicleType: string;
+  engineType: string;
+  displacement: number;
+  maxPower: string;
+  maxTorque: string;
+  transmission: string;
+  fuelSystem: string;
+  fuelCapacity: number;
+  fuelConsumption: string;
+  dimensions: string;
+  weight: number;
+  seatHeight: number;
+  groundClearance: number;
+  warrantyInfo: string;
+  origin: string;
+  isNew: boolean;
+
+  // Trả góp
+  installmentSupported: boolean;
+  installmentMonths: number;
+  downPaymentPercent: number;
+
+  variants: Variant[];
   images: ProductImages[];
 }

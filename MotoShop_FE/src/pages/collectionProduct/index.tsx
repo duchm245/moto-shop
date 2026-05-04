@@ -455,8 +455,8 @@ const CollectionProduct = () => {
                         name={item.name}
                         price={item.price}
                         salePrice={item.salePrice}
-                        img1={item.images[0].url}
-                        img2={item.images[1].url}
+                        img1={item.images?.[0]?.url ?? ''}
+                        img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                         sale={`${sales[item.sale]}`}
                       />
                     </React.Fragment>

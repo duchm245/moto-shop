@@ -47,8 +47,6 @@ const Product = () => {
   const [minPrice, setMinPrice] = React.useState();
   const [maxPrice, setMaxPrice] = React.useState();
   const [categoryId, setCategoryId] = React.useState<number>(-1);
-  const [allCategory1, setAllCategry1] = React.useState<Category[]>([]);
-  const [allCategory2, setAllCategry2] = React.useState<Category[]>([]);
   const [allCategory, setAllCategry] = React.useState<Category[]>([]);
   const navigate = useNavigate();
   const [categoriesMapping, setCategoriesMapping] = React.useState({});
@@ -102,10 +100,10 @@ const Product = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
-  const getAllCategory = async (id: number) => {
+  const loadAllCategory = async () => {
     if (!!token) {
       try {
-        const url = Api.getAllCategoryByParentId(id);
+        const url = Api.getAllCategory2();
         const [res] = await Promise.all([
           REQUEST_API({
             url: url,
@@ -114,19 +112,7 @@ const Product = () => {
           }),
         ]);
         if (res.status) {
-          if (id === 28) {
-            const category = res.data;
-            setAllCategry1(category);
-          } else if (id === 29) {
-            const category = res.data;
-            setAllCategry2(category);
-          }
-        } else {
-          toast.error(`Có lỗi xảy ra`, {
-            position: 'top-right',
-            pauseOnHover: false,
-            theme: 'dark',
-          });
+          setAllCategry(res.data || []);
         }
       } catch (error) {
         console.error(error);
@@ -134,12 +120,8 @@ const Product = () => {
     }
   };
   React.useEffect(() => {
-    getAllCategory(28);
-    getAllCategory(29);
+    loadAllCategory();
   }, []);
-  React.useEffect(() => {
-    setAllCategry([...allCategory1, ...allCategory2]);
-  }, [allCategory1, allCategory2]);
   const getAllProduct = async () => {
     if (!!token) {
       try {
@@ -503,9 +485,13 @@ const Product = () => {
               >
                 Giá KM <i className="bx bx-sort text-blue text-base"></i>
               </th>
+              <th className="w-[8%] text-center">Hãng xe</th>
+              <th className="w-[8%] text-center">Loại xe</th>
+              <th className="w-[6%] text-center">CC</th>
+              <th className="w-[8%] text-center">Tình trạng</th>
               <th className="w-[10%] text-center">Khuyến mãi</th>
               <th className="w-[10%] text-center">Trạng thái</th>
-              <th className="w-[10%] text-center">Danh mục</th>
+              <th className="w-[8%] text-center">Danh mục</th>
               <th className="w-[10%] text-center">Hành động</th>
               <th></th>
             </tr>
@@ -519,10 +505,14 @@ const Product = () => {
                     <td className="text-center">{item.sku}</td>
                     <td className="text-center">{item.name}</td>
                     <td className="">
-                      <img src={`${API_URL_IMAGE}${item?.images[0]?.url}`} className="w-20 h-20 object-contain" />
+                      <img src={`${API_URL_IMAGE}${item?.images?.[0]?.url}`} className="w-20 h-20 object-contain" />
                     </td>
                     <td className="text-center">{formatPrice(item.price)}</td>
                     <td className="text-center">{formatPrice(item.salePrice)}</td>
+                    <td className="text-center">{item.brand || '—'}</td>
+                    <td className="text-center">{item.vehicleType || '—'}</td>
+                    <td className="text-center">{item.displacement ? `${item.displacement}cc` : '—'}</td>
+                    <td className="text-center">{item.condition === 'new' ? 'Xe mới' : item.condition === 'used' ? 'Xe cũ' : '—'}</td>
                     <td className="text-center">{item.sale != 0 ? `${salesMapping[item.sale]}` : `Không có`}</td>
                     {item.status === 1 && (
                       <td className="text-green-500">

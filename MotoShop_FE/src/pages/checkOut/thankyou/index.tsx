@@ -299,7 +299,7 @@ const ThankYou = () => {
                                     <div className="product-thumbnail-wrapper">
                                       <img
                                         className="product-thumbnail-image"
-                                        src={`${API_URL_IMAGE}${product.images[0].url}`}
+                                        src={`${API_URL_IMAGE}${product.images?.[0]?.url ?? ''}`}
                                       />
                                     </div>
                                     <span className="product-thumbnail-quantity" aria-hidden="true">

@@ -6,5 +6,6 @@ const categoryApi = {
   getCategoryType : (id) => httpRequest.get<SuccessResponse<Category>, any>(`/api/category/type/${id}`),
   getCategory : (id) => httpRequest.get<SuccessResponse<Category>, any>(`/api/category/${id}`),
   getCategoryParent : (id) => httpRequest.get<SuccessResponse<Category>,any>(`/api/category/parent?parentId=${id}`),
+  getAllCategory : () => httpRequest.get<SuccessResponse<Category>, any>(`/api/category`),
 }
 export default categoryApi;

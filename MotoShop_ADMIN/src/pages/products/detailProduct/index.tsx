@@ -7,7 +7,7 @@ import { REQUEST_API } from '~/constants/method';
 import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
 import { RootState } from '~/redux/reducers';
 import { Category } from '~/types/category.type';
-import { Color, Product, ProductImages, Size } from '~/types/product.type';
+import { Product, ProductImages, Variant } from '~/types/product.type';
 import { Sale } from '~/types/sale.type';
 import { User } from '~/types/user.type';
 
@@ -17,8 +17,7 @@ const DetailProduct = () => {
   const token = useSelector((state: RootState) => state.ReducerAuth.token);
   const idProduct = location.state;
   const [product, setProduct] = React.useState<Product>();
-  const [size, setSize] = React.useState<Size[]>([]);
-  const [color, setColor] = React.useState<Color[]>([]);
+  const [variants, setVariants] = React.useState<Variant[]>([]);
   const [images, setImages] = React.useState<ProductImages[]>([]);
   const [user, setUser] = React.useState<User>();
   const [sale, setSale] = React.useState<Sale>();
@@ -37,11 +36,8 @@ const DetailProduct = () => {
         ]);
         if (res.status) {
           setProduct(res.data);
-          const colors = res.data.colors;
-          setColor(colors);
-          setImages(res.data.images);
-          const sizesByColor = colors.map((color) => color.sizes);
-          setSize(sizesByColor);
+          setVariants(res.data.variants || []);
+          setImages(res.data.images || []);
         } else {
           toast.error(`${res.data}`, {
             position: 'top-right',
@@ -180,8 +176,20 @@ const DetailProduct = () => {
             <span className="text-base ml-5">{product?.sku}</span>
           </div>
           <div className="flex items-center pt-5">
-            <span className="text-base text-black font-bold">Chất liệu: </span>
-            <span className="text-base ml-5">{product?.material}</span>
+            <span className="text-base text-black font-bold">Hãng xe: </span>
+            <span className="text-base ml-5">{product?.brand}</span>
+          </div>
+          <div className="flex items-center pt-5">
+            <span className="text-base text-black font-bold">Loại xe: </span>
+            <span className="text-base ml-5">{product?.vehicleType}</span>
+          </div>
+          <div className="flex items-center pt-5">
+            <span className="text-base text-black font-bold">Tình trạng: </span>
+            <span className="text-base ml-5">{product?.condition === 'new' ? 'Xe mới' : 'Xe cũ'}</span>
+          </div>
+          <div className="flex items-center pt-5">
+            <span className="text-base text-black font-bold">Năm sản xuất: </span>
+            <span className="text-base ml-5">{product?.manufacturingYear}</span>
           </div>
           <div className="flex items-center pt-5">
             <span className="text-base text-black font-bold">Số lượt xem: </span>
@@ -253,31 +261,28 @@ const DetailProduct = () => {
       </div>
       <div className="flex items-center justify-around mt-5">
         <div className="w-[70%] flex flex-col border rounded-md p-5">
-          <span className="text-lg font-semibold text-blue">Màu sắc và Size</span>
-          <div className="w-full h-[1px] bg-black"></div>
-          <div className="grid grid-cols-4 items-center">
-            <span className="text-black font-bold text-base">Màu sắc</span>
-            <span className="ml-2 text-black font-bold tex-base">Size</span>
-            <span className="text-black font-bold text-base">Số lượng tồn</span>
-            <span className="text-black font-bold text-base">Số lượng bán</span>
-            {!!color &&
-              !!color.length &&
-              color.map((colorItem, colorIndex) => (
-                <React.Fragment key={colorIndex}>
-                  <span className="w-full items-center">{colorItem.value}</span>
-                  <div className="flex flex-col col-span-3">
-                    {colorItem.sizes.map((sizeItem, sizeIndex) => (
-                      <div key={sizeIndex} className="flex justify-between">
-                        <div className="text-base">{sizeItem.value}</div>
-                        <div className="">{sizeItem.total}</div>
-                        <div className="w-[25%]">{sizeItem.sold}</div>
-                      </div>
-                    ))}
-                    <div className="w-full bg-black h-[1px] my-2"></div>
-                  </div>
-                </React.Fragment>
-              ))}
+          <span className="text-lg font-semibold text-blue">Phiên bản xe</span>
+          <div className="w-full h-[1px] bg-black mb-3"></div>
+          <div className="grid grid-cols-5 items-center font-bold text-sm mb-2">
+            <span>Tên phiên bản</span>
+            <span>Màu sắc</span>
+            <span>Mã màu</span>
+            <span>Tồn kho</span>
+            <span>Đã bán</span>
           </div>
+          {variants.map((v, i) => (
+            <div key={i} className="grid grid-cols-5 items-center py-1 border-b border-gray-100">
+              <span>{v.name}</span>
+              <span>{v.colorName}</span>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded-full border border-gray-300" style={{ backgroundColor: v.colorCode }}></div>
+                <span className="text-xs text-gray-500">{v.colorCode}</span>
+              </div>
+              <span>{v.stock}</span>
+              <span>{v.sold}</span>
+            </div>
+          ))}
+          {variants.length === 0 && <span className="text-gray-400 text-sm">Chưa có phiên bản nào</span>}
         </div>
         <div className="w-[25%] flex flex-col border rounded-md p-5 self-start">
           <span className="text-lg font-semibold text-blue">Danh mục</span>
