@@ -51,10 +51,36 @@ CREATE DATABASE motorbike_shop CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 Repo có file `motorbike_shop.sql` ở thư mục gốc. Import bằng một trong hai cách:
 
 - Dùng MySQL Workbench: mở file SQL rồi chạy toàn bộ script.
-- Hoặc dùng CLI:
+- Hoặc dùng CLI — chạy lệnh sau từ **thư mục gốc của project** (`Moto-shop/`):
 
+> **Lưu ý trước khi chạy:** Thay `YOUR_PASSWORD` bằng password MySQL của bạn (mặc định xem mục 4).
+> Khi dùng pipe (`|`) hoặc redirect (`<`), MySQL không thể nhận password qua bàn phím,
+> nên phải truyền qua biến môi trường `-e MYSQL_PWD=`.
+`
+**PowerShell:**
 ```powershell
-mysql -u root -p motorbike_shop < .\motorbike_shop.sql
+Get-Content .\motorbike_shop.sql | docker exec -i -e MYSQL_PWD=YOUR_PASSWORD motorbike-shop-mysql mysql -u root motorbike_shop
+```
+
+**CMD:**
+```cmd
+docker exec -i -e MYSQL_PWD=YOUR_PASSWORD motorbike-shop-mysql mysql -u root motorbike_shop < .\motorbike_shop.sql
+```
+
+### 3.3 Chạy migration
+
+Các file migration nằm trong thư mục `migrations/`. Chạy từ **thư mục gốc của project**.
+Thay `YOUR_PASSWORD` bằng password MySQL của bạn:
+
+**PowerShell:**
+```powershell
+Get-Content .\migrations\week1_day1_create_variant_table.sql | docker exec -i -e MYSQL_PWD=YOUR_PASSWORD motorbike-shop-mysql mysql -u root motorbike_shop
+
+```
+
+**CMD:**
+```cmd
+docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop < .\migrations\week1_day1_create_variant_table.sql
 ```
 
 ## 4. Cấu hình backend
@@ -84,7 +110,7 @@ cd .\MotoShop_BE
 Hoặc nếu đã có Maven global:
 
 ```powershell
-cd .\MotoShop_BE
+cd ~/Desktop/doan/Moto-shop/MotoShop_BE
 mvn spring-boot:run
 ```
 
@@ -94,6 +120,7 @@ Backend chạy mặc định tại: `http://localhost:8081`.
 
 ```powershell
 cd .\MotoShop_FE
+cd ~/Desktop/doan/Moto-shop/MotoShop_FE
 npm install
 npm run dev
 ```
