@@ -16,12 +16,10 @@ import SpinLoading from '~/components/spinloading';
 import categoryApi from '~/apis/category.apis';
 import { Category } from '~/types/category.type';
 
-interface IIValue {
-  value: string;
-}
 interface Params {
-  valueSize: any[];
-  valueColor: any[];
+  brand?: string;
+  vehicleType?: string;
+  condition?: string;
   minPrice: number;
   maxPrice: number;
   categoryId?: any | undefined;
@@ -37,12 +35,15 @@ const ProductView = () => {
   const state = location.state;
   const categoryId = state?.categoryId;
   const saleId = state?.saleId;
-  const [sizes, setSizes] = React.useState<IIValue[]>([]);
-  const [colors, setColors] = React.useState<IIValue[]>([]);
-  const [valueSize, setValueSize] = React.useState<any[]>([]);
-  const [valueColor, setValueColor] = React.useState<any[]>([]);
+  const [brand, setBrand] = React.useState('');
+  const [selectedTypeId, setSelectedTypeId] = React.useState<number | null>(null);
+  const [typeCategories, setTypeCategories] = React.useState<Category[]>([]);
+  const [condition, setCondition] = React.useState('');
   const [minPrice, setMinPrice] = React.useState(0);
-  const [maxPrice, setMaxPrice] = React.useState(3000000);
+  const [maxPrice, setMaxPrice] = React.useState(200000000);
+
+  const BRANDS = ['Honda', 'Yamaha', 'Suzuki', 'TVS', 'Vinfast', 'SYM', 'GPX', 'Zontes'];
+  const VEHICLE_TYPES = ['Xe số', 'Xe tay ga', 'Xe côn tay', 'Xe điện'];
   const [page, setPage] = React.useState(1);
   const [sortBy, setSortBy] = React.useState('');
   const [sortDirection, setSortDirection] = React.useState('');
@@ -51,54 +52,24 @@ const ProductView = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isShowFlter, setIsShowFilter] = React.useState(true);
   const [category, setCategory] = React.useState<Category>();
-  const [showFillColor, setShowFillColor] = React.useState(false);
-  const [showFillSize, setShowFillSize] = React.useState(false);
-
-  const getAllSize = async () => {
-    try {
-      const res = await productApi.getAllSize();
-
-      if (res.data.status) {
-        setSizes(res.data.data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const getAllColor = async () => {
-    try {
-      const res = await productApi.getAllColor();
-
-      if (res.data.status) {
-        setColors(res.data.data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  React.useEffect(() => {
-    getAllColor();
-    getAllSize();
-  }, []);
+  const [showFillBrand, setShowFillBrand] = React.useState(false);
+  const [showFillType, setShowFillType] = React.useState(false);
   const getProduct = async () => {
     try {
       setIsLoading(true);
       const params: Params = {
-        valueSize: valueSize,
-        valueColor: valueColor,
         minPrice: minPrice,
         maxPrice: maxPrice,
-        // categoryId: categoryId,
         pageNo: page,
         sortBy: sortBy,
         sortDirection: sortDirection,
       };
-      if (!!categoryId) {
-        params.categoryId = categoryId;
-      }
-      if (!!saleId) {
-        params.saleId = saleId;
-      }
+      if (brand) params.brand = brand;
+      if (condition) params.condition = condition;
+      // selectedTypeId (từ bộ lọc) ưu tiên hơn categoryId từ navigation
+      const effectiveCategoryId = selectedTypeId ?? categoryId;
+      if (effectiveCategoryId) params.categoryId = effectiveCategoryId;
+      if (saleId) params.saleId = saleId;
       const res = await productApi.getAllProducts(params);
       if (res.data.status) {
         setListProduct(res.data.data.data);
@@ -117,6 +88,21 @@ const ProductView = () => {
   React.useEffect(() => {
     getProduct();
   }, []);
+
+  React.useEffect(() => {
+    const loadTypeCategories = async () => {
+      try {
+        const res = await categoryApi.getAllCategory();
+        if (res.data.status) {
+          const raw: any = res.data.data;
+          const all: Category[] = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
+          setTypeCategories(all.filter(c => VEHICLE_TYPES.includes(c.title)));
+        }
+      } catch (e) {}
+    };
+    loadTypeCategories();
+  }, []);
+
   const getSale = async (id: number) => {
     try {
       const res = await saleApi.getSale(id);
@@ -146,34 +132,17 @@ const ProductView = () => {
       });
     }
   }, [listProduct]);
-  const handleChooseSize = (selectedSize) => {
-    // Kiểm tra xem selectedSize đã được chọn trước đó hay chưa
-    if (valueSize.includes(selectedSize)) {
-      // Nếu đã chọn rồi, loại bỏ khỏi mảng valueSize
-      setValueSize(valueSize.filter((size) => size !== selectedSize));
-    } else {
-      // Nếu chưa chọn, thêm vào mảng valueSize
-      setValueSize([...valueSize, selectedSize]);
-    }
-  };
-  const handleChooseColor = (selectedColor) => {
-    // Kiểm tra xem selectedColor đã được chọn trước đó hay chưa
-    if (valueColor.includes(selectedColor)) {
-      // Nếu đã chọn rồi, loại bỏ khỏi mảng valueColor
-      setValueColor(valueColor.filter((color) => color !== selectedColor));
-    } else {
-      // Nếu chưa chọn, thêm vào mảng valueColor
-      setValueColor([...valueColor, selectedColor]);
-    }
-  };
+  const handleChooseBrand = (val: string) => setBrand(brand === val ? '' : val);
+  const handleChooseType = (id: number) => setSelectedTypeId(selectedTypeId === id ? null : id);
   const handlePageClick = (page) => {
     setPage(page);
   };
   const handleCacelFilter = () => {
-    setValueColor([]);
-    setValueSize([]);
-    setMaxPrice(0);
-    setMinPrice(3000000);
+    setBrand('');
+    setSelectedTypeId(null);
+    setCondition('');
+    setMinPrice(0);
+    setMaxPrice(200000000);
     setIsShowFilter(false);
   };
   React.useEffect(() => {
@@ -184,7 +153,7 @@ const ProductView = () => {
       connect: true,
       range: {
         min: 0,
-        max: 3000000,
+        max: 200000000,
       },
       tooltips: [
         {
@@ -238,7 +207,7 @@ const ProductView = () => {
   };
   React.useEffect(() => {
     getProduct();
-  }, [valueSize, valueColor, minPrice, maxPrice, categoryId, page, sortBy, sortDirection, saleId]);
+  }, [brand, selectedTypeId, condition, minPrice, maxPrice, categoryId, page, sortBy, sortDirection, saleId]);
   const getCategory = async (id: number) => {
     if (!!categoryId) {
       try {
@@ -303,66 +272,76 @@ const ProductView = () => {
                             </div>
                           </div>
                         </div>
-                        {/* ./filter color */}
+                        {/* filter hãng xe */}
                         <div className="filter_group">
                           <div className="filter_group_block">
                             <div
-                              className={`filter_group-subtitle ${showFillColor ? 'action-group' : ''}`}
-                              onClick={() => setShowFillColor(!showFillColor)}
+                              className={`filter_group-subtitle ${showFillBrand ? 'action-group' : ''}`}
+                              onClick={() => setShowFillBrand(!showFillBrand)}
                             >
-                              <span>Màu sắc</span>
+                              <span>Hãng xe</span>
                             </div>
-                            <div
-                              className="filter_group-content filter-size"
-                              style={showFillColor ? { display: 'none' } : {}}
-                            >
+                            <div className="filter_group-content filter-size" style={showFillBrand ? { display: 'none' } : {}}>
                               <ul className="checkbox-list clearfix">
-                                {!!colors &&
-                                  !!colors.length &&
-                                  colors.map((item, i) => (
-                                    <li key={i}>
-                                      <input
-                                        type="checkbox"
-                                        id={`data-color-${i}`}
-                                        name="color-filter"
-                                        onChange={() => handleChooseColor(item.value)}
-                                        checked={valueColor.includes(item.value)}
-                                      />
-                                      <label htmlFor={`data-color-${i}`}>{item?.value}</label>
-                                    </li>
-                                  ))}
+                                {BRANDS.map((b, i) => (
+                                  <li key={i}>
+                                    <input
+                                      type="checkbox"
+                                      id={`brand-${i}`}
+                                      onChange={() => handleChooseBrand(b)}
+                                      checked={brand === b}
+                                    />
+                                    <label htmlFor={`brand-${i}`}>{b}</label>
+                                  </li>
+                                ))}
                               </ul>
                             </div>
                           </div>
                         </div>
-                        {/* ./filter size */}
+                        {/* filter loại xe */}
                         <div className="filter_group">
                           <div className="filter_group_block">
                             <div
-                              className={`filter_group-subtitle ${showFillSize ? 'action-group' : ''}`}
-                              onClick={() => setShowFillSize(!showFillSize)}
+                              className={`filter_group-subtitle ${showFillType ? 'action-group' : ''}`}
+                              onClick={() => setShowFillType(!showFillType)}
                             >
-                              <span>Size</span>
+                              <span>Loại xe</span>
                             </div>
-                            <div
-                              className="filter_group-content filter-size"
-                              style={showFillSize ? { display: 'none' } : {}}
-                            >
+                            <div className="filter_group-content filter-size" style={showFillType ? { display: 'none' } : {}}>
                               <ul className="checkbox-list">
-                                {!!sizes &&
-                                  !!sizes.length &&
-                                  sizes.map((item, i) => (
-                                    <li key={i}>
-                                      <input
-                                        type="checkbox"
-                                        id={`data-size-${i}`}
-                                        name="size-filter"
-                                        onChange={() => handleChooseSize(item.value)}
-                                        checked={valueSize.includes(item.value)}
-                                      />
-                                      <label htmlFor={`data-size-${i}`}>{item?.value}</label>
-                                    </li>
-                                  ))}
+                                {typeCategories.map((cat) => (
+                                  <li key={cat.id}>
+                                    <input
+                                      type="checkbox"
+                                      id={`vtype-${cat.id}`}
+                                      onChange={() => handleChooseType(cat.id)}
+                                      checked={selectedTypeId === cat.id}
+                                    />
+                                    <label htmlFor={`vtype-${cat.id}`}>{cat.title}</label>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        {/* filter tình trạng */}
+                        <div className="filter_group">
+                          <div className="filter_group_block">
+                            <div className="filter_group-subtitle"><span>Tình trạng</span></div>
+                            <div className="filter_group-content filter-size">
+                              <ul className="checkbox-list">
+                                {[{ val: '', label: 'Tất cả' }, { val: 'new', label: 'Xe mới' }, { val: 'used', label: 'Xe cũ' }].map((c) => (
+                                  <li key={c.val}>
+                                    <input
+                                      type="radio"
+                                      id={`cond-${c.val}`}
+                                      name="condition"
+                                      onChange={() => setCondition(c.val)}
+                                      checked={condition === c.val}
+                                    />
+                                    <label htmlFor={`cond-${c.val}`}>{c.label}</label>
+                                  </li>
+                                ))}
                               </ul>
                             </div>
                           </div>
@@ -473,8 +452,8 @@ const ProductView = () => {
                           name={item.name}
                           price={item.price}
                           salePrice={item.salePrice}
-                          img1={item.images[0].url}
-                          img2={item.images[1].url}
+                          img1={item.images?.[0]?.url ?? ''}
+                          img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                           sale={`${sales[item.sale]}`}
                           slide={false}
                         />

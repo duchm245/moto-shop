@@ -171,7 +171,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryResponse> getAllCategoryAdmin() {
-        List<Category> categories = categoryRepository.findAll();
+        List<Category> categories = categoryRepository.findAllByStatusAndType(Constants.ACTIVE_STATUS, Constants.PRODUCT_TYPE);
         return categories.stream()
                 .map(categoryMapper::mapModelToResponse)
                 .toList();

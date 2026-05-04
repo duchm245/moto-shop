@@ -17,31 +17,34 @@ const Header = () => {
   const user = useSelector((state: RootState) => state.AuthReducer.user);
   const cart: Order[] = useSelector((state: RootState) => state.CartReducer.cart);
   const [cartItem, setCartItem] = React.useState<OrderItem[]>([]);
-  // const [category, setCategory] = React.useState<Category[]>([]);
-  const [category1, setCategory1] = React.useState<Category[]>([]);
-  const [category2, setCategory2] = React.useState<Category[]>([]);
+  const [category, setCategory] = React.useState<Category[]>([]);
   const [showMenu, setShowMenu] = React.useState(false);
   const [searchLaptop, setSearchLaptop] = React.useState(false);
   const [searchMoblie, setSearchMobile] = React.useState(false);
   const [keyword, setKeyword] = React.useState('');
-  const getCategory = async (id: number) => {
+  const [productMenuOpen, setProductMenuOpen] = React.useState(false);
+  const productMenuTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openProductMenu = () => {
+    if (productMenuTimer.current) clearTimeout(productMenuTimer.current);
+    setProductMenuOpen(true);
+  };
+  const scheduleCloseProductMenu = () => {
+    productMenuTimer.current = setTimeout(() => setProductMenuOpen(false), 200);
+  };
+  const getAllCategories = async () => {
     try {
-      const res = await categoryApi.getCategoryParent(id);
+      const res = await categoryApi.getAllCategory();
       if (res.data.status) {
-        const category = res.data.data;
-        if (id === 28) {
-          setCategory1(category);
-        } else if (id === 29) {
-          setCategory2(category);
-        }
+        const raw: any = res.data.data;
+        setCategory(Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []));
       }
     } catch (error) {
       console.error(error);
     }
   };
   React.useEffect(() => {
-    getCategory(28);
-    getCategory(29);
+    getAllCategories();
   }, []);
   const handleUser = () => {
     if (!!user && user !== null) {
@@ -80,7 +83,6 @@ const Header = () => {
       setSearchMobile(false);
     }
   };
-  const category: Category[] = [...category1, ...category2];
   React.useEffect(() => {
     setShowMenu(false);
     setSearchLaptop(false);
@@ -142,147 +144,61 @@ const Header = () => {
                           Trang chủ
                         </Link>
                       </li>
-                      <li className="has-submenu  fullwidth">
-                        <a onClick={() => navigate(path.product, { state: { categoryId: 28 } })} title="Áo nam">
-                          Áo nam
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width={12}
-                            height={12}
-                            x={0}
-                            y={0}
-                            viewBox="0 0 128 128"
-                          >
+                      <li
+                        className={`has-submenu fullwidth${productMenuOpen ? ' is-open' : ''}`}
+                        onMouseEnter={openProductMenu}
+                        onMouseLeave={scheduleCloseProductMenu}
+                      >
+                        <a onClick={() => navigate(path.product)} title="Danh mục xe" className="cursor-pointer">
+                          Danh mục xe
+                          <svg xmlns="http://www.w3.org/2000/svg" width={12} height={12} x={0} y={0} viewBox="0 0 128 128">
                             <g>
                               <path d="m64 88c-1.023 0-2.047-.391-2.828-1.172l-40-40c-1.563-1.563-1.563-4.094 0-5.656s4.094-1.563 5.656 0l37.172 37.172 37.172-37.172c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656l-40 40c-.781.781-1.805 1.172-2.828 1.172z" />
                             </g>
                           </svg>
                         </a>
-                        <div className="menuList-submain multicolumn">
-                          <div className="multicolumn-container">
-                            <div className="subchildmenu  d-flex flex-wrap">
-                              {!!category1 &&
-                                !!category1.length &&
-                                category1.map((item, i) => {
-                                  return (
-                                    <div className="ui-menu-item has-submenu col-lg-3" key={i}>
-                                      <a
-                                        className="cursor-pointer"
-                                        title={item.title}
-                                        onClick={() => navigate(path.product, { state: { categoryId: item.id } })}
-                                      >
-                                        {item.title}
-                                      </a>
-                                      <ul className="subchildmenu-item">
-                                        {!!item.childCategories &&
-                                          !!item.childCategories.length &&
-                                          item.childCategories.map((child, index) => {
-                                            return (
-                                              <li className="" key={index}>
-                                                <a
-                                                  className="cursor-pointer"
-                                                  title={child.title}
-                                                  onClick={() =>
-                                                    navigate(path.product, { state: { categoryId: child.id } })
-                                                  }
-                                                >
-                                                  {child.title}
-                                                </a>
-                                              </li>
-                                            );
-                                          })}
-                                      </ul>
-                                    </div>
-                                  );
-                                })}
-                            </div>
-                            <div className="menuBanner">
-                              <a href="collections/ao-nam">
-                                <img
-                                  className=" lazyloaded"
-                                  src="//theme.hstatic.net/200000690725/1001078549/14/mega_menu_3_img.jpg?v=169"
-                                  data-src="//theme.hstatic.net/200000690725/1001078549/14/mega_menu_3_img.jpg?v=169"
-                                  alt="Áo nam"
-                                />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      <li className="has-submenu  fullwidth">
-                        <a
-                          className="cursor-pointer"
-                          title="Quần nam"
-                          onClick={() => navigate(path.product, { state: { categoryId: 29 } })}
+                        <div
+                          className="menuList-submain multicolumn"
+                          onMouseEnter={openProductMenu}
+                          onMouseLeave={scheduleCloseProductMenu}
                         >
-                          Quần nam
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width={12}
-                            height={12}
-                            x={0}
-                            y={0}
-                            viewBox="0 0 128 128"
-                          >
-                            <g>
-                              <path d="m64 88c-1.023 0-2.047-.391-2.828-1.172l-40-40c-1.563-1.563-1.563-4.094 0-5.656s4.094-1.563 5.656 0l37.172 37.172 37.172-37.172c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656l-40 40c-.781.781-1.805 1.172-2.828 1.172z" />
-                            </g>
-                          </svg>
-                        </a>
-                        <div className="menuList-submain multicolumn">
                           <div className="multicolumn-container">
                             <div className="subchildmenu  d-flex flex-wrap">
-                              {!!category2 &&
-                                !!category2.length &&
-                                category2.map((item, i) => {
-                                  return (
-                                    <div className="ui-menu-item has-submenu col-lg-3" key={i}>
-                                      <a
-                                        className="cursor-pointer"
-                                        title={item.title}
-                                        onClick={() => navigate(path.product, { state: { categoryId: item.id } })}
-                                      >
-                                        {item.title}
-                                      </a>
-                                      <ul className="subchildmenu-item">
-                                        {!!item.childCategories &&
-                                          !!item.childCategories.length &&
-                                          item.childCategories.map((child, index) => {
-                                            return (
-                                              <li className="" key={index}>
-                                                <a
-                                                  className="cursor-pointer"
-                                                  title={child.title}
-                                                  onClick={() =>
-                                                    navigate(path.product, { state: { categoryId: child.id } })
-                                                  }
-                                                >
-                                                  {child.title}
-                                                </a>
-                                              </li>
-                                            );
-                                          })}
-                                      </ul>
-                                    </div>
-                                  );
-                                })}
-                            </div>
-                            <div className="menuBanner">
-                              <a href="collections/quan-nam">
-                                <img
-                                  className=" lazyloaded"
-                                  src="//theme.hstatic.net/200000690725/1001078549/14/mega_menu_2_img.jpg?v=169"
-                                  data-src="//theme.hstatic.net/200000690725/1001078549/14/mega_menu_2_img.jpg?v=169"
-                                  alt="Quần nam"
-                                />
-                              </a>
+                              {!!category &&
+                                !!category.length &&
+                                category.map((item, i) => (
+                                  <div className="ui-menu-item has-submenu col-lg-3" key={i}>
+                                    <a
+                                      className="cursor-pointer"
+                                      title={item.title}
+                                      onClick={() => navigate(path.product, { state: { categoryId: item.id } })}
+                                    >
+                                      {item.title}
+                                    </a>
+                                    <ul className="subchildmenu-item">
+                                      {!!item.childCategories &&
+                                        !!item.childCategories.length &&
+                                        item.childCategories.map((child, index) => (
+                                          <li key={index}>
+                                            <a
+                                              className="cursor-pointer"
+                                              title={child.title}
+                                              onClick={() => navigate(path.product, { state: { categoryId: child.id } })}
+                                            >
+                                              {child.title}
+                                            </a>
+                                          </li>
+                                        ))}
+                                    </ul>
+                                  </div>
+                                ))}
                             </div>
                           </div>
                         </div>
                       </li>
                       <li className="has-submenu  ">
-                        <a onClick={() => navigate(path.product)} title="Sản phẩm" className="cursor-pointer">
-                          Sản phẩm
+                        <a onClick={() => navigate(path.product, { state: { saleId: 1 } })} title="Khuyến mãi" className="cursor-pointer">
+                          Khuyến mãi
                         </a>
                       </li>
                       <li className="has-submenu  ">
@@ -519,20 +435,21 @@ const Header = () => {
                         <span>Trang chủ</span>
                       </a>
                     </li>
-                    <li
-                      className="has-submenu level0 "
-                      onClick={() => navigate(path.product, { state: { categoryId: 28 } })}
-                    >
-                      <a title="Áo name">Áo nam</a>
+                    <li className="has-submenu level0 " onClick={() => navigate(path.product)}>
+                      <a title="Danh mục xe">Danh mục xe</a>
                     </li>
+                    {!!category &&
+                      !!category.length &&
+                      category.map((item, i) => (
+                        <li className="" key={i} onClick={() => navigate(path.product, { state: { categoryId: item.id } })}>
+                          <a title={item.title}>
+                            <span>{item.title}</span>
+                          </a>
+                        </li>
+                      ))}
                     <li className="">
-                      <a title="Quần nam" onClick={() => navigate(path.product, { state: { categoryId: 29 } })}>
-                        <span>Quần nam</span>
-                      </a>
-                    </li>
-                    <li className="">
-                      <a title="Sản phẩm" onClick={() => navigate(path.product)}>
-                        <span>Sản phẩm</span>
+                      <a title="Khuyến mãi" onClick={() => navigate(path.product, { state: { saleId: 1 } })}>
+                        <span>Khuyến mãi</span>
                       </a>
                     </li>
                     <li className="">

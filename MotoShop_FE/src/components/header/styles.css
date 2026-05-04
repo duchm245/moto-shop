@@ -2,6 +2,13 @@
   .sidebar-main{
     display: none;
   }
+
+  .mainHeader .header-wrap-menu .menuList-main li.has-submenu.is-open > .menuList-submain {
+    pointer-events: auto;
+    visibility: visible;
+    top: 100%;
+    opacity: 1;
+  }
 }
 .menuList-main li a{
   cursor: pointer;
