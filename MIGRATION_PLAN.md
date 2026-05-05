@@ -10,14 +10,14 @@
 
 | Giai đoạn | Layer | Tuần | Tiến độ |
 |---|---|---|---|
-| 🔴 **Giai đoạn 1** | Backend (`MotoShop_BE`) | Tuần 1 | ✅ Day 1–3 · 🔄 Day 4–5 |
+| 🔴 **Giai đoạn 1** | Backend (`MotoShop_BE`) | Tuần 1 | ✅ Day 1–4 · 🔄 Day 5 |
 | 🟡 **Giai đoạn 2** | Frontend khách hàng (`MotoShop_FE`) | Tuần 2 | ⬜ Chưa bắt đầu |
 | 🟢 **Giai đoạn 3** | Admin panel (`MotoShop_ADMIN`) | Tuần 3 | ⬜ Chưa bắt đầu |
 | 🔵 **Giai đoạn 4** | Dữ liệu mẫu (Database) | Tuần 4 | ⬜ Chưa bắt đầu |
 
 ### 📍 Đang dừng ở đây
 
-> **Giai đoạn 1 · Day 4** — Cập nhật `ProductDTO`, `ProductRequest`, filter API, fix `/api/product/allProduct`
+> **Giai đoạn 1 · Day 5** — Test API với Postman
 
 ---
 
@@ -68,12 +68,12 @@
 - [x] **Day 1** — Tạo `Variant.java`, migration tạo bảng `variant`
 - [x] **Day 2** — Thêm trường xe cũ/mới (`condition`, `mileage`, `manufacturingYear`)
 - [x] **Day 3** — Thêm trường trả góp + thông số kỹ thuật vào `Product.java`
-- [ ] **Day 4** — Cập nhật DTO, Service, API ← **🔄 ĐANG LÀM**
-  - [ ] Cập nhật `ProductDTO` với tất cả trường mới
-  - [ ] Cập nhật `ProductRequest` cho form tạo/sửa
-  - [ ] Thêm filter: `brand`, `vehicleType`, `displacement`, `condition`
-  - [ ] Fix `/api/product/allProduct` trả về đúng dữ liệu
-- [ ] **Day 5** — Test API với Postman
+- [x] **Day 4** — Cập nhật DTO, Service, API
+  - [x] Cập nhật `ProductDTO` với tất cả trường mới
+  - [x] Cập nhật `ProductRequest` cho form tạo/sửa
+  - [x] Thêm filter: `brand`, `vehicleType`, `condition` vào `ProductRepository`
+  - [x] Fix `/api/product/allProduct` trả về đúng dữ liệu
+- [ ] **Day 5** — Test API với Postman ← **🔄 ĐANG LÀM**
 
 ### Chi tiết kỹ thuật
 
@@ -157,6 +157,117 @@ ALTER TABLE product
   ADD COLUMN installment_months INT DEFAULT 36,
   ADD COLUMN down_payment_percent INT DEFAULT 20;
 ```
+
+### 🧪 Day 5 — Test Cases Postman
+
+> **Điều kiện:** Backend đang chạy tại `http://localhost:8080`
+
+#### TC-01: Lấy tất cả sản phẩm (không filter)
+
+```
+GET http://localhost:8080/api/product/allProduct
+→ Expect: status=200, data là mảng sản phẩm, mỗi item có brand, vehicleType, variants[]
+```
+
+#### TC-02: Filter theo hãng xe
+
+```
+GET http://localhost:8080/api/product/allProduct?brand=Honda
+→ Expect: tất cả sản phẩm trong data đều có brand="Honda"
+```
+
+#### TC-03: Filter theo loại xe
+
+```
+GET http://localhost:8080/api/product/allProduct?vehicleType=Xe+tay+ga
+→ Expect: tất cả sản phẩm đều có vehicleType="Xe tay ga"
+```
+
+#### TC-04: Filter theo tình trạng xe
+
+```
+GET http://localhost:8080/api/product/allProduct?condition=new
+GET http://localhost:8080/api/product/allProduct?condition=used
+→ Expect: lọc đúng trường condition
+```
+
+#### TC-05: Filter kết hợp brand + vehicleType + khoảng giá
+
+```
+GET http://localhost:8080/api/product/allProduct?brand=Yamaha&vehicleType=Xe+côn+tay&minPrice=30000000&maxPrice=80000000
+→ Expect: data thỏa mãn cả 3 điều kiện
+```
+
+#### TC-06: Tạo sản phẩm xe máy mới (POST)
+
+```
+POST http://localhost:8080/api/admin/product   (hoặc endpoint tạo SP của admin)
+Content-Type: application/json
+
+{
+  "name": "Honda Wave Alpha 110",
+  "description": "Xe số phổ thông tiết kiệm nhiên liệu",
+  "price": 18990000,
+  "categoryId": 1,
+  "userId": 1,
+  "brand": "Honda",
+  "vehicleType": "Xe số",
+  "engineType": "4 thì, 4 van, SOHC",
+  "displacement": 110,
+  "maxPower": "5.9 kW / 7,500 vòng/phút",
+  "maxTorque": "8.68 N·m / 5,500 vòng/phút",
+  "transmission": "4 số",
+  "fuelSystem": "Phun xăng điện tử Fi",
+  "fuelCapacity": 4.6,
+  "fuelConsumption": "1.91 lít/100km",
+  "dimensions": "1,910 × 699 × 1,063",
+  "weight": 99,
+  "seatHeight": 763,
+  "groundClearance": 148,
+  "warrantyInfo": "12 tháng",
+  "origin": "Honda Việt Nam",
+  "condition": "new",
+  "manufacturingYear": 2024,
+  "mileage": 0,
+  "installmentSupported": true,
+  "installmentMonths": 36,
+  "downPaymentPercent": 20,
+  "isNew": true,
+  "variants": [
+    {"name": "Tiêu Chuẩn", "colorName": "Đỏ đen", "colorCode": "#CC0000", "stock": 5},
+    {"name": "Tiêu Chuẩn", "colorName": "Xanh xám", "colorCode": "#4A7C96", "stock": 3}
+  ],
+  "images": [
+    {"url": "https://example.com/wave-alpha-1.jpg"}
+  ]
+}
+→ Expect: status=200, trả về product với id mới, variants đầy đủ
+```
+
+#### TC-07: Lấy chi tiết 1 sản phẩm
+
+```
+GET http://localhost:8080/api/product/{id}
+→ Expect: trả về đầy đủ 15 trường thông số kỹ thuật, variants[], images[]
+```
+
+#### TC-08: Phân trang
+
+```
+GET http://localhost:8080/api/product/allProduct?pageNo=1&pageSize=5&sortBy=price&sortDirection=asc
+→ Expect: data có tối đa 5 phần tử, sắp xếp giá tăng dần
+```
+
+#### ✅ Checklist xác nhận Day 5
+
+- [ ] TC-01 pass
+- [ ] TC-02 pass
+- [ ] TC-03 pass
+- [ ] TC-04 pass
+- [ ] TC-05 pass
+- [ ] TC-06 pass (tạo được sản phẩm xe máy)
+- [ ] TC-07 pass (response có đủ trường xe máy)
+- [ ] TC-08 pass
 
 ---
 
