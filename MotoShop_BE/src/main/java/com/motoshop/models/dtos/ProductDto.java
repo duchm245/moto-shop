@@ -24,10 +24,10 @@ public class ProductDto {
 
 	// ── Day 2 - Tuần 1: Tình trạng xe ────────────────────────────────────────
 	/** "new" | "used" */
-	private String condition;
+	private String vehicleCondition;
 	/** Năm sản xuất */
 	private Integer manufacturingYear;
-	/** Số km đã đi (chỉ có nghĩa khi condition = "used") */
+	/** Số km đã đi (chỉ có nghĩa khi vehicleCondition = "used") */
 	private int mileage;
 	// ─────────────────────────────────────────────────────────────────────────
 
@@ -48,7 +48,7 @@ public class ProductDto {
 	private Integer groundClearance;
 	private String warrantyInfo;
 	private String origin;
-	private boolean isNew;
+	private boolean newArrival;
 
 	// ══ Day 3 - Tuần 1: Trả góp ══════════════════════════════════════════════
 	private boolean installmentSupported;

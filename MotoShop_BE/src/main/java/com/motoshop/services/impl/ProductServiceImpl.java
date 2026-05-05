@@ -75,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Pair<List<ProductResponse>, Integer> getALLProducts(String brand, String vehicleType, String condition,
+    public Pair<List<ProductResponse>, Integer> getALLProducts(String brand, String vehicleType, String vehicleCondition,
                                                                Integer minPrice, Integer maxPrice,
                                                                Long categoryId, Long saleId,
                                                                int pageNo, int pageSize, String sortBy, boolean desc) {
@@ -88,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> products = productRepository.getAllProducts(
                 (brand == null || brand.isEmpty()) ? null : brand,
                 (vehicleType == null || vehicleType.isEmpty()) ? null : vehicleType,
-                (condition == null || condition.isEmpty()) ? null : condition,
+                (vehicleCondition == null || vehicleCondition.isEmpty()) ? null : vehicleCondition,
                 (minPrice == null || minPrice == 0) ? null : minPrice,
                 (maxPrice == null || maxPrice == 0) ? null : maxPrice,
                 (categoryId == null || categoryId == 0L) ? null : categoryId,

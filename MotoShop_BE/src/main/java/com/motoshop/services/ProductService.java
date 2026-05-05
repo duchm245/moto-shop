@@ -15,7 +15,7 @@ public interface ProductService {
      */
     Pair<List<ProductResponse>, Integer> getProducts(int pageNo, int pageSize, String sortBy);
 
-    Pair<List<ProductResponse>, Integer> getALLProducts(String brand, String vehicleType, String condition, Integer minPrice, Integer maxPrice,
+    Pair<List<ProductResponse>, Integer> getALLProducts(String brand, String vehicleType, String vehicleCondition, Integer minPrice, Integer maxPrice,
                                           Long categoryId, Long saleId, int pageNo, int pageSize, String sortBy, boolean desc);
 
     Pair<List<ProductResponse>, Integer> getALLProductsAdmin(String keyword, Integer status, Integer minPrice, Integer maxPrice,

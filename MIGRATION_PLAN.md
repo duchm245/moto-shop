@@ -10,14 +10,14 @@
 
 | Giai đoạn | Layer | Tuần | Tiến độ |
 |---|---|---|---|
-| 🔴 **Giai đoạn 1** | Backend (`MotoShop_BE`) | Tuần 1 | ✅ Day 1–4 · 🔄 Day 5 |
-| 🟡 **Giai đoạn 2** | Frontend khách hàng (`MotoShop_FE`) | Tuần 2 | ⬜ Chưa bắt đầu |
+| 🔴 **Giai đoạn 1** | Backend (`MotoShop_BE`) | Tuần 1 | ✅ Hoàn thành (Day 1–5) |
+| 🟡 **Giai đoạn 2** | Frontend khách hàng (`MotoShop_FE`) | Tuần 2 | 🔄 Đang bắt đầu |
 | 🟢 **Giai đoạn 3** | Admin panel (`MotoShop_ADMIN`) | Tuần 3 | ⬜ Chưa bắt đầu |
 | 🔵 **Giai đoạn 4** | Dữ liệu mẫu (Database) | Tuần 4 | ⬜ Chưa bắt đầu |
 
 ### 📍 Đang dừng ở đây
 
-> **Giai đoạn 1 · Day 5** — Test API với Postman
+> **Giai đoạn 2 · Day 1** — Cập nhật TypeScript types (`Variant`, `Product` interface)
 
 ---
 
@@ -73,7 +73,17 @@
   - [x] Cập nhật `ProductRequest` cho form tạo/sửa
   - [x] Thêm filter: `brand`, `vehicleType`, `condition` vào `ProductRepository`
   - [x] Fix `/api/product/allProduct` trả về đúng dữ liệu
-- [ ] **Day 5** — Test API với Postman ← **🔄 ĐANG LÀM**
+- [x] **Day 5** — Test API với Postman ✅ Tất cả 8 TC pass
+  - [x] TC-01: GET allProduct → 6 sản phẩm, đầy đủ trường
+  - [x] TC-02: Filter brand=Honda → 2 xe đúng
+  - [x] TC-03: Filter vehicleType=Xe tay ga → 2 xe đúng
+  - [x] TC-04: Filter vehicleCondition=new/used → đúng
+  - [x] TC-05: Filter kết hợp brand+vehicleType+giá → đúng
+  - [x] TC-06: POST tạo xe mới (TVS NTORQ 125) → id=107, variants OK
+  - [x] TC-07: GET /product/{id} → đủ 15 trường thông số, variants, images
+  - [x] TC-08: Phân trang + sort → total=6, perPage=5 đúng
+  - **Bug đã fix:** `boolean isNew` → `newArrival` (Lombok/JPA conflict)
+  - **Bug đã fix:** `condition` (MySQL keyword) → `vehicleCondition` / cột `vehicle_condition`
 
 ### Chi tiết kỹ thuật
 

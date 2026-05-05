@@ -38,9 +38,11 @@ public class Product {
 	/**
 	 * Tình trạng xe: "new" (xe mới) hoặc "used" (xe đã qua sử dụng).
 	 * Mặc định là "new".
+	 * Đổi tên từ "condition" (reserved keyword trong MySQL) → "vehicleCondition".
+	 * Tên cột DB: vehicle_condition.
 	 */
-	@Column(length = 10, columnDefinition = "VARCHAR(10) DEFAULT 'new'")
-	private String condition = "new";
+	@Column(name = "vehicle_condition", length = 10, columnDefinition = "VARCHAR(10) DEFAULT 'new'")
+	private String vehicleCondition = "new";
 
 	/**
 	 * Năm sản xuất của xe (ví dụ: 2023, 2024).
@@ -49,7 +51,7 @@ public class Product {
 	private Integer manufacturingYear;
 
 	/**
-	 * Số km đã đi — chỉ có ý nghĩa khi condition = "used".
+	 * Số km đã đi — chỉ có ý nghĩa khi vehicleCondition = "used".
 	 * Với xe mới, luôn = 0.
 	 */
 	@Column(columnDefinition = "INT DEFAULT 0")
@@ -125,11 +127,12 @@ public class Product {
 
 	/**
 	 * Badge "New" — đánh dấu xe vừa ra mắt.
-	 * Khác với `condition`: isNew=true có thể tắt sau vài tháng,
-	 * còn condition="new" nghĩa là xe chưa qua sử dụng.
+	 * Khác với `vehicleCondition`: newArrival=true có thể tắt sau vài tháng,
+	 * còn vehicleCondition="new" nghĩa là xe chưa qua sử dụng.
+	 * NOTE: Không đặt tên "isNew" vì Lombok sẽ sinh getter isNew() → JPA map sang cột "new" (bỏ prefix "is").
 	 */
 	@Column(name = "is_new", columnDefinition = "BOOLEAN DEFAULT FALSE")
-	private boolean isNew = false;
+	private boolean newArrival = false;
 
 	// ══ Day 3 - Tuần 1: Thông tin trả góp ════════════════════════════════════
 

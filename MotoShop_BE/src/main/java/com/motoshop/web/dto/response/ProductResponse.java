@@ -19,7 +19,7 @@ public class ProductResponse {
 
     // ── Day 2 - Tuần 1: Tình trạng xe ────────────────────────────────────────
     /** "new" | "used" */
-    private String condition;
+    private String vehicleCondition;
     /** Năm sản xuất */
     private Integer manufacturingYear;
     /** Số km đã đi */
@@ -43,7 +43,7 @@ public class ProductResponse {
     private Integer groundClearance;
     private String warrantyInfo;
     private String origin;
-    private boolean isNew;
+    private boolean newArrival;
 
     // ══ Day 3 - Tuần 1: Trả góp ══════════════════════════════════════════════
     private boolean installmentSupported;

@@ -13,7 +13,7 @@ public class ProductUDRequest {
     private String description;
 
     // ── Day 2 - Tuần 1: Tình trạng xe ────────────────────────────────────────
-    private String condition;
+    private String vehicleCondition;
     private Integer manufacturingYear;
     private int mileage;
     // ─────────────────────────────────────────────────────────────────────────
@@ -35,7 +35,7 @@ public class ProductUDRequest {
     private Integer groundClearance;
     private String warrantyInfo;
     private String origin;
-    private boolean isNew;
+    private boolean newArrival;
 
     // ══ Day 3 - Tuần 1: Trả góp ══════════════════════════════════════════════
     private boolean installmentSupported;

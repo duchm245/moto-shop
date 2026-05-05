@@ -13,7 +13,7 @@ public class ProductRequest {
 
     // ── Day 2 - Tuần 1: Tình trạng xe ────────────────────────────────────────
     /** "new" | "used" — mặc định "new" */
-    private String condition = "new";
+    private String vehicleCondition = "new";
     /** Năm sản xuất */
     private Integer manufacturingYear;
     /** Số km đã đi */
@@ -37,7 +37,7 @@ public class ProductRequest {
     private Integer groundClearance;
     private String warrantyInfo;
     private String origin;
-    private boolean isNew = false;
+    private boolean newArrival = false;
 
     // ══ Day 3 - Tuần 1: Trả góp ══════════════════════════════════════════════
     private boolean installmentSupported = false;

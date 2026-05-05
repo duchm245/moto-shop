@@ -107,7 +107,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "AND (:categoryId IS NULL OR cat.id = :categoryId OR parent.id = :categoryId OR grandparent.id = :categoryId) " +
             "AND (:brand IS NULL OR p.brand = :brand) " +
             "AND (:vehicleType IS NULL OR p.vehicleType = :vehicleType) " +
-            "AND (:condition IS NULL OR p.condition = :condition) " +
+            "AND (:vehicleCondition IS NULL OR p.vehicleCondition = :vehicleCondition) " +
             "AND (:minPrice IS NULL OR p.salePrice >= :minPrice) " +
             "AND (:maxPrice IS NULL OR p.salePrice <= :maxPrice) " +
             "AND (:saleId IS NULL OR p.sale.id = :saleId)",
@@ -119,13 +119,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "AND (:categoryId IS NULL OR cat.id = :categoryId OR parent.id = :categoryId OR grandparent.id = :categoryId) " +
             "AND (:brand IS NULL OR p.brand = :brand) " +
             "AND (:vehicleType IS NULL OR p.vehicleType = :vehicleType) " +
-            "AND (:condition IS NULL OR p.condition = :condition) " +
+            "AND (:vehicleCondition IS NULL OR p.vehicleCondition = :vehicleCondition) " +
             "AND (:minPrice IS NULL OR p.salePrice >= :minPrice) " +
             "AND (:maxPrice IS NULL OR p.salePrice <= :maxPrice) " +
             "AND (:saleId IS NULL OR p.sale.id = :saleId)")
     Page<Product> getAllProducts(@Param("brand") String brand,
                                  @Param("vehicleType") String vehicleType,
-                                 @Param("condition") String condition,
+                                 @Param("vehicleCondition") String vehicleCondition,
                                  @Param("minPrice") Integer minPrice,
                                  @Param("maxPrice") Integer maxPrice,
                                  @Param("categoryId") Long categoryId,

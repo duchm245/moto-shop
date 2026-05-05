@@ -52,7 +52,7 @@ public class ProductRest {
     @GetMapping("/allProduct")
     public ResponseEntity<?> getALLProducts(@RequestParam(value = "brand", required = false) String brand,
                                             @RequestParam(value = "vehicleType", required = false) String vehicleType,
-                                            @RequestParam(value = "condition", required = false) String condition,
+                                            @RequestParam(value = "vehicleCondition", required = false) String vehicleCondition,
                                             @RequestParam(value = "minPrice", required = false) Integer minPrice,
                                             @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
                                             @RequestParam(value = "categoryId", required = false) Long categoryId,
@@ -67,7 +67,7 @@ public class ProductRest {
         if (sortDirection == null || sortDirection.isBlank()) sortDirection = "desc";
 
         try {
-            Pair<List<ProductResponse>, Integer> result = productService.getALLProducts(brand, vehicleType, condition, minPrice, maxPrice, categoryId, saleId, pageNo, pageSize, sortBy, sortDirection.equals("desc"));
+            Pair<List<ProductResponse>, Integer> result = productService.getALLProducts(brand, vehicleType, vehicleCondition, minPrice, maxPrice, categoryId, saleId, pageNo, pageSize, sortBy, sortDirection.equals("desc"));
             List<ProductResponse> productResponses = result.getFirst();
             int total = result.getSecond();
             if (!productResponses.isEmpty()) {
