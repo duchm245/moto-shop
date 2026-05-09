@@ -6,18 +6,18 @@
 
 ## 🎯 TỔNG QUAN TIẾN ĐỘ
 
-> **Cập nhật lần cuối:** 2026-05-05
+> **Cập nhật lần cuối:** 2026-05-09
 
 | Giai đoạn | Layer | Tuần | Tiến độ |
 |---|---|---|---|
 | 🔴 **Giai đoạn 1** | Backend (`MotoShop_BE`) | Tuần 1 | ✅ Hoàn thành (Day 1–5) |
-| 🟡 **Giai đoạn 2** | Frontend khách hàng (`MotoShop_FE`) | Tuần 2 | 🔄 Đang bắt đầu |
-| 🟢 **Giai đoạn 3** | Admin panel (`MotoShop_ADMIN`) | Tuần 3 | ⬜ Chưa bắt đầu |
+| 🟡 **Giai đoạn 2** | Frontend khách hàng (`MotoShop_FE`) | Tuần 2 | ✅ Hoàn thành (Day 1–5) |
+| 🟢 **Giai đoạn 3** | Admin panel (`MotoShop_ADMIN`) | Tuần 3 | 🔄 Đang bắt đầu |
 | 🔵 **Giai đoạn 4** | Dữ liệu mẫu (Database) | Tuần 4 | ⬜ Chưa bắt đầu |
 
 ### 📍 Đang dừng ở đây
 
-> **Giai đoạn 2 · Day 1** — Cập nhật TypeScript types (`Variant`, `Product` interface)
+> **Giai đoạn 3 · Day 1** — Bộ lọc xe máy trong trang danh sách sản phẩm Admin
 
 ---
 
@@ -283,11 +283,11 @@ GET http://localhost:8080/api/product/allProduct?pageNo=1&pageSize=5&sortBy=pric
 
 ## 🟡 GIAI ĐOẠN 2 — FRONTEND KHÁCH HÀNG · `MotoShop_FE` · Tuần 2
 
-- [ ] **Day 1** — Cập nhật TypeScript types (`Variant`, `Product` interface)
-- [ ] **Day 2** — UI chọn Phiên bản + Màu (thay `Color` + `Size` cũ)
-- [ ] **Day 3** — Bảng thông số kỹ thuật (15 trường) trong trang chi tiết
-- [ ] **Day 4** — UI trả góp (tính toán + modal hiển thị)
-- [ ] **Day 5** — Badge tình trạng xe cũ/mới trên card và trang chi tiết
+- [x] **Day 1** — Cập nhật TypeScript types (`Variant`, `Product` interface)
+- [x] **Day 2** — UI chọn Phiên bản + Màu (thay `Color` + `Size` cũ)
+- [x] **Day 3** — Bảng thông số kỹ thuật (15 trường) trong trang chi tiết
+- [x] **Day 4** — UI trả góp (tính toán + modal hiển thị)
+- [x] **Day 5** — Badge tình trạng xe cũ/mới trên card và trang chi tiết
 
 ### Chi tiết kỹ thuật
 

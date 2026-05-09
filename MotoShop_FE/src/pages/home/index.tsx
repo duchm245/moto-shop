@@ -621,6 +621,9 @@ const Home = () => {
                       img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                       sale={`${salesProduct[item.sale]}`}
                       slide={true}
+                      condition={item.condition}
+                      isNew={item.isNew}
+                      displacement={item.displacement}
                     />
                   </SwiperSlide>
                 ))}
@@ -661,6 +664,9 @@ const Home = () => {
                     img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                     sale={`${sales[item.sale]}`}
                     slide={false}
+                    condition={item.condition}
+                    isNew={item.isNew}
+                    displacement={item.displacement}
                   />
                 </React.Fragment>
               ))}
@@ -758,6 +764,9 @@ const Home = () => {
                         img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                         sale={`${salesColection[item.sale]}`}
                         slide={false}
+                        condition={item.condition}
+                        isNew={item.isNew}
+                        displacement={item.displacement}
                       />
                     </React.Fragment>
                   );

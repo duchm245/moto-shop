@@ -456,6 +456,9 @@ const ProductView = () => {
                           img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                           sale={`${sales[item.sale]}`}
                           slide={false}
+                          condition={item.condition}
+                          isNew={item.isNew}
+                          displacement={item.displacement}
                         />
                       </React.Fragment>
                     ))}

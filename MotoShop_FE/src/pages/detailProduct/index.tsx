@@ -280,16 +280,26 @@ const DetailProduct = () => {
                         <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                           {/* thông tin sản phẩm */}
                           <div className="info-header">
-                            <div className="product-name">
-                              <h1>{product?.name}</h1>
+                            <div className="product-name" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+                              <h1 style={{ margin: 0 }}>{product?.name}</h1>
+                              {product?.condition === 'used' && (
+                                <span style={{ background: '#e67e22', color: '#fff', fontSize: 12, fontWeight: 600, padding: '3px 10px', borderRadius: 4, whiteSpace: 'nowrap' }}>
+                                  Xe cũ
+                                </span>
+                              )}
+                              {product?.isNew && (
+                                <span style={{ background: '#27ae60', color: '#fff', fontSize: 12, fontWeight: 600, padding: '3px 10px', borderRadius: 4, whiteSpace: 'nowrap' }}>
+                                  Mới về
+                                </span>
+                              )}
                             </div>
                             <div className="product-sku">
                               <span id="pro_sku">
                                 Mã sản phẩm: <strong>{product?.sku}</strong>
                               </span>
                               <span className="pro-state">
-                                Tình trạng:
-                                <strong>Còn hàng</strong>
+                                Tình trạng:{' '}
+                                <strong>{product?.condition === 'used' ? 'Xe đã qua sử dụng' : 'Xe mới'}</strong>
                               </span>
                               <span className="pro-vendor">
                                 Thương hiệu:{' '}
@@ -982,6 +992,9 @@ const DetailProduct = () => {
                                     img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                                     sale={`${saleRelated[item.sale]}`}
                                     slide
+                                    condition={item.condition}
+                                    isNew={item.isNew}
+                                    displacement={item.displacement}
                                   />
                                 </SwiperSlide>
                               );

@@ -30,6 +30,9 @@ interface IIProduct {
   img2: string;
   sale: string;
   slide: boolean;
+  condition?: string;
+  isNew?: boolean;
+  displacement?: number;
 }
 
 const ItemProduct = (props: IIProduct) => {
@@ -170,6 +173,16 @@ const ItemProduct = (props: IIProduct) => {
                   </span>
                 </div>
               )}
+              {props.condition === 'used' && (
+                <div style={{ position: 'absolute', top: 6, right: 6, zIndex: 3, background: '#e67e22', color: '#fff', fontSize: 11, fontWeight: 600, padding: '5px 10px', borderRadius: 4, lineHeight: 1 }}>
+                  Xe cũ
+                </div>
+              )}
+              {props.isNew && (
+                <div style={{ position: 'absolute', top: props.condition === 'used' ? 38 : 6, right: 6, zIndex: 3, background: '#27ae60', color: '#fff', fontSize: 11, fontWeight: 600, padding: '5px 10px', borderRadius: 4, lineHeight: 1 }}>
+                  Mới về
+                </div>
+              )}
             </div>
             <div className="proloop-actions">
               <div className="proloop-actions__inner">
@@ -217,6 +230,9 @@ const ItemProduct = (props: IIProduct) => {
                 {props.name}
               </a>
             </h3>
+            {props.displacement && (
+              <p style={{ fontSize: 12, color: '#888', margin: '0 0 4px', fontWeight: 500 }}>{props.displacement} CC</p>
+            )}
             <p className="proloop-price on-sale">
               <span className="price">
                 {isSale ? `${formatPrice(props.salePrice)}` : `${formatPrice(props.price)}`}
