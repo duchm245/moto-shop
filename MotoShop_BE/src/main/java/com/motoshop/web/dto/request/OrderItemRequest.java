@@ -9,4 +9,5 @@ public class OrderItemRequest {
     private String productName;
     private String valueColor;
     private String valueSize;
+    private Long variantId;
 }

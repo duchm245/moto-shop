@@ -34,6 +34,9 @@
         @Column
         private String valueSize;
 
+        @Column
+        private Long variantId;
+
         @ManyToOne
         @JoinColumn(name = "order_id")
         private Orders orders;

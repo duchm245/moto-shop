@@ -404,7 +404,7 @@ Section "Trả góp":
 - [x] **Day 2** — SQL sản phẩm 6 xe mẫu (`migrations/phase4_complete.sql`)
 - [x] **Day 3** — SQL variant + màu sắc (trong cùng script phase4_complete.sql)
 - [x] **Day 4** — Chạy `migrations/phase4_complete.sql` ✅ 6 xe · 17 variants · 12 ảnh đã vào DB
-- [ ] **Day 5** — Test end-to-end toàn bộ luồng mua hàng
+- [x] **Day 5** — Test end-to-end toàn bộ luồng mua hàng ✅ Add-to-cart + checkout + stock deduction hoạt động
 
 ### Chi tiết kỹ thuật
 

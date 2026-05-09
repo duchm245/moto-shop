@@ -38,6 +38,7 @@ public class OrdersServiceImpl implements OrdersService {
     private final ProductRepository productRepository;
     private final SizeRepository sizeRepository;
     private final ColorRepository colorRepository;
+    private final VariantRepository variantRepository;
     private final NotificationService notificationService;
     private final OrdersMapper ordersMapper;
     private final OrderItemMapper orderItemMapper;
@@ -47,7 +48,9 @@ public class OrdersServiceImpl implements OrdersService {
     public OrdersServiceImpl(OrdersRepository ordersRepository,
                              OrderItemRepository orderItemRepository,
                              UserRepository userRepository,
-                             SizeRepository sizeRepository, ColorRepository colorRepository, OrdersMapper ordersMapper,
+                             SizeRepository sizeRepository, ColorRepository colorRepository,
+                             VariantRepository variantRepository,
+                             OrdersMapper ordersMapper,
                              OrderItemMapper orderItemMapper, ProductMapper productMapper, ProductRepository productRepository,
                              NotificationService notificationService,
                              EmailUtils emailUtils) {
@@ -56,12 +59,20 @@ public class OrdersServiceImpl implements OrdersService {
         this.userRepository = userRepository;
         this.sizeRepository = sizeRepository;
         this.colorRepository = colorRepository;
+        this.variantRepository = variantRepository;
         this.ordersMapper = ordersMapper;
         this.orderItemMapper = orderItemMapper;
         this.productMapper = productMapper;
         this.productRepository = productRepository;
         this.notificationService = notificationService;
         this.emailUtils = emailUtils;
+    }
+
+    private Variant resolveVariant(OrderItem orderItem, Product product) {
+        if (orderItem.getVariantId() != null) {
+            return variantRepository.findById(orderItem.getVariantId()).orElse(null);
+        }
+        return variantRepository.findByProductAndColorNameAndName(product, orderItem.getValueColor(), orderItem.getValueSize()).orElse(null);
     }
 
     //lấy đơn hàng đã đặt
@@ -101,23 +112,29 @@ public class OrdersServiceImpl implements OrdersService {
         if (user != null) {
             Orders checkOrders = ordersRepository.findByUserAndType(user, Constants.CART_TYPE);
             Product product = productRepository.findByName(orderItemRequest.getProductName());
-            Color color = colorRepository.findByValueAndProductId(orderItemRequest.getValueColor(), product.getId());
-            Size size = sizeRepository.findByValueAndColorId(orderItemRequest.getValueSize(), color.getId());
 
-            if (orderItemRequest.getQuantity() > size.getTotal()) {
-                return String.format(
-                        "Size %s không còn đủ số lượng. Vui lòng chọn ít hơn %d sản phẩm",
-                        size.getValue(),
-                        size.getTotal()
-                );
-            } else if (size.getTotal() == 0) {
-                return "Size này đang hết hàng vui lòng chọn sản phẩm khác";
+            // Tìm Variant để kiểm tra tồn kho
+            Variant variant = null;
+            if (orderItemRequest.getVariantId() != null) {
+                variant = variantRepository.findById(orderItemRequest.getVariantId()).orElse(null);
+            }
+            if (variant == null) {
+                variant = variantRepository.findByProductAndColorNameAndName(
+                        product, orderItemRequest.getValueColor(), orderItemRequest.getValueSize()).orElse(null);
+            }
+
+            int availableStock = (variant != null) ? variant.getStock() : 0;
+            if (availableStock == 0) {
+                return "Phiên bản này đang hết hàng, vui lòng chọn phiên bản khác";
+            } else if (orderItemRequest.getQuantity() > availableStock) {
+                return String.format("Phiên bản %s không còn đủ số lượng. Vui lòng chọn ít hơn %d sản phẩm",
+                        orderItemRequest.getValueSize(), availableStock);
             } else {
                 orderItemRequest.setSellPrice(product.getSalePrice());
                 OrderItem orderItem = orderItemMapper.mapToModel(orderItemRequest);
+                orderItem.setVariantId(orderItemRequest.getVariantId());
 
                 if (checkOrders == null) {
-                    // Chưa có giỏ hàng, tạo giỏ hàng mới và lưu thông tin
                     Orders orders = new Orders();
                     initializeOrderAndSave(orders, user);
                     orderItem.setOrders(orders);
@@ -129,13 +146,15 @@ public class OrdersServiceImpl implements OrdersService {
                 } else {
                     OrderItem checkOrderItem = orderItemRepository.findByProductNameAndOrders(orderItemRequest.getProductName(), checkOrders);
                     if (checkOrderItem == null) {
-                        // Có giỏ hàng nhưng chưa có sản phẩm đó
                         orderItem.setOrders(checkOrders);
                         orderItemRepository.save(orderItem);
                     } else {
-                        // Có giỏ hàng và sản phẩm đó đã có
-                        if (!checkOrderItem.getValueColor().equals(color.getValue()) || !checkOrderItem.getValueSize().equals(size.getValue())) {
-                            // Nếu sản phẩm đã có nhưng màu sắc hoặc kích thước khác, thêm sản phẩm mới
+                        Long existingVariantId = checkOrderItem.getVariantId();
+                        Long newVariantId = orderItemRequest.getVariantId();
+                        boolean sameVariant = (existingVariantId != null && existingVariantId.equals(newVariantId))
+                                || (existingVariantId == null && checkOrderItem.getValueColor().equals(orderItemRequest.getValueColor())
+                                    && checkOrderItem.getValueSize().equals(orderItemRequest.getValueSize()));
+                        if (!sameVariant) {
                             OrderItem newOrderItem = new OrderItem();
                             newOrderItem.setProductName(orderItemRequest.getProductName());
                             newOrderItem.setQuantity(orderItemRequest.getQuantity());
@@ -143,9 +162,9 @@ public class OrdersServiceImpl implements OrdersService {
                             newOrderItem.setOrders(checkOrders);
                             newOrderItem.setValueColor(orderItemRequest.getValueColor());
                             newOrderItem.setValueSize(orderItemRequest.getValueSize());
+                            newOrderItem.setVariantId(orderItemRequest.getVariantId());
                             orderItemRepository.save(newOrderItem);
                         } else {
-                            // Có giỏ hàng và sản phẩm đó đã có với màu sắc và kích thước giống nhau
                             checkOrderItem.setQuantity(orderItemRequest.getQuantity() + checkOrderItem.getQuantity());
                             if (checkOrderItem.getSellPrice() != orderItemRequest.getSellPrice()) {
                                 checkOrderItem.setSellPrice(orderItemRequest.getSellPrice());
@@ -229,19 +248,15 @@ public class OrdersServiceImpl implements OrdersService {
         OrderItem orderItem = orderItemRepository.findById(orderItemId).orElseThrow();
         Orders orders = ordersRepository.findById(orderItem.getOrders().getId()).orElseThrow();
         Product product = productRepository.findByName(orderItem.getProductName());
-        Color color = colorRepository.findByValueAndProductId(orderItem.getValueColor(), product.getId());
-        Size size = sizeRepository.findByValueAndColorId(orderItem.getValueSize(), color.getId());
+        Variant variant = resolveVariant(orderItem, product);
+        int availableStock = (variant != null) ? variant.getStock() : Integer.MAX_VALUE;
         orderItem.setQuantity(orderItem.getQuantity() + 1);
         orderItemRepository.save(orderItem);
-        if (orderItem.getQuantity() > size.getTotal()) {
-            String errorMessage = String.format(
-                    "Size %s không còn đủ số lượng. Vui lòng chọn ít hơn %d sản phẩm",
-                    size.getValue(),
-                    size.getTotal()
-            );
-            return errorMessage;
-        } else if (size.getTotal() == 0) {
-            return "Size này đang hết hàng vui lòng chọn sản phẩm khác";
+        if (availableStock == 0) {
+            return "Phiên bản này đang hết hàng vui lòng chọn sản phẩm khác";
+        } else if (orderItem.getQuantity() > availableStock) {
+            return String.format("Phiên bản %s không còn đủ số lượng. Vui lòng chọn ít hơn %d sản phẩm",
+                    orderItem.getValueSize(), availableStock);
         } else {
             orderItem.setSellPrice(product.getSalePrice());
             List<OrderItem> orderItems = orderItemRepository.findByOrders(orders);
@@ -259,27 +274,17 @@ public class OrdersServiceImpl implements OrdersService {
         List<OrderItem> orderItems = orders.getOrderItems();
         for (OrderItem orderItem : orderItems) {
             Product product = productRepository.findByName(orderItem.getProductName());
-            Color color = colorRepository.findByValueAndProductId(orderItem.getValueColor(), product.getId());
-            Size size = sizeRepository.findByValueAndColorId(orderItem.getValueSize(), color.getId());
-            int availableQuantity = size.getTotal();
-            if (orderItem.getQuantity() > availableQuantity) {
-                return String.format(
-                        "Size %s của sản phẩm %s không còn đủ số lượng. Vui lòng chọn ít hơn %d sản phẩm",
-                        size.getValue(),
-                        orderItem.getProductName(),
-                        availableQuantity
-                );
-            } else if (availableQuantity == 0) {
-                return String.format(
-                        "Size %s của sản phẩm %s không còn đủ số lượng. Vui lòng chọn sản phẩm khác",
-                        size.getValue(),
-                        orderItem.getProductName()
-                );
-            } else {
-                return ordersMapper.mapToResponse(orders);
+            Variant variant = resolveVariant(orderItem, product);
+            int availableStock = (variant != null) ? variant.getStock() : Integer.MAX_VALUE;
+            if (availableStock == 0) {
+                return String.format("Phiên bản %s của sản phẩm %s đang hết hàng. Vui lòng chọn sản phẩm khác",
+                        orderItem.getValueSize(), orderItem.getProductName());
+            } else if (orderItem.getQuantity() > availableStock) {
+                return String.format("Phiên bản %s của sản phẩm %s không còn đủ số lượng. Vui lòng chọn ít hơn %d sản phẩm",
+                        orderItem.getValueSize(), orderItem.getProductName(), availableStock);
             }
         }
-        return "Có thể thanh toán";
+        return ordersMapper.mapToResponse(orders);
     }
 
     //đặt hàng
@@ -316,29 +321,22 @@ public class OrdersServiceImpl implements OrdersService {
             List<OrderItem> orderItems = orders.getOrderItems();
             for (OrderItem orderItem : orderItems) {
                 Product product = productRepository.findByName(orderItem.getProductName());
-                Color color = colorRepository.findByValueAndProductId(orderItem.getValueColor(), product.getId());
-                Size size = sizeRepository.findByValueAndColorId(orderItem.getValueSize(), color.getId());
-                int availableQuantity = size.getTotal();
-                if (orderItem.getQuantity() > availableQuantity) {
-                    return String.format(
-                            "Size %s của sản phẩm %s không còn đủ số lượng. Vui lòng chọn ít hơn %d sản phẩm",
-                            size.getValue(),
-                            orderItem.getProductName(),
-                            availableQuantity
-                    );
-                } else if (availableQuantity == 0) {
-                    return String.format(
-                            "Size %s của sản phẩm %s không còn đủ số lượng. Vui lòng chọn sản phẩm khác",
-                            size.getValue(),
-                            orderItem.getProductName()
-                    );
-                } else {
-                    size.setTotal(size.getTotal() - orderItem.getQuantity());
-                    size.setSold(orderItem.getQuantity() + size.getSold());
-                    sizeRepository.save(size);
-                    orderItem.setOrders(orders);
-                    orderItemRepository.save(orderItem);
+                Variant variant = resolveVariant(orderItem, product);
+                if (variant != null) {
+                    int availableStock = variant.getStock();
+                    if (availableStock == 0) {
+                        return String.format("Phiên bản %s của sản phẩm %s đang hết hàng.",
+                                orderItem.getValueSize(), orderItem.getProductName());
+                    } else if (orderItem.getQuantity() > availableStock) {
+                        return String.format("Phiên bản %s của sản phẩm %s không còn đủ số lượng.",
+                                orderItem.getValueSize(), orderItem.getProductName());
+                    }
+                    variant.setStock(variant.getStock() - orderItem.getQuantity());
+                    variant.setSold(variant.getSold() + orderItem.getQuantity());
+                    variantRepository.save(variant);
                 }
+                orderItem.setOrders(orders);
+                orderItemRepository.save(orderItem);
             }
             //lưu lại order
             ordersRepository.save(orders);
@@ -385,11 +383,12 @@ public class OrdersServiceImpl implements OrdersService {
             orders.setNote(cancelOrdersRequest.getNote());
             for (OrderItem orderItem : orderItems) {
                 Product product = productRepository.findByName(orderItem.getProductName());
-                Color color = colorRepository.findByValueAndProductId(orderItem.getValueColor(), product.getId());
-                Size size = sizeRepository.findByValueAndColorId(orderItem.getValueSize(), color.getId());
-                size.setTotal(orderItem.getQuantity() + size.getTotal());
-                size.setSold(orderItem.getQuantity() + size.getSold());
-                sizeRepository.save(size);
+                Variant variant = resolveVariant(orderItem, product);
+                if (variant != null) {
+                    variant.setStock(variant.getStock() + orderItem.getQuantity());
+                    variant.setSold(Math.max(0, variant.getSold() - orderItem.getQuantity()));
+                    variantRepository.save(variant);
+                }
             }
             //lưu lại order
             ordersRepository.save(orders);
@@ -536,11 +535,12 @@ public class OrdersServiceImpl implements OrdersService {
             orders.setModifiedDate(date);
             for (OrderItem orderItem : orderItems) {
                 Product product = productRepository.findByName(orderItem.getProductName());
-                Color color = colorRepository.findByValueAndProductId(orderItem.getValueColor(), product.getId());
-                Size size = sizeRepository.findByValueAndColorId(orderItem.getValueSize(), color.getId());
-                size.setTotal(orderItem.getQuantity() + size.getTotal());
-                size.setSold(orderItem.getQuantity() + size.getSold());
-                sizeRepository.save(size);
+                Variant variant = resolveVariant(orderItem, product);
+                if (variant != null) {
+                    variant.setStock(variant.getStock() + orderItem.getQuantity());
+                    variant.setSold(Math.max(0, variant.getSold() - orderItem.getQuantity()));
+                    variantRepository.save(variant);
+                }
             }
             ordersRepository.save(orders);
             return ordersMapper.mapToResponse(orders);
@@ -549,11 +549,12 @@ public class OrdersServiceImpl implements OrdersService {
             orders.setModifiedDate(date);
             for (OrderItem orderItem : orderItems) {
                 Product product = productRepository.findByName(orderItem.getProductName());
-                Color color = colorRepository.findByValueAndProductId(orderItem.getValueColor(), product.getId());
-                Size size = sizeRepository.findByValueAndColorId(orderItem.getValueSize(), color.getId());
-                size.setTotal(orderItem.getQuantity() + size.getTotal());
-                size.setSold(orderItem.getQuantity() + size.getSold());
-                sizeRepository.save(size);
+                Variant variant = resolveVariant(orderItem, product);
+                if (variant != null) {
+                    variant.setStock(variant.getStock() + orderItem.getQuantity());
+                    variant.setSold(Math.max(0, variant.getSold() - orderItem.getQuantity()));
+                    variantRepository.save(variant);
+                }
             }
             ordersRepository.save(orders);
             return ordersMapper.mapToResponse(orders);

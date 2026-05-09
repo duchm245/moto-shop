@@ -114,6 +114,7 @@ const ItemProduct = (props: IIProduct) => {
           productName: product?.name,
           valueColor: selectedVariant?.colorName || '',
           valueSize: selectedVariant?.name || '',
+          variantId: selectedVariant?.id || null,
         };
         const res = await cartApi.addToCart(user.id, data);
         if (res.data.status) {
