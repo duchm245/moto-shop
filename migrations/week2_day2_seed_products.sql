@@ -27,7 +27,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 INSERT INTO product (
     id, name, description, sku, price, sale_price, status, visited,
-    `condition`, manufacturing_year, mileage,
+    vehicle_condition, manufacturing_year, mileage,
     brand, vehicle_type, is_new,
     engine_type, displacement, max_power, max_torque, transmission,
     fuel_system, fuel_capacity, fuel_consumption,
@@ -47,9 +47,9 @@ VALUES
  18990000, 18990000, 1, 0,
  'new', 2024, 0,
  'Honda', 'Xe số', 1,
- '4 thì, SOHC, 2 van, 1 xi-lanh', 110, '6,0 kW / 7.500 vòng/phút', '8,68 N·m / 5.500 vòng/phút', '4 số',
+ '4 thì, SOHC, 2 van, 1 xi-lanh', 110, '6,0 kW / 7.500 vòng/phút', '8,68 Nm / 5.500 vòng/phút', '4 số',
  'Bộ chế hòa khí', 4.0, '1,63 lít/100km',
- '1.896 × 694 × 1.061 mm', 99, 761, 145,
+ '1.896 x 694 x 1.061 mm', 99, 761, 145,
  '3 năm hoặc 30.000 km', 'Honda Việt Nam',
  1, 36, 20,
  1, 31, NULL,

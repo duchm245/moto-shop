@@ -13,11 +13,11 @@
 | 🔴 **Giai đoạn 1** | Backend (`MotoShop_BE`) | Tuần 1 | ✅ Hoàn thành (Day 1–5) |
 | 🟡 **Giai đoạn 2** | Frontend khách hàng (`MotoShop_FE`) | Tuần 2 | ✅ Hoàn thành (Day 1–5) |
 | 🟢 **Giai đoạn 3** | Admin panel (`MotoShop_ADMIN`) | Tuần 3 | ✅ Hoàn thành (Day 1–5) |
-| 🔵 **Giai đoạn 4** | Dữ liệu mẫu (Database) | Tuần 4 | 🔄 Đang bắt đầu |
+| 🔵 **Giai đoạn 4** | Dữ liệu mẫu (Database) | Tuần 4 | ✅ Hoàn thành (Day 1–4) |
 
 ### 📍 Đang dừng ở đây
 
-> **Giai đoạn 4 · Day 1** — Chuẩn bị và upload ảnh xe mẫu
+> **Giai đoạn 4 · Day 5** — Test end-to-end toàn bộ luồng mua hàng (FE + Admin + DB)
 
 ---
 
@@ -400,10 +400,11 @@ Section "Trả góp":
 
 ## 🔵 GIAI ĐOẠN 4 — DỮ LIỆU MẪU · Database · Tuần 4
 
-- [ ] **Day 1** — Chuẩn bị và upload ảnh xe
-- [ ] **Day 2** — Nhập 6–8 sản phẩm xe mẫu
-- [ ] **Day 3** — Nhập variant + màu cho từng xe
-- [ ] **Day 4–5** — Test end-to-end toàn bộ luồng mua hàng
+- [x] **Day 1** — Chuẩn bị ảnh xe (16 ảnh placeholder tải về `MotoShop_FE/src/static/images/`)
+- [x] **Day 2** — SQL sản phẩm 6 xe mẫu (`migrations/phase4_complete.sql`)
+- [x] **Day 3** — SQL variant + màu sắc (trong cùng script phase4_complete.sql)
+- [x] **Day 4** — Chạy `migrations/phase4_complete.sql` ✅ 6 xe · 17 variants · 12 ảnh đã vào DB
+- [ ] **Day 5** — Test end-to-end toàn bộ luồng mua hàng
 
 ### Chi tiết kỹ thuật
 

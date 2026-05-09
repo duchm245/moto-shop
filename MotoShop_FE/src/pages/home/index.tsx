@@ -159,7 +159,7 @@ const Home = () => {
   React.useEffect(() => {
     if (category.length > 0) {
       if (activeCategoryId === null || !category.find((item) => item.id === activeCategoryId)) {
-        setActiveCategoryId(1);
+        setActiveCategoryId(category[0].id);
       }
     }
   }, [category]);
