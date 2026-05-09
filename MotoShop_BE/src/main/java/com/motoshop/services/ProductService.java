@@ -19,7 +19,8 @@ public interface ProductService {
                                           Long categoryId, Long saleId, int pageNo, int pageSize, String sortBy, boolean desc);
 
     Pair<List<ProductResponse>, Integer> getALLProductsAdmin(String keyword, Integer status, Integer minPrice, Integer maxPrice,
-                                                             Long categoryId, int pageNo, int pageSize, String sortBy, boolean desc);
+                                                             Long categoryId, String brand, String vehicleType, String vehicleCondition,
+                                                             int pageNo, int pageSize, String sortBy, boolean desc);
 
     ProductResponse getProduct(long productId);
 

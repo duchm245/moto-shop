@@ -33,7 +33,13 @@ interface Params {
   minPrice?: number | undefined;
   maxPrice?: number | undefined;
   categoryId?: number | undefined;
+  brand?: string;
+  vehicleType?: string;
+  condition?: string;
 }
+
+const BRANDS = ['Honda', 'Yamaha', 'Suzuki', 'TVS', 'Vinfast', 'SYM', 'GPX', 'Zontes'];
+const VEHICLE_TYPES = ['Xe số', 'Xe tay ga', 'Xe côn tay', 'Xe điện'];
 
 const Product = () => {
   const token = useSelector((state: RootState) => state.ReducerAuth.token);
@@ -48,6 +54,9 @@ const Product = () => {
   const [maxPrice, setMaxPrice] = React.useState();
   const [categoryId, setCategoryId] = React.useState<number>(-1);
   const [allCategory, setAllCategry] = React.useState<Category[]>([]);
+  const [filterBrand, setFilterBrand] = React.useState('');
+  const [filterVehicleType, setFilterVehicleType] = React.useState('');
+  const [filterCondition, setFilterCondition] = React.useState('');
   const navigate = useNavigate();
   const [categoriesMapping, setCategoriesMapping] = React.useState({});
   const [salesMapping, setSalesMapping] = React.useState({});
@@ -142,6 +151,9 @@ const Product = () => {
         if (categoryId !== -1) {
           params.categoryId = categoryId;
         }
+        if (filterBrand) params.brand = filterBrand;
+        if (filterVehicleType) params.vehicleType = filterVehicleType;
+        if (filterCondition) params.condition = filterCondition;
         const url = Api.getAllProduct(params);
         const [res] = await Promise.all([
           REQUEST_API({
@@ -181,7 +193,7 @@ const Product = () => {
   };
   React.useEffect(() => {
     getAllProduct();
-  }, [page, status, sortBy, sortDirection, categoryId]);
+  }, [page, status, sortBy, sortDirection, categoryId, filterBrand, filterVehicleType, filterCondition]);
   const handleFindPrice = () => {
     if (!minPrice) {
       toast.error(`Hãy nhập giá nhỏ nhất`, {
@@ -446,7 +458,44 @@ const Product = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-[2px] bg-black mt-5"></div>
+      {/* Bộ lọc xe máy */}
+      <div className="flex items-center gap-3 mt-4 flex-wrap">
+        <span className="font-semibold text-sm text-gray-600">Lọc xe:</span>
+        <select
+          value={filterBrand}
+          onChange={(e) => { setFilterBrand(e.target.value); setPage(1); }}
+          className="h-9 border-black border rounded-lg px-2 text-sm"
+        >
+          <option value="">Tất cả hãng</option>
+          {BRANDS.map((b) => <option key={b} value={b}>{b}</option>)}
+        </select>
+        <select
+          value={filterVehicleType}
+          onChange={(e) => { setFilterVehicleType(e.target.value); setPage(1); }}
+          className="h-9 border-black border rounded-lg px-2 text-sm"
+        >
+          <option value="">Tất cả loại</option>
+          {VEHICLE_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+        </select>
+        <select
+          value={filterCondition}
+          onChange={(e) => { setFilterCondition(e.target.value); setPage(1); }}
+          className="h-9 border-black border rounded-lg px-2 text-sm"
+        >
+          <option value="">Tất cả tình trạng</option>
+          <option value="new">Xe mới</option>
+          <option value="used">Xe cũ</option>
+        </select>
+        {(filterBrand || filterVehicleType || filterCondition) && (
+          <button
+            className="text-sm text-red-500 underline"
+            onClick={() => { setFilterBrand(''); setFilterVehicleType(''); setFilterCondition(''); setPage(1); }}
+          >
+            Xóa lọc
+          </button>
+        )}
+      </div>
+      <div className="w-full h-[2px] bg-black mt-4"></div>
       <div className="overflow-x-auto w-full">
         <table className="table w-full">
           <thead>

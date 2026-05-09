@@ -133,17 +133,25 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                  Pageable pageable);
 
     @Query("SELECT DISTINCT p FROM Product p " +
+            "LEFT JOIN p.productCategory cat " +
+            "LEFT JOIN cat.parentCategory parentCat " +
+            "LEFT JOIN parentCat.parentCategory grandParentCat " +
             "WHERE (:status IS NULL OR p.status = :status) " +
             "AND (:keyword IS NULL OR p.name LIKE %:keyword% OR p.sku LIKE %:keyword%) " +
-            "AND (:categoryId IS NULL OR p.productCategory.id = :categoryId OR :categoryId = 0 OR p.productCategory.parentCategory.id = :categoryId OR " +
-            "p.productCategory.parentCategory.parentCategory.id = :categoryId) " +
+            "AND (:categoryId IS NULL OR cat.id = :categoryId OR parentCat.id = :categoryId OR grandParentCat.id = :categoryId) " +
             "AND (:minPrice IS NULL OR p.salePrice >= :minPrice OR :minPrice = 0) " +
-            "AND (:maxPrice IS NULL OR p.salePrice <= :maxPrice OR :maxPrice = 0)")
-    Page<Product> getAllProductsAdmin(String keyword,
-                                      Integer status,
-                                      Integer minPrice,
-                                      Integer maxPrice,
-                                      Long categoryId,
+            "AND (:maxPrice IS NULL OR p.salePrice <= :maxPrice OR :maxPrice = 0) " +
+            "AND (:brand IS NULL OR p.brand = :brand) " +
+            "AND (:vehicleType IS NULL OR p.vehicleType = :vehicleType) " +
+            "AND (:vehicleCondition IS NULL OR p.vehicleCondition = :vehicleCondition)")
+    Page<Product> getAllProductsAdmin(@Param("keyword") String keyword,
+                                      @Param("status") Integer status,
+                                      @Param("minPrice") Integer minPrice,
+                                      @Param("maxPrice") Integer maxPrice,
+                                      @Param("categoryId") Long categoryId,
+                                      @Param("brand") String brand,
+                                      @Param("vehicleType") String vehicleType,
+                                      @Param("vehicleCondition") String vehicleCondition,
                                       Pageable pageable);
 
     @Query("SELECT COUNT(p) FROM Product p WHERE p.status = 1")

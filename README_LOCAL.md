@@ -143,14 +143,14 @@ Khuyến nghị mở **3 terminal độc lập**.
 ### 5.1 Backend (`MotoShop_BE`)
 
 ```powershell
-cd .\MotoShop_BE
+cd .\Desktop\doan\Moto-shop\MotoShop_BE
 .\mvnw.cmd spring-boot:run
 ```
 
 Hoặc nếu đã cài Maven global:
 
 ```powershell
-cd .\MotoShop_BE
+cd .\Desktop\doan\Moto-shop\MotoShop_BE
 mvn spring-boot:run
 ```
 
@@ -159,7 +159,7 @@ mvn spring-boot:run
 ### 5.2 Frontend khách hàng (`MotoShop_FE`)
 
 ```powershell
-cd .\MotoShop_FE
+cd .\Desktop\doan\Moto-shop\MotoShop_FE
 npm install
 npm run dev
 ```
@@ -169,7 +169,7 @@ npm run dev
 ### 5.3 Frontend quản trị (`MotoShop_ADMIN`)
 
 ```powershell
-cd .\MotoShop_ADMIN
+cd .\Desktop\doan\Moto-shop\MotoShop_ADMIN
 npm install
 npm run dev
 ```

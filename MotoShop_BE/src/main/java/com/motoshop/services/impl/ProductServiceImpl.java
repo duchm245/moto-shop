@@ -166,13 +166,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Pair<List<ProductResponse>, Integer> getALLProductsAdmin(String keyword, Integer status, Integer minPrice, Integer maxPrice,
-                                                                    Long categoryId, int pageNo, int pageSize, String sortBy, boolean desc) {
+                                                                    Long categoryId, String brand, String vehicleType, String vehicleCondition,
+                                                                    int pageNo, int pageSize, String sortBy, boolean desc) {
         Sort.Direction sortDirection = desc ? Sort.Direction.DESC : Sort.Direction.ASC;
         if (pageNo < 1) {
             pageNo = 1;
         }
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sortDirection, sortBy);
-        Page<Product> products = productRepository.getAllProductsAdmin(keyword, status, minPrice, maxPrice, categoryId, pageable);
+        Page<Product> products = productRepository.getAllProductsAdmin(
+                keyword, status, minPrice, maxPrice, categoryId,
+                (brand == null || brand.isEmpty()) ? null : brand,
+                (vehicleType == null || vehicleType.isEmpty()) ? null : vehicleType,
+                (vehicleCondition == null || vehicleCondition.isEmpty()) ? null : vehicleCondition,
+                pageable);
         int total = (int) products.getTotalElements();
         List<ProductResponse> productResponses = products.getContent().stream()
                 .map(productMapper::mapModelToResponse)
