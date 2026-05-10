@@ -21,6 +21,7 @@ import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
 import saleApi from '~/apis/sale.apis';
 import { Sale } from '~/types/sale.type';
 import ItemProduct from '~/components/product';
+import ConsultModal from '~/components/consultModal/ConsultModal';
 
 import './styles.css';
 import ImageMagnifier from '~/components/imageMagnifier';
@@ -40,6 +41,7 @@ const DetailProduct = () => {
   const [selectedVariantI, setSelectedVariantI] = React.useState(0);
   const [selectedVariant, setSelectedVariant] = React.useState<Variant | null>(null);
   const [showInstallment, setShowInstallment] = React.useState(false);
+  const [showConsult, setShowConsult] = React.useState(false);
   const [quantity, setQuantity] = React.useState(1);
   const [productImage, setProductImage] = React.useState<ProductImages[]>([]);
   const [relatedProduct, setRelatedProduct] = React.useState<Product[]>([]);
@@ -210,6 +212,12 @@ const DetailProduct = () => {
   }, [relatedProduct]);
   return (
     <div className="mainWrapper--content">
+      <ConsultModal
+        isOpen={showConsult}
+        onClose={() => setShowConsult(false)}
+        productId={product?.id}
+        productName={product?.name}
+      />
       <div className="layout-productDetail layout-pageProduct">
         <Breadcrum title={'Sản phẩm'} />
         {/* temp 01 */}
@@ -493,13 +501,14 @@ const DetailProduct = () => {
                             {/* thêm vào giỏ hàng */}
                             <div className="product-actions">
                               <div className="product-actions__inner">
-                                <div className="action-buys">
+                                <div className="action-buys" style={{ flexWrap: 'wrap', gap: '10px' }}>
                                   <button
                                     type="submit"
                                     name="add-to-cart"
                                     className="button btn-addtocart"
                                     id="add-to-cart"
                                     onClick={addToCart}
+                                    style={{ flex: 1 }}
                                   >
                                     Thêm vào giỏ
                                   </button>
@@ -509,8 +518,18 @@ const DetailProduct = () => {
                                     name="buy-now"
                                     id="buy-now"
                                     onClick={buyNow}
+                                    style={{ flex: 1 }}
                                   >
                                     <span className="add-to-cart--text">Mua ngay</span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="button btnborder"
+                                    id="btn-consult"
+                                    onClick={() => setShowConsult(true)}
+                                    style={{ flex: '1 0 100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginLeft: 0 }}
+                                  >
+                                    📞 <span>Yêu cầu tư vấn</span>
                                   </button>
                                 </div>
                                 <div id="zone-mix" className="d-none">

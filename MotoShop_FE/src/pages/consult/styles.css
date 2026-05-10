@@ -1,0 +1,241 @@
+/* Hero */
+.consult-page__hero {
+  background: linear-gradient(135deg, #c0392b 0%, #e74c3c 60%, #922b21 100%);
+  color: #fff;
+  padding: 48px 0 40px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+.consult-page__hero-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 10px;
+  letter-spacing: -0.5px;
+}
+.consult-page__hero-sub {
+  font-size: 15px;
+  opacity: 0.92;
+  margin: 0;
+}
+
+/* Body layout */
+.consult-page__body {
+  padding-bottom: 60px;
+}
+
+/* Form card */
+.consult-page__form-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  margin-bottom: 24px;
+}
+.consult-page__form-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 24px;
+  color: #222;
+}
+
+/* Fields */
+.consult-page__field {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.consult-page__field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+}
+.req { color: #e74c3c; }
+
+.consult-page__field input,
+.consult-page__field select,
+.consult-page__field textarea {
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 13px;
+  font-size: 14px;
+  color: #222;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  background: #fafafa;
+}
+.consult-page__field input:focus,
+.consult-page__field select:focus,
+.consult-page__field textarea:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231,76,60,0.1);
+  background: #fff;
+}
+.consult-page__field textarea { resize: vertical; min-height: 90px; }
+
+/* Budget chips */
+.consult-page__budget-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+.budget-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border: 1.5px solid #ddd;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.18s;
+  color: #555;
+  background: #fafafa;
+}
+.budget-chip input { display: none; }
+.budget-chip:hover { border-color: #e74c3c; color: #e74c3c; }
+.budget-chip.active {
+  background: #e74c3c;
+  border-color: #e74c3c;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Submit button */
+.consult-page__submit {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #c0392b, #e74c3c);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.consult-page__submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #a93226, #c0392b);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(192,57,43,0.35);
+}
+.consult-page__submit:disabled { opacity: 0.65; cursor: not-allowed; }
+
+/* Success */
+.consult-page__success {
+  text-align: center;
+  padding: 32px 16px;
+}
+.consult-page__success-icon { font-size: 52px; margin-bottom: 12px; }
+.consult-page__success h3 { font-size: 20px; font-weight: 700; color: #222; margin: 0 0 8px; }
+.consult-page__success p { color: #666; font-size: 14px; margin-bottom: 20px; }
+.consult-page__btn-again {
+  padding: 10px 24px;
+  border: 2px solid #e74c3c;
+  border-radius: 8px;
+  color: #e74c3c;
+  background: transparent;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.consult-page__btn-again:hover { background: #e74c3c; color: #fff; }
+
+/* Info cards */
+.consult-page__info-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 22px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.consult-page__info-card--red {
+  background: linear-gradient(135deg, #c0392b, #e74c3c);
+  color: #fff;
+}
+.info-card__icon { font-size: 28px; flex-shrink: 0; }
+.info-card__label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin: 0 0 4px;
+  letter-spacing: 0.5px;
+}
+.info-card__value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  display: block;
+}
+.consult-page__info-card:not(.consult-page__info-card--red) .info-card__value {
+  color: #222;
+  font-size: 15px;
+  font-weight: 700;
+}
+.info-card__sub {
+  font-size: 13px;
+  color: #777;
+  margin: 2px 0 0;
+}
+
+/* Process steps */
+.consult-page__process {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px 22px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.process__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 20px;
+}
+.process__steps { display: flex; flex-direction: column; gap: 16px; }
+.process__step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.process__step-num {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  background: linear-gradient(135deg, #c0392b, #e74c3c);
+  color: #fff;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.process__step-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 2px;
+}
+.process__step-desc {
+  font-size: 12.5px;
+  color: #777;
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  .consult-page__hero { padding: 32px 16px 28px; }
+  .consult-page__hero-title { font-size: 24px; }
+  .consult-page__form-card { padding: 20px 16px; }
+  .consult-page__budget-group { gap: 6px; }
+  .budget-chip { font-size: 12px; padding: 5px 10px; }
+}

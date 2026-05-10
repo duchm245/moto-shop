@@ -18,11 +18,12 @@ import paymentMethodApi from '~/apis/paymentMethod.apis';
 import { REQUEST_API } from '~/constants/method';
 import { Address } from '~/types/address.type';
 import LoadingPage from '~/components/loadingPage';
+import userApi from '~/apis/user.apis';
 
 const CheckOut = () => {
   const user: User = useSelector((state: RootState) => state.AuthReducer.user);
-  const addresses: Address[] = user.addresses;
   const token = useSelector((state: RootState) => state.AuthReducer.token);
+  const [localAddresses, setLocalAddresses] = React.useState<Address[]>(user.addresses || []);
   const navigate = useNavigate();
   const location = useLocation();
   const cartItem: OrderItem[] = location.state.cartItem;
@@ -44,6 +45,7 @@ const CheckOut = () => {
   const [vnPay, setVnPay] = React.useState(false);
   const [zaloPay, setZaloPay] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [saveAddressChecked, setSaveAddressChecked] = React.useState(false);
 
   const getCities = async () => {
     try {
@@ -80,6 +82,14 @@ const CheckOut = () => {
   React.useEffect(() => {
     getCities();
   }, []);
+  React.useEffect(() => {
+    if (user?.id) {
+      userApi.getAddress(user.id).then((res: any) => {
+        const data = res?.data?.data;
+        if (Array.isArray(data)) setLocalAddresses(data);
+      }).catch(() => {});
+    }
+  }, [user?.id]);
   const handleCity = (e) => {
     const city = e.target.value;
     if (city === 'Chọn tỉnh / thành') {
@@ -195,6 +205,23 @@ const CheckOut = () => {
       });
       return;
     }
+    if (saveAddressChecked && user?.id) {
+      try {
+        const words = fullName.trim().split(' ');
+        await userApi.createAddress({
+          lastName: words[0] || '',
+          firstName: words.slice(1).join(' ') || fullName,
+          phone,
+          addressDetail: address,
+          province: cityId,
+          district: districtId,
+          wards: wardId,
+          focus: 0,
+          status: 1,
+          userId: user.id,
+        });
+      } catch (_) {}
+    }
     if (bankTransfer || payOnDelivery) {
       createOrder();
     } else if (vnPay) {
@@ -293,7 +320,7 @@ const CheckOut = () => {
         ]);
         console.log(res);
 
-        if (res.returncode === 1) {
+        if (String(res.returncode) === "1") {
           setIsLoading(false);
           window.location.href = `${res.orderurl}`;
         } else {
@@ -317,7 +344,7 @@ const CheckOut = () => {
   };
   const handleChooseAddress = (e) => {
     const itemss = e.target.value;
-    const item: Address | undefined = addresses.find((address) => address.id === parseInt(itemss));
+    const item: Address | undefined = localAddresses.find((address) => address.id === parseInt(itemss));
     if (item) {
       setFullName(`${item.lastName} ${item.firstName}`);
       setPhone(item.phone);
@@ -401,23 +428,23 @@ const CheckOut = () => {
     getCitiesMap();
   }, []);
   React.useEffect(() => {
-    if (addresses.length > 0) {
-      addresses.forEach(async (item) => {
+    if (localAddresses.length > 0) {
+      localAddresses.forEach(async (item) => {
         if (item.district !== null && item.district !== undefined && !Number.isNaN(item.district)) {
           await getWardsMap(parseInt(item.district));
         }
       });
     }
-  }, [addresses]);
+  }, [localAddresses]);
   React.useEffect(() => {
-    if (addresses.length > 0) {
-      addresses.forEach(async (item) => {
+    if (localAddresses.length > 0) {
+      localAddresses.forEach(async (item) => {
         if (item.province !== null && item.province !== undefined && !Number.isNaN(item.province)) {
           await getDistrictsMap(parseInt(item.province));
         }
       });
     }
-  }, [addresses]);
+  }, [localAddresses]);
   const handleUseDiscount = () => {
     toast.error(`Tính năng đang phát triển`, {
       position: 'top-right',
@@ -747,13 +774,13 @@ const CheckOut = () => {
                         <div className="field field-show-floating-label">
                           <div className="field-input-wrapper field-input-wrapper-select">
                             <label className="field-label" htmlFor="stored_addresses">
-                              Thêm địa chỉ mới...
+                              Địa chỉ đã lưu
                             </label>
                             <select className="field-input" id="stored_addresses" onChange={handleChooseAddress}>
-                              <option value={0}>Địa chỉ đã lưu trữ</option>
-                              {!!addresses &&
-                                !!addresses.length &&
-                                addresses.map((item, i) => (
+                              <option value={0}>-- Chọn địa chỉ đã lưu --</option>
+                              {!!localAddresses &&
+                                !!localAddresses.length &&
+                                localAddresses.map((item, i) => (
                                   <option value={item.id} key={i}>
                                     {item.phone}, {item.addressDetail}, {wardMap[item.wards]},{' '}
                                     {districtMap[item.district]}, {cityMap[item.province]}
@@ -779,12 +806,18 @@ const CheckOut = () => {
                     {/* tỉnh thành */}
                     <div className="section-content">
                       <div className="fieldset">
+                        <Input
+                          placeholder="Địa chỉ"
+                          id="address"
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                        />
                         <form
                           autoComplete="off"
                           id="form_update_shipping_method"
                           className="field default"
                           acceptCharset="UTF-8"
-                          method="post"
+                          onSubmit={(e) => e.preventDefault()}
                         >
                           <div className="content-box mt0">
                             <div
@@ -794,12 +827,6 @@ const CheckOut = () => {
                               <div className="order-checkout__loading--box">
                                 <div className="order-checkout__loading--circle" />
                               </div>
-                              <Input
-                                placeholder="Địa chỉ"
-                                id="address"
-                                value={address}
-                                onChange={(e) => setAddress(e.target.value)}
-                              />
                               <div className="field field-show-floating-label  field-third ">
                                 <div className="field-input-wrapper field-input-wrapper-select">
                                   <label className="field-label" htmlFor="customer_shipping_province">
@@ -873,6 +900,18 @@ const CheckOut = () => {
                             </div>
                           </div>
                         </form>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5em', padding: '0.6em 0.45em' }}>
+                          <input
+                            type="checkbox"
+                            id="save_address_checkbox"
+                            checked={saveAddressChecked}
+                            onChange={(e) => setSaveAddressChecked(e.target.checked)}
+                            style={{ width: 'auto', cursor: 'pointer', accentColor: '#338dbc' }}
+                          />
+                          <label htmlFor="save_address_checkbox" style={{ cursor: 'pointer', fontSize: '14px', margin: 0, color: '#4d4d4d' }}>
+                            Lưu địa chỉ này cho lần sau
+                          </label>
+                        </div>
                       </div>
                     </div>
                     {/* phương thứ thanh toán  */}

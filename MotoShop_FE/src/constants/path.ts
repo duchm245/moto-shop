@@ -2,6 +2,7 @@ const path = {
   home:'/',
   login: "/login",
   register: '/register',
+  consult: '/tu-van-mua-ban-xe',
 
   //profile
   profile: '/profile',

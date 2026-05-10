@@ -447,6 +447,22 @@ Hãng xe:  Honda · Yamaha · Suzuki · TVS · GPX · Vinfast · SYM
 
 ## ⭐ TÍNH NĂNG BỔ SUNG *(Sau khi hoàn thành 4 giai đoạn core)*
 
+- [x] **Yêu cầu tư vấn** ✅ — Entity `ConsultRequest`, `POST /api/consult` + `ConsultModal` trong trang chi tiết SP
 - [ ] **So sánh xe** — `GET /api/products/compare?ids=1,2,3` + component `CompareTable`
-- [ ] **Yêu cầu tư vấn** — Entity `ConsultRequest`, `POST /api/consult` + modal `ConsultModal`
 - [ ] **Trang bảo hành** — `/warranty` + tab "Bảo hành & Bảo dưỡng" trong chi tiết sản phẩm
+
+### Chi tiết kỹ thuật — Yêu cầu tư vấn
+
+#### Backend
+- `ConsultRequest.java` — Entity: `fullName`, `phone`, `email`, `note`, `productId`, `productName`, `status` (0=chờ, 1=đã liên hệ, 2=xong)
+- `ConsultRequestRepository.java` — JpaRepository + query phân trang theo ngày
+- `ConsultRest.java` — 3 endpoints:
+  - `POST /api/consult` — public, khách gửi yêu cầu
+  - `GET /api/consult/admin` — admin xem danh sách (có filter status + phân trang)
+  - `PUT /api/consult/admin/{id}/status` — admin cập nhật trạng thái
+
+#### Frontend
+- `src/apis/consult.apis.ts` — API client
+- `src/components/consultModal/ConsultModal.tsx` — Modal form với validation (họ tên + SĐT bắt buộc)
+- `src/components/consultModal/ConsultModal.css` — UI gradient đỏ, animation slide-up
+- `detailProduct/index.tsx` — Thêm nút "📞 Yêu cầu tư vấn" dưới nút "Mua ngay"

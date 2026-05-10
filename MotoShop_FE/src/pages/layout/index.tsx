@@ -19,6 +19,7 @@ import DetailArticle from '../detailArticle';
 import DetailOrder from '../profile/detailOrder';
 import Contact from '../contact';
 import Articles from '../articles';
+import ConsultPage from '../consult';
 
 const Layout = () => {
   const ScrollToTopOnNavigate = () => {
@@ -81,6 +82,7 @@ const Layout = () => {
           <Route path={path.detailOrder} element={<DetailOrder />} />
           <Route path={path.contact} element={<Contact />} />
           <Route path={path.article} element={<Articles />} />
+          <Route path={path.consult} element={<ConsultPage />} />
         </Routes>
       </div>
       <Footer />

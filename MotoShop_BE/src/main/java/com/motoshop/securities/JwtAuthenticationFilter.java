@@ -44,23 +44,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         // validate token
-        if (StringUtils.hasText(token) && jwtConfig.validateToken(token)){
-            // get username from token
-            String username = jwtConfig.getUsernameFromJWT(token);
+        if (StringUtils.hasText(token)) {
+            try {
+                if (jwtConfig.validateToken(token)) {
+                    // get username from token
+                    String username = jwtConfig.getUsernameFromJWT(token);
 
-            // load user associated with token
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+                    // load user associated with token
+                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities()
-            );
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities()
+                    );
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            // set spring security
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    // set spring security
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
+            } catch (Exception ex) {
+                // Token không hợp lệ (sai chữ ký, hết hạn, ...) → trả về 401
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json;charset=UTF-8");
+                response.getWriter().write(
+                    "{\"status\":401,\"error\":\"Unauthorized\",\"message\":\"Token kh\\u00f4ng h\\u1ee3p l\\u1ec7 ho\\u1eb7c \\u0111\\u00e3 h\\u1ebft h\\u1ea1n. Vui l\\u00f2ng \\u0111\\u0103ng nh\\u1eadp l\\u1ea1i.\"}"
+                );
+                return;
+            }
         }
 
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
 
     }
 

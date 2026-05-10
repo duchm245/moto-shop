@@ -1,0 +1,198 @@
+/* Overlay */
+.consult-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Modal box */
+.consult-modal {
+  background: #fff;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 480px;
+  margin: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  animation: slideUp 0.25s ease;
+  overflow: hidden;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Header */
+.consult-modal__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #c0392b, #e74c3c);
+  color: #fff;
+  padding: 18px 20px;
+  position: relative;
+}
+
+.consult-modal__icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.consult-modal__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.consult-modal__subtitle {
+  margin: 2px 0 0;
+  font-size: 13px;
+  opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 280px;
+}
+
+.consult-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.consult-modal__close:hover { background: rgba(255,255,255,0.35); }
+
+/* Body / Form */
+.consult-modal__body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.consult-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.consult-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+}
+
+.consult-required {
+  color: #e74c3c;
+}
+
+.consult-input {
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 14px;
+  color: #222;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.consult-input:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.12);
+}
+
+.consult-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.consult-note-text {
+  font-size: 12.5px;
+  color: #666;
+  background: #fff8f0;
+  border-left: 3px solid #e67e22;
+  padding: 8px 10px;
+  border-radius: 4px;
+  margin: 0;
+}
+
+/* Footer buttons */
+.consult-modal__footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+
+.consult-btn {
+  padding: 9px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.consult-btn--cancel {
+  background: #f0f0f0;
+  color: #555;
+}
+.consult-btn--cancel:hover { background: #e0e0e0; }
+
+.consult-btn--submit {
+  background: linear-gradient(135deg, #c0392b, #e74c3c);
+  color: #fff;
+  min-width: 120px;
+}
+.consult-btn--submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #a93226, #c0392b);
+  transform: translateY(-1px);
+}
+.consult-btn--submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Hotline */
+.consult-hotline {
+  text-align: center;
+  font-size: 13px;
+  color: #666;
+  padding-top: 4px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.consult-hotline__number {
+  color: #c0392b;
+  font-weight: 700;
+  font-size: 15px;
+  margin-left: 4px;
+  text-decoration: none;
+}
+.consult-hotline__number:hover {
+  text-decoration: underline;
+}
