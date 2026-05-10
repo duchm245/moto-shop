@@ -20,6 +20,8 @@ import DetailOrder from '../profile/detailOrder';
 import Contact from '../contact';
 import Articles from '../articles';
 import ConsultPage from '../consult';
+import ComparePage from '../compare';
+import CompareTray from '~/components/compareTray';
 
 const Layout = () => {
   const ScrollToTopOnNavigate = () => {
@@ -83,9 +85,11 @@ const Layout = () => {
           <Route path={path.contact} element={<Contact />} />
           <Route path={path.article} element={<Articles />} />
           <Route path={path.consult} element={<ConsultPage />} />
+          <Route path={path.compare} element={<ComparePage />} />
         </Routes>
       </div>
       <Footer />
+      <CompareTray />
       <div className="back-to-top" id="scrollToTop" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
         <a className="cursor-pointer">
           <div className="btt-back">

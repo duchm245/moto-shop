@@ -30,5 +30,8 @@ const path = {
 
   //liên hệ
   contact: '/contact',
+
+  //so sánh xe
+  compare: '/compare',
 } as const;
  export default path;
