@@ -1,0 +1,32 @@
+# ============================================================
+#  application-local.yaml  –  MẪU CẤU HÌNH LOCAL
+# ============================================================
+#  Cách dùng:
+#    1. Copy file này, đổi tên thành application-local.yaml
+#    2. Điền các giá trị thật vào (xem hướng dẫn bên dưới)
+#    3. KHÔNG commit application-local.yaml lên git
+# ============================================================
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/motorbike_shop?useSSL=false
+    username: root
+    password: YOUR_MYSQL_PASSWORD          # mật khẩu MySQL của bạn
+
+  security:
+    user:
+      name: YOUR_SECURITY_USER             # tên dùng cho Spring Security basic-auth
+      password: YOUR_SECURITY_PASSWORD
+
+  mail:
+    username: YOUR_GMAIL_ADDRESS           # ví dụ: yourname@gmail.com
+    password: YOUR_GMAIL_APP_PASSWORD      # Google App Password (16 ký tự, không phải mật khẩu Gmail thường)
+                                           # Tạo tại: Google Account → Security → App passwords
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+app:
+  jwt-secret: YOUR_JWT_SECRET_BASE64       # chuỗi Base64 ngẫu nhiên, dài ≥ 64 ký tự
+                                           # Tạo nhanh: openssl rand -base64 64
