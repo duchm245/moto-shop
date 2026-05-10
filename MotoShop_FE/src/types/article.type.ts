@@ -1,6 +1,7 @@
 export interface Article {
   author: string;
   categoryId: number;
+  categoryTitle: string;
   content: string;
   createdDate: string;
   id: number;

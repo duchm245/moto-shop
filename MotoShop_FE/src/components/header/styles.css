@@ -13,3 +13,14 @@
 .menuList-main li a{
   cursor: pointer;
 }
+
+/* ── Sticky header ── */
+.mainHeader {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+}

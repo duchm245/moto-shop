@@ -14,6 +14,7 @@ import org.mapstruct.*;
 public interface ArticleMapper {
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "categoryTitle", source = "category.title")
     ArticleResponse mapToResponse(Article article);
 
     ArticleImageResponse mapImageToResponse(ArticleImage articleImage);

@@ -18,12 +18,15 @@ const Header = () => {
   const cart: Order[] = useSelector((state: RootState) => state.CartReducer.cart);
   const [cartItem, setCartItem] = React.useState<OrderItem[]>([]);
   const [category, setCategory] = React.useState<Category[]>([]);
+  const [articleCategories, setArticleCategories] = React.useState<Category[]>([]);
   const [showMenu, setShowMenu] = React.useState(false);
   const [searchLaptop, setSearchLaptop] = React.useState(false);
   const [searchMoblie, setSearchMobile] = React.useState(false);
   const [keyword, setKeyword] = React.useState('');
   const [productMenuOpen, setProductMenuOpen] = React.useState(false);
   const productMenuTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [articleMenuOpen, setArticleMenuOpen] = React.useState(false);
+  const articleMenuTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const openProductMenu = () => {
     if (productMenuTimer.current) clearTimeout(productMenuTimer.current);
@@ -32,12 +35,20 @@ const Header = () => {
   const scheduleCloseProductMenu = () => {
     productMenuTimer.current = setTimeout(() => setProductMenuOpen(false), 200);
   };
+  const openArticleMenu = () => {
+    if (articleMenuTimer.current) clearTimeout(articleMenuTimer.current);
+    setArticleMenuOpen(true);
+  };
+  const scheduleCloseArticleMenu = () => {
+    articleMenuTimer.current = setTimeout(() => setArticleMenuOpen(false), 200);
+  };
   const getAllCategories = async () => {
     try {
       const res = await categoryApi.getAllCategory();
       if (res.data.status) {
         const raw: any = res.data.data;
-        setCategory(Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []));
+        const all: Category[] = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
+        setCategory(all.filter((c: any) => c.type === 0));
       }
     } catch (error) {
       console.error(error);
@@ -45,6 +56,12 @@ const Header = () => {
   };
   React.useEffect(() => {
     getAllCategories();
+    categoryApi.getCategoryType(2).then((res) => {
+      if (res.data.status) {
+        const raw: any = res.data.data;
+        setArticleCategories(Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []));
+      }
+    }).catch(console.error);
   }, []);
   const handleUser = () => {
     if (!!user && user !== null) {
@@ -145,65 +162,78 @@ const Header = () => {
                         </Link>
                       </li>
                       <li
-                        className={`has-submenu fullwidth${productMenuOpen ? ' is-open' : ''}`}
+                        className={`has-submenu${productMenuOpen ? ' is-open' : ''}`}
                         onMouseEnter={openProductMenu}
                         onMouseLeave={scheduleCloseProductMenu}
                       >
                         <a onClick={() => navigate(path.product)} title="Danh mục xe" className="cursor-pointer">
                           Danh mục xe
-                          <svg xmlns="http://www.w3.org/2000/svg" width={12} height={12} x={0} y={0} viewBox="0 0 128 128">
-                            <g>
+                          {category.length > 0 && (
+                            <svg xmlns="http://www.w3.org/2000/svg" width={12} height={12} viewBox="0 0 128 128" style={{ marginLeft: 4 }}>
                               <path d="m64 88c-1.023 0-2.047-.391-2.828-1.172l-40-40c-1.563-1.563-1.563-4.094 0-5.656s4.094-1.563 5.656 0l37.172 37.172 37.172-37.172c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656l-40 40c-.781.781-1.805 1.172-2.828 1.172z" />
-                            </g>
-                          </svg>
+                            </svg>
+                          )}
                         </a>
-                        <div
-                          className="menuList-submain multicolumn"
-                          onMouseEnter={openProductMenu}
-                          onMouseLeave={scheduleCloseProductMenu}
-                        >
-                          <div className="multicolumn-container">
-                            <div className="subchildmenu  d-flex flex-wrap">
-                              {!!category &&
-                                !!category.length &&
-                                category.map((item, i) => (
-                                  <div className="ui-menu-item has-submenu col-lg-3" key={i}>
-                                    <a
-                                      className="cursor-pointer"
-                                      title={item.title}
-                                      onClick={() => navigate(path.product, { state: { categoryId: item.id } })}
-                                    >
-                                      {item.title}
-                                    </a>
-                                    <ul className="subchildmenu-item">
-                                      {!!item.childCategories &&
-                                        !!item.childCategories.length &&
-                                        item.childCategories.map((child, index) => (
-                                          <li key={index}>
-                                            <a
-                                              className="cursor-pointer"
-                                              title={child.title}
-                                              onClick={() => navigate(path.product, { state: { categoryId: child.id } })}
-                                            >
-                                              {child.title}
-                                            </a>
-                                          </li>
-                                        ))}
-                                    </ul>
-                                  </div>
-                                ))}
-                            </div>
+                        {category.length > 0 && (
+                          <div
+                            className="menuList-submain"
+                            onMouseEnter={openProductMenu}
+                            onMouseLeave={scheduleCloseProductMenu}
+                          >
+                            <ul>
+                              {category.map((item, i) => (
+                                <li key={i}>
+                                  <a
+                                    className="cursor-pointer"
+                                    title={item.title}
+                                    onClick={() => navigate(path.product, { state: { categoryId: item.id } })}
+                                  >
+                                    {item.title}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
-                        </div>
+                        )}
                       </li>
-                      <li className="has-submenu  ">
-                        <a onClick={() => navigate(path.product, { state: { saleId: 1 } })} title="Khuyến mãi" className="cursor-pointer">
-                          Khuyến mãi
+                      <li
+                        className={`has-submenu${articleMenuOpen ? ' is-open' : ''}`}
+                        onMouseEnter={openArticleMenu}
+                        onMouseLeave={scheduleCloseArticleMenu}
+                      >
+                        <a title="Tin tức" className="cursor-pointer" onClick={() => navigate(path.article)}>
+                          Tin tức
+                          {articleCategories.length > 0 && (
+                            <svg xmlns="http://www.w3.org/2000/svg" width={12} height={12} viewBox="0 0 128 128" style={{ marginLeft: 4 }}>
+                              <path d="m64 88c-1.023 0-2.047-.391-2.828-1.172l-40-40c-1.563-1.563-1.563-4.094 0-5.656s4.094-1.563 5.656 0l37.172 37.172 37.172-37.172c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656l-40 40c-.781.781-1.805 1.172-2.828 1.172z" />
+                            </svg>
+                          )}
                         </a>
+                        {articleCategories.length > 0 && (
+                          <div
+                            className="menuList-submain"
+                            onMouseEnter={openArticleMenu}
+                            onMouseLeave={scheduleCloseArticleMenu}
+                          >
+                            <ul>
+                              {articleCategories.map((cat) => (
+                                <li key={cat.id}>
+                                  <a
+                                    className="cursor-pointer"
+                                    title={cat.title}
+                                    onClick={() => navigate(path.article, { state: { categoryId: cat.id } })}
+                                  >
+                                    {cat.title}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </li>
-                      <li className="has-submenu  ">
-                        <a title="Bài viết" className="cursor-pointer" onClick={() => navigate(path.article)}>
-                          Bài viết
+                      <li className="has-submenu">
+                        <a title="Tư vấn mua – bán xe" className="cursor-pointer" onClick={() => navigate(path.consult)}>
+                          Tư vấn mua – bán xe
                         </a>
                       </li>
                       <li className="">
@@ -447,14 +477,21 @@ const Header = () => {
                           </a>
                         </li>
                       ))}
-                    <li className="">
-                      <a title="Khuyến mãi" onClick={() => navigate(path.product, { state: { saleId: 1 } })}>
-                        <span>Khuyến mãi</span>
+                    <li className="has-submenu level0">
+                      <a title="Tin tức" onClick={() => navigate(path.article)}>
+                        <span>Tin tức</span>
                       </a>
                     </li>
+                    {articleCategories.map((cat) => (
+                      <li key={cat.id} style={{ paddingLeft: 16 }} onClick={() => navigate(path.article, { state: { categoryId: cat.id } })}>
+                        <a title={cat.title}>
+                          <span style={{ fontSize: 13, color: '#555' }}>— {cat.title}</span>
+                        </a>
+                      </li>
+                    ))}
                     <li className="">
-                      <a title="Bài viết" onClick={() => navigate(path.article)}>
-                        <span>Bài viết</span>
+                      <a title="Tư vấn mua – bán xe" onClick={() => navigate(path.consult)}>
+                        <span>Tư vấn mua – bán xe</span>
                       </a>
                     </li>
                     <li className="has-submenu level0 " onClick={() => navigate(path.contact)}>

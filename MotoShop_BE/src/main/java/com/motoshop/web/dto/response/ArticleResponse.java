@@ -19,6 +19,7 @@ public class ArticleResponse {
     private Date createdDate;
     private long userId;
     private long categoryId;
+    private String categoryTitle;
     private int status;
     private String image;
 }

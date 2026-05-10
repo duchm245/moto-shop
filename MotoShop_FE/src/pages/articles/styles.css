@@ -1,0 +1,77 @@
+/* ── Category Tab Bar ── */
+.articles-tabs-sticky {
+  position: sticky;
+  top: 74px;
+  z-index: 50;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin: 0 -15px 24px;
+  padding: 0 15px;
+}
+
+.articles-category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  border-bottom: 2px solid #e8e8e8;
+}
+
+.articles-category-tabs .cat-tab {
+  position: relative;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.articles-category-tabs .cat-tab:hover {
+  color: #c0392b;
+}
+
+.articles-category-tabs .cat-tab.active {
+  color: #c0392b;
+  font-weight: 700;
+  border-bottom-color: #c0392b;
+}
+
+/* ── Article tag badge ── */
+.article-cat-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.article-cat-tag.tag-event    { background: #2980b9; color: #fff; }
+.article-cat-tag.tag-promo    { background: #e74c3c; color: #fff; }
+.article-cat-tag.tag-recruit  { background: #8e44ad; color: #fff; }
+.article-cat-tag.tag-service  { background: #27ae60; color: #fff; }
+.article-cat-tag.tag-default  { background: #7f8c8d; color: #fff; }
+
+/* sidebar tag (smaller) */
+.item-article__detail .article-cat-tag {
+  font-size: 10px;
+  padding: 2px 7px;
+  margin-bottom: 4px;
+}
+
+/* heading tweak */
+.layout-blogs .column-left .heading-page {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
