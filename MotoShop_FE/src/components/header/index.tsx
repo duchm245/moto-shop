@@ -9,7 +9,7 @@ import { Order, OrderItem } from '~/types/order.type';
 import cartApi from '~/apis/cart.apis';
 import { Category } from '~/types/category.type';
 import categoryApi from '~/apis/category.apis';
-import productApi from '~/apis/product.apis';
+
 
 const Header = () => {
   const navigate = useNavigate();
@@ -147,7 +147,7 @@ const Header = () => {
                         src={Images.logo}
                         alt="MotoShop"
                         className="img-responsive logoimg ls-is-cached lazyloaded"
-                        style={{ width: '150px' }}
+                        style={{ width: '140px', height: 'auto' }}
                       />
                     </a>
                   </div>
@@ -510,8 +510,8 @@ const Header = () => {
                         <path d="M14 1c4.971 0 9 4.029 9 9m-9-5c2.761 0 5 2.239 5 5" stroke="#121212" />
                       </g>
                     </svg>
-                    <a href="tel:0966821574" rel="nofollow">
-                      0966821574
+                    <a href={`tel:${SHOP_INFO.phone}`} rel="nofollow">
+                      {SHOP_INFO.phoneDisplay}
                     </a>
                   </div>
                   <div className="mobile-menu__help-wrapper">
@@ -565,7 +565,7 @@ const Header = () => {
                         src={Images.logo}
                         alt="MotoShop"
                         className="img-responsive logoimg ls-is-cached lazyloaded"
-                        style={{ width: '150px' }}
+                        style={{ width: '140px', height: 'auto' }}
                       />
                     </a>
                   </div>
@@ -594,7 +594,7 @@ const Header = () => {
                         x="0px"
                         y="0px"
                         viewBox="0 0 24 27"
-                        style={{ enableBackground: 'new 0 0 24 27' }}
+                        style={{ ['enableBackground' as any]: 'new 0 0 24 27' }}
                         xmlSpace="preserve"
                       >
                         <path d="M10,2C4.5,2,0,6.5,0,12s4.5,10,10,10s10-4.5,10-10S15.5,2,10,2z M10,19c-3.9,0-7-3.1-7-7s3.1-7,7-7s7,3.1,7,7S13.9,19,10,19z" />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { SHOP_INFO } from '~/constants/utils';
 
 const Topbar = () => {
   return (
@@ -10,8 +11,8 @@ const Topbar = () => {
             <div className="box-left d-flex flex-wrap align-items-center">
               <div className="hotline">
                 <span>
-                  Hotline CSKH: <Link to="0966821574">0966821574</Link> - Hotline mua hàng:{' '}
-                  <Link to="0966821574">0966821574</Link>
+                  Hotline CSKH: <Link to={`tel:${SHOP_INFO.phone}`}>{SHOP_INFO.phoneDisplay}</Link> - Hotline mua hàng:{' '}
+                  <Link to={`tel:${SHOP_INFO.phone}`}>{SHOP_INFO.phoneDisplay}</Link>
                 </span>
               </div>
             </div>

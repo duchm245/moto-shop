@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import Input from './component/input';
 import { Order, OrderItem } from '~/types/order.type';
 import { Product } from '~/types/product.type';
-import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
+import { API_URL_IMAGE, formatPrice, SHOP_INFO } from '~/constants/utils';
 import { City, District, Ward } from '~/types/province.type';
 import provinceApi from '~/apis/province.apis';
 import { toast } from 'react-toastify';
@@ -1005,7 +1005,7 @@ const CheckOut = () => {
                                 <div className="blank-slate">
                                   Anh/Chị vui lòng chuyển khoản vào tài khoản sau đây: - Ngân hàng: BIDV (Ngân hàng TMCP
                                   Đầu Tư & Phát Triển Việt Nam) - Tên tài khoản: NGUYEN KIM THANG - Số tài khoản:
-                                  0966821574 - Chi nhánh Quang Minh * Nội Dung Chuyển Khoản: Online ck + SĐT đặt hàng.
+                                  {SHOP_INFO.phone} - Chi nhánh Quang Minh * Nội Dung Chuyển Khoản: Online ck + SĐT đặt hàng.
                                   Chuyển khoản thành công Anh/Chị cho em xin ảnh chụp sao kê giao dịch và báo lại với
                                   nhân viên khi xác nhận ạ
                                 </div>

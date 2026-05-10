@@ -6,7 +6,7 @@ import 'swiper/css/navigation';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import homeApi from '~/apis/home.apis';
 import { Banner, Category } from '~/types/category.type';
-import { API_URL_IMAGE } from '~/constants/utils';
+import { API_URL_IMAGE, SHOP_INFO } from '~/constants/utils';
 import './styles.css';
 import { toast } from 'react-toastify';
 import SwiperCore from 'swiper/core';
@@ -966,7 +966,7 @@ const Home = () => {
                 <div className="policy-item__info">
                   <h3 className="info-title">Tổng Đài Bán Hàng Miễn Phí</h3>
                   <div className="infor-des">
-                    Gọi <b>0966821574</b> để được tư vấn
+                    Gọi <b>{SHOP_INFO.phoneDisplay}</b> để được tư vấn
                   </div>
                 </div>
               </div>

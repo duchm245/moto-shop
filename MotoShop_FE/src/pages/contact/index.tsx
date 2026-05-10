@@ -1,5 +1,6 @@
 import React from 'react';
 import Breadcrum from '~/components/breadcrumb';
+import { SHOP_INFO } from '~/constants/utils';
 
 const Contact = () => {
   return (
@@ -156,7 +157,7 @@ const Contact = () => {
                       <div className="right">
                         <strong>Điện thoại</strong>
                         <br />
-                        0966821574
+                        {SHOP_INFO.phoneDisplay}
                       </div>
                     </div>
                     <div className="contact-info__item">

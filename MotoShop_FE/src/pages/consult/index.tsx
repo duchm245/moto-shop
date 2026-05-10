@@ -2,6 +2,7 @@ import React from 'react';
 import Breadcrum from '~/components/breadcrumb';
 import { toast } from 'react-toastify';
 import consultApi, { ConsultRequestPayload } from '~/apis/consult.apis';
+import { SHOP_INFO } from '~/constants/utils';
 import './styles.css';
 
 const VEHICLE_TYPES = ['Xe số', 'Xe tay ga', 'Xe côn tay', 'Xe điện'];
@@ -182,7 +183,7 @@ const ConsultPage = () => {
               <div className="info-card__icon">📞</div>
               <div>
                 <p className="info-card__label">Hotline hỗ trợ</p>
-                <a href="tel:0966821574" className="info-card__value">0966 821 574</a>
+                <a href={`tel:${SHOP_INFO.phone}`} className="info-card__value">{SHOP_INFO.phoneDisplay}</a>
               </div>
             </div>
 

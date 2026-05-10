@@ -1,4 +1,4 @@
-import logo from './images/logoLight.png';
+import logo from './images/logoLight.svg';
 import logoDark from './images/logoDark.png';
 import logoZaloPay from './images/LogoZaloPay.png';
 import LogoVnPay from './images/LogoVnPay.svg';

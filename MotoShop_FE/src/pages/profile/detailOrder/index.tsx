@@ -265,7 +265,7 @@ const DetailOrder = () => {
                           <p />
                           <p> Cần Thơ</p>
                           <p>Vietnam </p>
-                          <p>0966821574</p>
+                          <p>0968886668</p>
                         </div>
                       </div> */}
                     </div>

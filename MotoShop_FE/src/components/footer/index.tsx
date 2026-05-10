@@ -4,6 +4,7 @@ import categoryApi from '~/apis/category.apis';
 import path from '~/constants/path';
 import Images from '~/static';
 import { Category } from '~/types/category.type';
+import { SHOP_INFO } from '~/constants/utils';
 
 const Footer = () => {
   const [isOpen1, setIsOpen1] = React.useState(false);
@@ -86,25 +87,25 @@ const Footer = () => {
                       <Link to="/">
                         <img
                           itemProp="logo"
-                          src={Images.logoDark}
+                          src={Images.logo}
                           className="img-responsive logoimg ls-is-cached lazyloaded"
+                          style={{ maxWidth: 160 }}
                         />
                       </Link>
                     </div>
                     <div className="address-footer">
                       <ul>
                         <li className="contact-1">
-                          <b>CÔNG TY TNHH MOTOSHOP</b>
+                          <b>{SHOP_INFO.name.toUpperCase()}</b>
                           <br />
-                          <b>Trụ sở chính: </b>
-                          Số 7, Nghinh Tiên, <br />
-                          Xã Nguyệt Đức, Huyện Yên Lạc, Tỉnh Vĩnh Phúc <br />
+                          <b>Showroom: </b>
+                          {SHOP_INFO.address} <br />
                         </li>
                         <li className="contact-2">
-                          <b>Điện thoại:</b> 0966821574
+                          <b>Điện thoại:</b> {SHOP_INFO.phoneDisplay}
                         </li>
                         <li className="contact-4">
-                          <b>Email:</b> duchm245@gmail.com
+                          <b>Email:</b> {SHOP_INFO.email}
                         </li>{' '}
                       </ul>
                     </div>
@@ -130,22 +131,22 @@ const Footer = () => {
                       </a>
                     </li>
                     <li className="item">
-                      <a href="/blogs/tin-tuc" title="Sự kiện">
-                        Sự kiện
+                      <a href="/tin-tuc" title="Tin tức sự kiện">
+                        Tin tức sự kiện
                       </a>
                     </li>
                     <li className="item">
-                      <a href="/blogs/bai-viet-noi-bat" title="Tin tức">
-                        Tin tức
+                      <a href="/tin-tuc" title="Khuyến mãi">
+                        Khuyến mãi
                       </a>
                     </li>
                     <li className="item">
-                      <a href="/blogs/sao-eva" title="SAO & Eva">
-                        SAO &amp; Eva
+                      <a href="/tu-van-mua-ban-xe" title="Tư vấn mua – bán xe">
+                        Tư vấn mua – bán xe
                       </a>
                     </li>
                     <li className="item">
-                      <a href="/pages/he-thong-cua-hang" title="Hệ thống Showroom">
+                      <a href="/lien-he" title="Hệ thống Showroom">
                         Hệ thống Showroom
                       </a>
                     </li>
@@ -182,13 +183,13 @@ const Footer = () => {
                       </a>
                     </li>
                     <li className="item">
-                      <a href="/pages/chuong-trinh-the-vip" title="Chương trình thẻ VIP">
-                        Chương trình thẻ VIP
+                      <a href="/pages/chinh-sach-bao-hanh" title="Chính sách bảo hành">
+                        Chính sách bảo hành
                       </a>
                     </li>
                     <li className="item">
-                      <a href="/pages/huong-dan-chon-size" title="Hướng dẫn chọn size">
-                        Hướng dẫn chọn size
+                      <a href="/tu-van-mua-ban-xe" title="Hướng dẫn mua xe trả góp">
+                        Hướng dẫn mua xe trả góp
                       </a>
                     </li>
                   </ul>

@@ -158,7 +158,7 @@ public class EmailUtils {
                 .append("<h3> Cảm ơn bạn" + orders.getUser().getUsername() + " đã đặt hàng</h3>").append("<br/>")
                 .append("Cảm ơn bạn " + orders.getFullName() + " đã đặt hàng bên chúng tôi").append("<br/>")
                 .append("Bạn có thể đổi trả trong vòng 7 ngày nếu gặp lỗi từ nhà sản xuất.").append("<br/>")
-                .append("Nếu có vấn đề cần thắc mắc hãy liên hệ lại cho chúng tôi 0966821574.").append("<br/>")
+                .append("Nếu có vấn đề cần thắc mắc hãy liên hệ lại cho chúng tôi 0968886668.").append("<br/>")
                 .append("Tiếp tục mua sắm tại đây: ")
                 .append("http://localhost:3000/").append(Base64.getUrlEncoder().encodeToString(String.valueOf(orders.getId()).getBytes()));
         mimeMessageHelper.setText(sb.toString(), true);
