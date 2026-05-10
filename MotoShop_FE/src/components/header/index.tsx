@@ -9,6 +9,7 @@ import { Order, OrderItem } from '~/types/order.type';
 import cartApi from '~/apis/cart.apis';
 import { Category } from '~/types/category.type';
 import categoryApi from '~/apis/category.apis';
+import { SHOP_INFO } from '~/constants/utils';
 
 
 const Header = () => {
