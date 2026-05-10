@@ -59,7 +59,9 @@ const Home = () => {
       const res = await categoryApi.getAllCategory();
       if (res.data.status) {
         const raw: any = res.data.data;
-        setCategory(Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []));
+        const all: any[] = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
+        // Chỉ lấy danh mục sản phẩm (type=0), bỏ danh mục tin tức (type=2)
+        setCategory(all.filter((c: any) => c.type === 0));
       }
     } catch (error) {
       console.error(error);
@@ -77,20 +79,16 @@ const Home = () => {
     setSwiper(ref);
   };
   const handlePrevClick = () => {
-    if (activeSlide > 0) {
-      if (swiper && activeSlide - 1 >= 0) {
-        setActiveSlide(activeSlide - 1);
-        swiper.slidePrev();
-      }
+    if (swiper && !swiper.isBeginning) {
+      swiper.slidePrev();
+      setActiveSlide((prev) => Math.max(0, prev - 1));
     }
   };
 
   const handleNextClick = () => {
-    if (activeSlide < totalSlides - 1) {
-      if (swiper && activeSlide + 1 < totalSlides - 3) {
-        setActiveSlide(activeSlide + 1);
-        swiper.slideNext();
-      }
+    if (swiper && !swiper.isEnd) {
+      swiper.slideNext();
+      setActiveSlide((prev) => Math.min(totalSlides - 1, prev + 1));
     }
   };
 
@@ -209,19 +207,15 @@ const Home = () => {
     setSwiperArticle(ref);
   };
   const handlePrevClickArticle = () => {
-    if (activeSlideArticle > 0) {
-      if (swiperArticle && activeSlideArticle - 1 >= 0) {
-        setActiveSlideArticle(activeSlideArticle - 1);
-        swiperArticle.slidePrev();
-      }
+    if (swiperArticle && !swiperArticle.isBeginning) {
+      swiperArticle.slidePrev();
+      setActiveSlideArticle((prev) => Math.max(0, prev - 1));
     }
   };
   const handleNextClickArticle = () => {
-    if (activeSlideArticle < totalSlidesArticle - 1) {
-      if (swiperArticle && activeSlideArticle + 1 < totalSlidesArticle - 3) {
-        setActiveSlideArticle(activeSlideArticle + 1);
-        swiperArticle.slideNext();
-      }
+    if (swiperArticle && !swiperArticle.isEnd) {
+      swiperArticle.slideNext();
+      setActiveSlideArticle((prev) => Math.min(totalSlidesArticle - 1, prev + 1));
     }
   };
   const getArticle = async () => {
@@ -291,19 +285,15 @@ const Home = () => {
     setSwiperSale(ref);
   };
   const handlePrevClickSale = () => {
-    if (activeSlideSale > 0) {
-      if (swiperSale && activeSlideSale - 1 >= 0) {
-        setActiveSlideSale(activeSlideSale - 1);
-        swiperSale.slidePrev();
-      }
+    if (swiperSale && !swiperSale.isBeginning) {
+      swiperSale.slidePrev();
+      setActiveSlideSale((prev) => Math.max(0, prev - 1));
     }
   };
   const handleNextClickSale = () => {
-    if (activeSlideSale < totalSlidesSale - 1) {
-      if (swiperSale && activeSlideSale + 1 < totalSlidesSale - 3) {
-        setActiveSlideSale(activeSlideSale + 1);
-        swiperSale.slideNext();
-      }
+    if (swiperSale && !swiperSale.isEnd) {
+      swiperSale.slideNext();
+      setActiveSlideSale((prev) => Math.min(totalSlidesSale - 1, prev + 1));
     }
   };
   const getProductSale = async () => {
@@ -368,7 +358,7 @@ const Home = () => {
             </h2>{' '}
             <div className="swiper-nav">
               <span
-                className={`swiper-button swiper-category-prev ${activeSlide === 0 ? 'swiper-button-disabled' : ''}`}
+                className={`swiper-button swiper-category-prev ${!swiper || swiper.isBeginning ? 'swiper-button-disabled' : ''}`}
                 role="button"
                 tabIndex={-1}
                 onClick={handlePrevClick}
@@ -390,7 +380,7 @@ const Home = () => {
               </span>
               <span
                 className={`swiper-button swiper-category-next ${
-                  activeSlide >= totalSlides - 4 ? 'swiper-button-disabled' : ''
+                  !swiper || swiper.isEnd ? 'swiper-button-disabled' : ''
                 }`}
                 role="button"
                 tabIndex={0}
@@ -416,6 +406,9 @@ const Home = () => {
           <div className="section-content">
             <Swiper
               onSwiper={setSwiperRef}
+              onSlideChange={(s) => setActiveSlide(s.activeIndex)}
+              observer={true}
+              observeParents={true}
               slidesPerView={4}
               breakpoints={{
                 0: {

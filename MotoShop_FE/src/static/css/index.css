@@ -5218,12 +5218,20 @@ INDEX
   position: relative; }
 
 .section-home-category .category-item__img {
-  overflow: hidden; }
+  overflow: hidden;
+  aspect-ratio: 3 / 4;  /* tỉ lệ cố định, tất cả card bằng nhau */
+}
   .section-home-category .category-item__img a {
     display: block;
+    height: 100%;
     transition: all 0.5s ease-in-out; }
   .section-home-category .category-item__img:hover a {
     transform: scale(1.1); }
+  .section-home-category .category-item__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* crop ảnh vừa khung, không bị lệch */
+    display: block; }
   .section-home-category .category-item__img img:not(.swiper-lazy-loaded) {
     min-height: 350px; }
 
