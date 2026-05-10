@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import path from '~/constants/path';
 import Types from '~/redux/types';
 import CartAction from '~/redux/actions/cartAction';
+import CompareAction from '~/redux/actions/compareAction';
 
 interface IIProduct {
   id: number;
@@ -37,12 +38,31 @@ interface IIProduct {
 
 const ItemProduct = (props: IIProduct) => {
   const user: User = useSelector((state: RootState) => state.AuthReducer.user);
+  const compareItems = useSelector((state: RootState) => state.CompareReducer.items);
+  const isInCompare = compareItems.some((i) => i.id === props.id);
+  const compareIsFull = compareItems.length >= 4 && !isInCompare;
   const dispatch = useDispatch();
+
+  const handleCompareToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isInCompare) {
+      dispatch(CompareAction.removeFromCompare(props.id));
+    } else if (!compareIsFull) {
+      dispatch(CompareAction.addToCompare({
+        id: props.id,
+        name: props.name,
+        img: props.img1,
+        salePrice: props.salePrice,
+        price: props.price,
+      }));
+    }
+  };
   const navigate = useNavigate();
   const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
   const handleThumbsSwiper = (swiper) => {
     setThumbsSwiper(swiper);
   };
+  const [mainSwiper, setMainSwiper] = React.useState<any>(null);
   const [isSale, setIsSale] = React.useState(true);
   const [isOpen, setIsOpen] = React.useState(false);
   const [product, setProduct] = React.useState<Product>();
@@ -65,6 +85,9 @@ const ItemProduct = (props: IIProduct) => {
     if (!variant || variant.stock === 0) return;
     setSelectedVariantI(i);
     setSelectedVariant(variant);
+    if (mainSwiper && !mainSwiper.destroyed) {
+      mainSwiper.slideToLoop(0, 300);
+    }
   };
 
   React.useEffect(() => {
@@ -231,9 +254,6 @@ const ItemProduct = (props: IIProduct) => {
                 {props.name}
               </a>
             </h3>
-            {props.displacement && (
-              <p style={{ fontSize: 12, color: '#888', margin: '0 0 4px', fontWeight: 500 }}>{props.displacement} CC</p>
-            )}
             <p className="proloop-price on-sale">
               <span className="price">
                 {isSale ? `${formatPrice(props.salePrice)}` : `${formatPrice(props.price)}`}
@@ -247,6 +267,16 @@ const ItemProduct = (props: IIProduct) => {
                 </a>
               </span>
             </p>
+            <button
+              className={`proloop-compare${isInCompare ? ' proloop-compare--active' : ''}${compareIsFull ? ' proloop-compare--disabled' : ''}`}
+              onClick={handleCompareToggle}
+              title={compareIsFull ? 'Đã chọn đủ 4 xe' : undefined}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 20V10M12 20V4M6 20v-6" />
+              </svg>
+              {isInCompare ? '✓ Đã thêm' : 'So sánh'}
+            </button>
           </div>
         </div>
       </div>
@@ -267,6 +297,7 @@ const ItemProduct = (props: IIProduct) => {
                   <div className="productDetail--gallery product-gallery">
                     <div className="product-gallery__inner sticky-gallery">
                       <Swiper
+                        onSwiper={setMainSwiper}
                         slidesPerView={1}
                         spaceBetween={30}
                         loop={true}
@@ -340,15 +371,14 @@ const ItemProduct = (props: IIProduct) => {
                         )}
                         {product?.displacement && (
                           <span className="pro-state">
-                            Phân khối: <strong>{product?.displacement}</strong>
+                            Phân khối: <strong>{product?.displacement} cc</strong>
                           </span>
                         )}
-                        <span className="pro-vendor">
-                          Thương hiệu:{' '}
-                          <strong>
-                            <Link to="">MotoShop</Link>
-                          </strong>
-                        </span>
+                        {product?.vehicleType && (
+                          <span className="pro-state">
+                            Loại xe: <strong>{product?.vehicleType}</strong>
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="info-body">

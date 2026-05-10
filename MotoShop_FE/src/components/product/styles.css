@@ -7,3 +7,58 @@
 .second-image img{
   width: 125% !important;
 }
+
+.proloop-compare {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 5px 12px;
+  border: 1.5px solid #ddd;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.proloop-compare svg {
+  stroke: #999;
+  transition: stroke 0.15s;
+  flex-shrink: 0;
+}
+
+.proloop-compare:hover {
+  border-color: #c0392b;
+  color: #c0392b;
+  background: #fff5f5;
+}
+
+.proloop-compare:hover svg {
+  stroke: #c0392b;
+}
+
+.proloop-compare--active {
+  background: #c0392b;
+  border-color: #c0392b;
+  color: #fff;
+}
+
+.proloop-compare--active svg {
+  stroke: #fff;
+}
+
+.proloop-compare--active:hover {
+  background: #a93226;
+  border-color: #a93226;
+  color: #fff;
+}
+
+.proloop-compare--disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
