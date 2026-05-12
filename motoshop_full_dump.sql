@@ -375,7 +375,7 @@ INSERT INTO `user`
   (`id`,`created_date`,`email`,`first_name`,`last_name`,`modified_date`,
    `otp`,`otp_generated_time`,`password`,`phone`,`status`,`username`)
 VALUES
-(1,'2023-09-17 07:23:11','duchm245@gmail.com','Linh','Quan Tri',
+(1,'2023-09-17 07:23:11','duchm245@gmail.com','Linh','Quản Trị',
  '2023-09-17 07:23:11',NULL,NULL,
  '$2a$10$1Xmt73dPIjrpTIFrU04hx.WCLdIjaV9yrCUN6QbhjbT8ntIRuOS.i','0966821574',1,'admin'),
 (2,'2023-09-17 07:28:27','thangdv007@gmail.com','Thang','Nguyen Kim',
@@ -399,13 +399,13 @@ ALTER TABLE `sales` AUTO_INCREMENT = 2;
 INSERT INTO `category`
   (`id`,`created_date`,`description`,`modified_date`,`status`,`title`,`type`,`url_image`,`parent_category_id`)
 VALUES
-(31,'2024-01-01 00:00:00','Xe so - xe pho thong, tiet kiem nhien lieu','2024-01-01 00:00:00',1,'Xe so',0,'category_xe_so.jpg',NULL),
-(32,'2024-01-01 00:00:00','Xe tay ga - tien loi, de di','2024-01-01 00:00:00',1,'Xe tay ga',0,'category_xe_tay_ga.jpg',NULL),
-(33,'2024-01-01 00:00:00','Xe con tay - the thao, manh me','2024-01-01 00:00:00',1,'Xe con tay',0,'category_xe_con_tay.jpg',NULL),
-(34,'2024-01-01 00:00:00','Xe dien - than thien moi truong','2024-01-01 00:00:00',1,'Xe dien',0,'category_xe_dien.jpg',NULL),
-(35,'2024-01-01 00:00:00','Tin tuc va bai viet ve xe may','2024-01-01 00:00:00',1,'Tin tuc xe may',2,NULL,NULL),
-(36,'2024-01-01 00:00:00','Chuong trinh khuyen mai, uu dai giam gia','2024-01-01 00:00:00',1,'Tin khuyen mai',2,NULL,NULL),
-(37,'2024-01-01 00:00:00','Tuyen dung nhan su cua hang xe may','2024-01-01 00:00:00',1,'Tin tuyen dung',2,NULL,NULL);
+(31,'2024-01-01 00:00:00','Xe số - xe phổ thông, tiết kiệm nhiên liệu','2024-01-01 00:00:00',1,'Xe số',0,'category_xe_so.jpg',NULL),
+(32,'2024-01-01 00:00:00','Xe tay ga - tiện lợi, dễ đi','2024-01-01 00:00:00',1,'Xe tay ga',0,'category_xe_tay_ga.jpg',NULL),
+(33,'2024-01-01 00:00:00','Xe côn tay - thể thao, mạnh mẽ','2024-01-01 00:00:00',1,'Xe côn tay',0,'category_xe_con_tay.jpg',NULL),
+(34,'2024-01-01 00:00:00','Xe điện - thân thiện môi trường','2024-01-01 00:00:00',1,'Xe điện',0,'category_xe_dien.jpg',NULL),
+(35,'2024-01-01 00:00:00','Tin tức và bài viết về xe máy','2024-01-01 00:00:00',1,'Tin tức xe máy',2,NULL,NULL),
+(36,'2024-01-01 00:00:00','Chương trình khuyến mãi, ưu đãi giảm giá','2024-01-01 00:00:00',1,'Tin khuyến mãi',2,NULL,NULL),
+(37,'2024-01-01 00:00:00','Tuyển dụng nhân sự cửa hàng xe máy','2024-01-01 00:00:00',1,'Tin tuyển dụng',2,NULL,NULL);
 ALTER TABLE `category` AUTO_INCREMENT = 38;
 
 INSERT INTO `banner` VALUES
@@ -418,8 +418,8 @@ INSERT INTO `address`
   (`id`,`address_detail`,`created_date`,`district`,`first_name`,`focus`,
    `last_name`,`modified_date`,`phone`,`province`,`status`,`wards`,`user_id`)
 VALUES
-(1,'Nguyet Duc','2023-09-22 13:19:36','251','Kim Thang',0,
- 'Nguyen','2023-09-22 13:19:36','0966821574','26',1,'9052',3);
+(1,'Nguyệt Đức','2023-09-22 13:19:36','251','Kim Thắng',0,
+ 'Nguyễn','2023-09-22 13:19:36','0966821574','26',1,'9052',3);
 ALTER TABLE `address` AUTO_INCREMENT = 2;
 
 INSERT INTO `orders`
@@ -428,13 +428,13 @@ INSERT INTO `orders`
    `phone`,`province`,`ship_date`,`shipping_fee`,`status`,`type`,
    `user_name_emp`,`wards`,`address_id`,`user_id`)
 VALUES
-(3,'Nguyet Duc','13471626','2023-09-22 13:20:54','251','Nguyen Kim Thang',
+(3,'Nguyệt Đức','13471626','2023-09-22 13:20:54','251','Nguyễn Kim Thắng',
  b'1','2023-09-22 13:37:17','','2023-09-22 13:20:54','COD',
  '0966821574','26','2023-09-22 13:36:41',25000,4,1,'thangdev','9052',NULL,3),
-(4,'Nguyet Duc','72913687','2023-09-22 13:38:05','251','Nguyen Kim Thang',
+(4,'Nguyệt Đức','72913687','2023-09-22 13:38:05','251','Nguyễn Kim Thắng',
  b'0','2023-09-22 13:38:05','','2023-09-22 13:38:05','COD',
  '0966821574','26',NULL,25000,1,1,NULL,'9052',NULL,3),
-(5,'Nguyet Duc','60195487','2023-09-22 14:17:55','251','Nguyen Kim Thang',
+(5,'Nguyệt Đức','60195487','2023-09-22 14:17:55','251','Nguyễn Kim Thắng',
  b'0','2023-09-22 14:17:55','','2023-09-22 14:17:55','COD',
  '0966821574','26',NULL,25000,1,1,NULL,'9052',NULL,3),
 (7,NULL,'72129668','2023-10-04 14:32:34',NULL,NULL,
@@ -443,9 +443,9 @@ VALUES
 ALTER TABLE `orders` AUTO_INCREMENT = 8;
 
 INSERT INTO `notifications` VALUES
-(1,'Don hang 13471626 vua duoc tao, xac nhan ngay nao',b'1',b'0',1,3,NULL),
-(2,'Don hang 72913687 vua duoc tao, xac nhan ngay nao',b'1',b'0',1,4,NULL),
-(3,'Don hang 60195487 vua duoc tao, xac nhan ngay nao',b'1',b'0',1,5,NULL);
+(1,'Đơn hàng 13471626 vừa được tạo, xác nhận ngay nào',b'1',b'0',1,3,NULL),
+(2,'Đơn hàng 72913687 vừa được tạo, xác nhận ngay nào',b'1',b'0',1,4,NULL),
+(3,'Đơn hàng 60195487 vừa được tạo, xác nhận ngay nào',b'1',b'0',1,5,NULL);
 ALTER TABLE `notifications` AUTO_INCREMENT = 4;
 
 INSERT INTO `article`
@@ -453,15 +453,15 @@ INSERT INTO `article`
    `short_content`,`status`,`title`,`category_id`,`user_id`)
 VALUES
 (1,'Nguyen Kim Thang',
- '<p>Meo chon mua xe may phu hop: Can xem xet muc dich su dung, ngan sach, thuong hieu va dich vu hau mai. Cap nhat noi dung qua trang quan tri.</p>',
+ '<p>Mẹo chọn mua xe máy phù hợp: Cần xem xét mục đích sử dụng, ngân sách, thương hiệu và dịch vụ hậu mãi. Cập nhật nội dung qua trang quản trị.</p>',
  '2023-09-19 13:46:41','blog_1.jpg','2023-09-19 13:46:41',
- '<p>Huong dan chon mua xe may phu hop voi nhu cau va ngan sach.</p>',
- 1,'Meo chon mua xe may phu hop cho nguoi moi',35,2),
+ '<p>Hướng dẫn chọn mua xe máy phù hợp với nhu cầu và ngân sách.</p>',
+ 1,'Mẹo chọn mua xe máy phù hợp cho người mới',35,2),
 (2,'Nguyen Kim Thang',
- '<p>Bao duong xe may dinh ky giup xe hoat dong on dinh, tiet kiem nhien lieu va tang tuoi tho dong co. Cap nhat noi dung qua trang quan tri.</p>',
+ '<p>Bảo dưỡng xe máy định kỳ giúp xe hoạt động ổn định, tiết kiệm nhiên liệu và tăng tuổi thọ động cơ. Cập nhật nội dung qua trang quản trị.</p>',
  '2023-09-19 13:49:34','blog_2.jpg','2023-09-19 13:49:34',
- '<p>Huong dan bao duong xe may dinh ky de xe luon hoat dong tot va ben bi.</p>',
- 1,'Huong dan bao duong xe may dinh ky dung cach',35,2);
+ '<p>Hướng dẫn bảo dưỡng xe máy định kỳ để xe luôn hoạt động tốt và bền bỉ.</p>',
+ 1,'Hướng dẫn bảo dưỡng xe máy định kỳ đúng cách',35,2);
 ALTER TABLE `article` AUTO_INCREMENT = 3;
 
 -- ============================================================
@@ -479,44 +479,44 @@ INSERT INTO `product` (
   `warranty_info`,`origin`,
   `installment_supported`,`installment_months`,`down_payment_percent`
 ) VALUES
-(101,'2024-01-01 00:00:00','<p>Honda Wave Alpha 110 - mau xe so pho thong ban chay nhat Viet Nam voi thiet ke gon gang, tiet kiem nhien lieu xuat sac va do ben cao.</p>','2024-01-01 00:00:00','Honda Wave Alpha 110',18990000,18990000,'HONDA-WAVE-ALPHA-110',1,0,1,31,NULL,'new',2024,0,'Honda','Xe so',1,'4 thi, SOHC, 2 van, 1 xi-lanh',110,'6.0 kW / 7500 vong/phut','8.68 Nm / 5500 vong/phut','4 so','Bo che hoa khi',4.0,'1.63 lit/100km','1896 x 694 x 1061 mm',99,761,145,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(102,'2024-01-01 00:00:00','<p>Honda Air Blade 125 - xe tay ga the thao voi thiet ke manh me, dong co eSP tien tien cho hieu suat vuot troi va tiet kiem nhien lieu toi uu.</p>','2024-01-01 00:00:00','Honda Air Blade 125',52900000,52900000,'HONDA-AIR-BLADE-125',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',1,'4 thi, eSP, SOHC, 2 van, 1 xi-lanh',125,'9.2 kW / 8500 vong/phut','12.0 Nm / 5000 vong/phut','Tay ga (CVT)','Phun xang dien tu PGM-FI',5.3,'1.79 lit/100km','1916 x 681 x 1132 mm',118,790,138,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(103,'2024-01-01 00:00:00','<p>Yamaha Exciter 155 VVA - bieu tuong cua dong xe con tay the thao voi cong nghe VVA, mang lai cam giac lai phan khich va manh me.</p>','2024-01-01 00:00:00','Yamaha Exciter 155 VVA',52900000,52900000,'YAMAHA-EXCITER-155-VVA',1,0,1,33,NULL,'new',2024,0,'Yamaha','Xe con tay',1,'4 thi, 4 van, SOHC, VVA, 1 xi-lanh',155,'13.2 kW / 9500 vong/phut','14.4 Nm / 8000 vong/phut','6 so','Phun xang dien tu',5.4,'1.91 lit/100km','1975 x 665 x 1105 mm',119,795,150,'3 nam hoac 30000 km','Yamaha Viet Nam',1,36,20),
-(104,'2024-01-01 00:00:00','<p>Yamaha Grande 125 Hybrid - xe tay ga cao cap danh cho phai dep voi cong nghe hybrid SmartPower, thiet ke sang trong va nhieu tinh nang tien ich.</p>','2024-01-01 00:00:00','Yamaha Grande 125 Hybrid',49900000,49900000,'YAMAHA-GRANDE-125',1,0,1,32,NULL,'new',2024,0,'Yamaha','Xe tay ga',0,'4 thi, 4 van, SOHC, BluCore, 1 xi-lanh',125,'7.3 kW / 8000 vong/phut','10.6 Nm / 6000 vong/phut','Tay ga (CVT)','Phun xang dien tu',5.5,'1.76 lit/100km','1840 x 680 x 1145 mm',112,761,127,'3 nam hoac 30000 km','Yamaha Viet Nam',1,36,20),
-(105,'2024-01-01 00:00:00','<p>Suzuki Raider R150 Fi - mau xe con tay the thao manh me voi dong co phun xang Fi, phong cach ham ho va hieu suat vuot troi phan khuc 150cc.</p>','2024-01-01 00:00:00','Suzuki Raider R150 Fi',46990000,46990000,'SUZUKI-RAIDER-R150',1,0,1,33,NULL,'new',2024,0,'Suzuki','Xe con tay',0,'4 thi, DOHC, 4 van, lam mat bang dau, 1 xi-lanh',150,'11.3 kW / 10000 vong/phut','13.8 Nm / 8000 vong/phut','6 so','Phun xang dien tu Fi',4.8,'2.1 lit/100km','1985 x 700 x 1060 mm',126,795,170,'2 nam hoac 20000 km','Suzuki Viet Nam',1,36,20),
-(106,'2024-01-01 00:00:00','<p>VinFast Evo 200 - xe may dien thong minh voi pham vi hoat dong len den 200km/lan sac, ket noi dien thoai thong minh va thiet ke hien dai.</p>','2024-01-01 00:00:00','VinFast Evo 200',29990000,29990000,'VINFAST-EVO-200',1,0,1,34,NULL,'new',2024,0,'VinFast','Xe dien',1,'Dong co dien 3 pha khong choi than',NULL,'4.0 kW (dinh 6.0 kW)',NULL,'Tay ga (1 cap)','Dien (pin Lithium)',NULL,'1.9 kWh/100km','1840 x 700 x 1100 mm',108,755,140,'3 nam hoac 30000 km','VinFast Viet Nam',1,36,20),
-(107,'2024-01-01 00:00:00','<p>Honda Wave RSX 110 - xe so the thao voi thiet ke tre trung, dong co 4 thi tiet kiem nhien lieu, phu hop hoc sinh sinh vien.</p>','2024-01-01 00:00:00','Honda Wave RSX 110',30490000,30490000,'HONDA-WAVE-RSX-110',1,0,1,31,NULL,'new',2024,0,'Honda','Xe so',1,'4 thi, SOHC, 2 van',110,'5.5 kW / 7500 rpm','8.05 Nm / 5500 rpm','4 so','Phun xang dien tu PGM-FI',3.7,'1.66 lit/100km','1897 x 696 x 1069 mm',101,771,149,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(108,'2024-01-01 00:00:00','<p>Honda Future 125 FI - xe so quoc dan voi thiet ke don gian, tiet kiem nhien lieu va do ben cao, lua chon cua hang trieu nguoi Viet.</p>','2024-01-01 00:00:00','Honda Future 125 FI',30290000,30290000,'HONDA-FUTURE-125-FI',1,0,1,31,NULL,'new',2024,0,'Honda','Xe so',0,'4 thi, SOHC, 2 van',125,'6.7 kW / 7500 rpm','10.0 Nm / 6000 rpm','4 so','Phun xang dien tu PGM-FI',4.0,'1.58 lit/100km','1924 x 699 x 1076 mm',107,778,148,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(109,'2024-01-01 00:00:00','<p>Honda Super Cub C125 - huyen thoai 60 nam tuoi voi thiet ke co dien dac biet, dong co 125cc hien dai va kha nang tiet kiem nhien lieu tuyet voi.</p>','2024-01-01 00:00:00','Honda Super Cub C125',68000000,68000000,'HONDA-SUPER-CUB-C125',1,0,1,31,NULL,'new',2024,0,'Honda','Xe so',1,'4 thi, SOHC, 2 van, lam mat bang khong khi',125,'6.9 kW / 7500 rpm','10.3 Nm / 5500 rpm','4 so tu dong','Phun xang dien tu PGM-FI',3.7,'1.82 lit/100km','1869 x 760 x 1000 mm',102,779,135,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(110,'2024-01-01 00:00:00','<p>Honda Blade 125 - xe so tre trung voi thiet ke sporty an tuong, dong co 125cc manh me va tiet kiem nhien lieu voi he thong phun xang PGM-FI.</p>','2024-01-01 00:00:00','Honda Blade 125',23990000,23990000,'HONDA-BLADE-125',1,0,1,31,NULL,'new',2024,0,'Honda','Xe so',0,'4 thi, SOHC, 2 van',125,'7.0 kW / 7500 rpm','10.12 Nm / 5500 rpm','4 so','Phun xang dien tu PGM-FI',3.7,'1.73 lit/100km','1918 x 692 x 1067 mm',103,770,145,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(111,'2024-01-01 00:00:00','<p>Honda Vision - xe tay ga quoc dan voi thiet ke thanh lich, suc chua hang hoa lon va tiet kiem nhien lieu xuat sac, phu hop cho nguoi di hang ngay.</p>','2024-01-01 00:00:00','Honda Vision 110',32990000,32990000,'HONDA-VISION-110',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',1,'4 thi, SOHC, 2 van, lam mat bang khong khi',110,'6.0 kW / 8000 rpm','8.68 Nm / 5500 rpm','Tay ga (CVT)','Phun xang dien tu PGM-FI',5.0,'1.76 lit/100km','1824 x 683 x 1088 mm',104,761,130,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(112,'2024-01-01 00:00:00','<p>Honda Vario 125 - xe tay ga the thao voi thiet ke khoe khoan, dong co eSP 125cc tiet kiem nhien lieu va nhieu tinh nang hien dai.</p>','2024-01-01 00:00:00','Honda Vario 125',39990000,39990000,'HONDA-VARIO-125',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',0,'4 thi, SOHC, 2 van, eSP',125,'8.3 kW / 8500 rpm','10.9 Nm / 5000 rpm','Tay ga (CVT)','Phun xang dien tu PGM-FI',5.5,'1.76 lit/100km','1939 x 694 x 1133 mm',116,789,140,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(113,'2024-01-01 00:00:00','<p>Honda Vario 160 - xe tay ga phan khuc cao voi dong co 160cc manh me, thiet ke sang trong va nhieu tinh nang cong nghe tien tien.</p>','2024-01-01 00:00:00','Honda Vario 160',50490000,50490000,'HONDA-VARIO-160',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',1,'4 thi, SOHC, 2 van, eSP+',160,'12.3 kW / 8500 rpm','14.7 Nm / 6500 rpm','Tay ga (CVT)','Phun xang dien tu PGM-FI',5.5,'1.98 lit/100km','1936 x 694 x 1133 mm',125,790,143,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(114,'2024-01-01 00:00:00','<p>Honda SH Mode 125 - xe tay ga cao cap phan khuc trung voi thiet ke thanh lich, trang bi day du tinh nang va cong nghe hien dai.</p>','2024-01-01 00:00:00','Honda SH Mode 125',56990000,56990000,'HONDA-SH-MODE-125',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',0,'4 thi, SOHC, 2 van, eSP',125,'8.7 kW / 8500 rpm','11.2 Nm / 5000 rpm','Tay ga (CVT)','Phun xang dien tu PGM-FI',5.7,'1.74 lit/100km','1924 x 696 x 1153 mm',129,768,155,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(115,'2024-01-01 00:00:00','<p>Honda SH 160i - bieu tuong xe tay ga cao cap Viet Nam voi dong co 160cc, thiet ke sang trong dang cap va nhieu trang bi tien nghi hang dau.</p>','2024-01-01 00:00:00','Honda SH 160i',77990000,77990000,'HONDA-SH-160I',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',0,'4 thi, SOHC, 2 van, eSP+',160,'12.3 kW / 8500 rpm','14.7 Nm / 6500 rpm','Tay ga (CVT)','Phun xang dien tu PGM-FI',8.0,'2.1 lit/100km','1940 x 698 x 1148 mm',140,790,150,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(116,'2024-01-01 00:00:00','<p>Honda ADV350 - adventure scooter cao cap voi dong co 350cc, thiet ke kham pha duong truong, trang bi he thong ABS va nhieu cong nghe tien tien.</p>','2024-01-01 00:00:00','Honda ADV 350',120000000,120000000,'HONDA-ADV-350',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',1,'4 thi, SOHC, 4 van, lam mat bang nuoc',350,'25.8 kW / 7500 rpm','32 Nm / 5250 rpm','Tay ga (CVT)','Phun xang dien tu PGM-FI',11.0,'3.3 lit/100km','2175 x 815 x 1320 mm',212,805,165,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(117,'2024-01-01 00:00:00','<p>Honda Winner X - xe con tay the thao voi dong co 150cc manh me, thiet ke hung han va he thong phun xang Fi cho hieu suat van hanh vuot troi.</p>','2024-01-01 00:00:00','Honda Winner X',45690000,45690000,'HONDA-WINNER-X',1,0,1,33,NULL,'new',2024,0,'Honda','Xe con tay',1,'4 thi, DOHC, 4 van, lam mat bang nuoc',150,'12.0 kW / 10000 rpm','13.8 Nm / 8000 rpm','6 so','Phun xang dien tu PGM-FI',4.8,'2.1 lit/100km','2007 x 698 x 1077 mm',123,795,175,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(118,'2024-01-01 00:00:00','<p>Honda CBR150R - sportbike thuan thuy voi thiet ke khi dong nhu CBR1000RR, dong co 150cc DOHC 4 van suc manh an tuong trong phan khuc 150cc.</p>','2024-01-01 00:00:00','Honda CBR150R',89000000,89000000,'HONDA-CBR150R',1,0,1,33,NULL,'new',2024,0,'Honda','Xe con tay',1,'4 thi, DOHC, 4 van, lam mat bang nuoc',150,'12.5 kW / 10000 rpm','13.8 Nm / 8500 rpm','6 so','Phun xang dien tu PGM-FI',11.0,'2.8 lit/100km','2012 x 726 x 1064 mm',136,795,170,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(119,'2024-01-01 00:00:00','<p>Honda CB350 - neo-classic phong cach retro voi dong co 350cc 2 xi-lanh, thiet ke co dien sang trong ket hop cong nghe hien dai.</p>','2024-01-01 00:00:00','Honda CB350 H-ness',150000000,150000000,'HONDA-CB350-HNESS',1,0,1,33,NULL,'new',2024,0,'Honda','Xe con tay',1,'4 thi, OHC, 2 xi-lanh song song',350,'21.0 kW / 5500 rpm','29.0 Nm / 3000 rpm','5 so','Phun xang dien tu PGM-FI',15.0,'3.5 lit/100km','2117 x 800 x 1107 mm',181,800,166,'3 nam hoac 30000 km','Honda Viet Nam',1,36,20),
-(120,'2024-01-01 00:00:00','<p>Honda CUV e - xe may dien cao cap voi thiet ke hien dai, pin Li-ion dung luong lon, ket noi smartphone va nhieu tinh nang thong minh hang dau.</p>','2024-01-01 00:00:00','Honda CUV e',50000000,50000000,'HONDA-CUV-E',1,0,1,34,NULL,'new',2024,0,'Honda','Xe dien',1,'Dong co dien Hub-motor',NULL,'1.4 kW (dinh 4 kW)',NULL,'Tay ga (1 cap)','Dien (pin Li-ion)',NULL,'2.2 kWh/100km','1875 x 720 x 1082 mm',108,745,152,'3 nam hoac 30000 km','Honda Viet Nam',1,0,0),
-(121,'2024-01-01 00:00:00','<p>Yamaha Jupiter FI - xe so quen thuoc voi nguoi Viet voi thiet ke gon gang, dong co 113cc BluCore tiet kiem nhien lieu hang dau phan khuc.</p>','2024-01-01 00:00:00','Yamaha Jupiter FI',18400000,18400000,'YAMAHA-JUPITER-FI',1,0,1,31,NULL,'new',2024,0,'Yamaha','Xe so',0,'4 thi, SOHC, 2 van, BluCore',113,'6.0 kW / 8000 rpm','8.7 Nm / 6000 rpm','4 so','Phun xang dien tu',4.2,'1.47 lit/100km','1880 x 695 x 1060 mm',99,763,141,'3 nam hoac 30000 km','Yamaha Viet Nam',1,36,20),
-(122,'2024-01-01 00:00:00','<p>Yamaha Jupiter Finn - phien ban nang cap cua Jupiter voi dong co BluCore the he moi, thiet ke sang trong va tinh nang bao ve tu dong tien tien.</p>','2024-01-01 00:00:00','Yamaha Jupiter Finn',20490000,20490000,'YAMAHA-JUPITER-FINN',1,0,1,31,NULL,'new',2024,0,'Yamaha','Xe so',1,'4 thi, SOHC, 2 van, BluCore',113,'6.0 kW / 8000 rpm','8.7 Nm / 6000 rpm','4 so tu dong','Phun xang dien tu',4.2,'1.47 lit/100km','1880 x 695 x 1060 mm',100,763,141,'3 nam hoac 30000 km','Yamaha Viet Nam',1,36,20),
-(123,'2024-01-01 00:00:00','<p>Yamaha NVX 155 VVA - xe tay ga the thao voi thiet ke hieu suat cao, dong co 155cc VVA cho cam giac van hanh manh me va tiet kiem nhien lieu.</p>','2024-01-01 00:00:00','Yamaha NVX 155 VVA',53900000,53900000,'YAMAHA-NVX-155-VVA',1,0,1,32,NULL,'new',2024,0,'Yamaha','Xe tay ga',0,'4 thi, SOHC, 4 van, VVA',155,'11.4 kW / 8000 rpm','14.0 Nm / 6000 rpm','Tay ga (CVT)','Phun xang dien tu',5.4,'2.0 lit/100km','1940 x 680 x 1140 mm',127,790,150,'3 nam hoac 30000 km','Yamaha Viet Nam',1,36,20),
-(124,'2024-01-01 00:00:00','<p>Yamaha Janus 125 - xe tay ga pho thong voi thiet ke thanh lich, dong co 125cc tiet kiem nhien lieu va khoang chua do lon tien loi.</p>','2024-01-01 00:00:00','Yamaha Janus 125',30490000,30490000,'YAMAHA-JANUS-125',1,0,1,32,NULL,'new',2024,0,'Yamaha','Xe tay ga',0,'4 thi, SOHC, 4 van, BluCore',125,'7.0 kW / 8000 rpm','10.0 Nm / 6000 rpm','Tay ga (CVT)','Phun xang dien tu',4.9,'1.85 lit/100km','1812 x 668 x 1120 mm',98,760,135,'3 nam hoac 30000 km','Yamaha Viet Nam',1,36,20),
-(125,'2024-01-01 00:00:00','<p>Yamaha Freego 125 - xe tay ga thong minh voi he thong Y-Connect ket noi smartphone, thiet ke tre trung an tuong va tinh nang Smart Key hien dai.</p>','2024-01-01 00:00:00','Yamaha Freego 125',31490000,31490000,'YAMAHA-FREEGO-125',1,0,1,32,NULL,'new',2024,0,'Yamaha','Xe tay ga',1,'4 thi, SOHC, 4 van, BluCore',125,'7.3 kW / 8000 rpm','10.6 Nm / 6000 rpm','Tay ga (CVT)','Phun xang dien tu',5.0,'1.85 lit/100km','1836 x 704 x 1149 mm',104,760,145,'3 nam hoac 30000 km','Yamaha Viet Nam',1,36,20),
-(126,'2024-01-01 00:00:00','<p>Yamaha Latte 125 - xe tay ga danh cho nu voi thiet ke nhe nhang uyen chuyen, mam xa phong thap giu xe de dang va nhieu tinh nang thong minh.</p>','2024-01-01 00:00:00','Yamaha Latte 125',39490000,39490000,'YAMAHA-LATTE-125',1,0,1,32,NULL,'new',2024,0,'Yamaha','Xe tay ga',1,'4 thi, SOHC, 4 van, BluCore',125,'7.0 kW / 8000 rpm','10.0 Nm / 6000 rpm','Tay ga (CVT)','Phun xang dien tu',4.0,'1.85 lit/100km','1765 x 680 x 1090 mm',97,720,130,'3 nam hoac 30000 km','Yamaha Viet Nam',1,36,20),
-(127,'2024-01-01 00:00:00','<p>Yamaha MT-15 - naked bike the thao voi thiet ke MT-DNA hung han, dong co 155cc VVA manh me va he thong traction control cho cam giac lai dinh cao.</p>','2024-01-01 00:00:00','Yamaha MT-15',71900000,71900000,'YAMAHA-MT15',1,0,1,33,NULL,'new',2024,0,'Yamaha','Xe con tay',1,'4 thi, SOHC, 4 van, VVA, lam mat bang nuoc',155,'13.6 kW / 10000 rpm','14.1 Nm / 7500 rpm','6 so','Phun xang dien tu',10.0,'2.8 lit/100km','1930 x 800 x 1055 mm',139,810,160,'3 nam hoac 30000 km','Yamaha Viet Nam',1,36,20),
-(128,'2024-01-01 00:00:00','<p>Yamaha MT-03 - naked bike 2 xi-lanh manh me voi dong co 321cc, thiet ke MT-DNA du ngoai an tuong va the tao van hanh the thao dinh cao.</p>','2024-01-01 00:00:00','Yamaha MT-03',115000000,115000000,'YAMAHA-MT03',1,0,1,33,NULL,'new',2024,0,'Yamaha','Xe con tay',1,'4 thi, DOHC, 4 van, 2 xi-lanh song song, lam mat bang nuoc',321,'31.0 kW / 10750 rpm','29.5 Nm / 9000 rpm','6 so','Phun xang dien tu',14.0,'3.8 lit/100km','2005 x 740 x 1050 mm',168,780,145,'3 nam hoac 30000 km','Yamaha Viet Nam',1,36,20),
-(129,'2024-01-01 00:00:00','<p>Yamaha XSR155 - neo-retro sport voi thiet ke co dien ket hop hieu suat hien dai, dong co 155cc VVA va khung kim cuong chac chan cho trai nghiem lai thu vi.</p>','2024-01-01 00:00:00','Yamaha XSR155',79900000,79900000,'YAMAHA-XSR155',1,0,1,33,NULL,'new',2024,0,'Yamaha','Xe con tay',1,'4 thi, SOHC, 4 van, VVA, lam mat bang nuoc',155,'13.6 kW / 10000 rpm','14.4 Nm / 8000 rpm','6 so','Phun xang dien tu',10.0,'2.8 lit/100km','2000 x 800 x 1060 mm',134,810,160,'3 nam hoac 30000 km','Yamaha Viet Nam',1,36,20),
-(130,'2024-01-01 00:00:00','<p>Yamaha YZF-R15M - fullsport thua huong DNA MotoGP, trang bi VVA, TCS va quickshifter, the hien tinh than chien binh dua trong phan khuc 150cc.</p>','2024-01-01 00:00:00','Yamaha YZF-R15M',90000000,90000000,'YAMAHA-R15M',1,0,1,33,NULL,'new',2024,0,'Yamaha','Xe con tay',1,'4 thi, SOHC, 4 van, VVA, lam mat bang nuoc',155,'13.6 kW / 10000 rpm','14.2 Nm / 8500 rpm','6 so','Phun xang dien tu',11.0,'2.9 lit/100km','1990 x 720 x 1060 mm',142,815,170,'3 nam hoac 30000 km','Yamaha Viet Nam',1,36,20),
-(131,'2024-01-01 00:00:00','<p>SYM Angela 50 - xe tay ga pho thong danh cho nu voi thiet ke nhe nhang, gon gang, de di trong noi thanh, dong co 50cc on dinh va tiet kiem.</p>','2024-01-01 00:00:00','SYM Angela 50',11990000,11990000,'SYM-ANGELA-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thi, 1 xi-lanh, lam mat bang khong khi',50,'2.2 kW / 7500 rpm','3.5 Nm / 6000 rpm','Tay ga (CVT)','Che hoa khi',3.5,'1.4 lit/100km','1700 x 660 x 1055 mm',77,720,120,'1 nam hoac 10000 km','SYM Viet Nam',0,0,0),
-(132,'2024-01-01 00:00:00','<p>SYM Attila 50 - xe tay ga co dien voi thiet ke sang trong duoc yeu thich tu nhieu the he, dong co on dinh, de bao tri va phu hop su dung hang ngay.</p>','2024-01-01 00:00:00','SYM Attila 50',12490000,12490000,'SYM-ATTILA-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thi, 1 xi-lanh, lam mat bang khong khi',50,'2.2 kW / 7500 rpm','3.5 Nm / 6000 rpm','Tay ga (CVT)','Che hoa khi',3.5,'1.4 lit/100km','1700 x 660 x 1055 mm',78,720,120,'1 nam hoac 10000 km','SYM Viet Nam',0,0,0),
-(133,'2024-01-01 00:00:00','<p>SYM Elegant 50 - xe tay ga 50cc phan khuc binh dan voi thiet ke don gian, gon nhe, de bao tri va gia ca phai chang, lua chon tot cho hoc sinh.</p>','2024-01-01 00:00:00','SYM Elegant 50',10490000,10490000,'SYM-ELEGANT-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thi, 1 xi-lanh, lam mat bang khong khi',50,'2.0 kW / 7000 rpm','3.2 Nm / 5500 rpm','Tay ga (CVT)','Che hoa khi',3.5,'1.4 lit/100km','1690 x 640 x 1040 mm',74,715,120,'1 nam hoac 10000 km','SYM Viet Nam',0,0,0),
-(134,'2024-01-01 00:00:00','<p>SYM Elite 50 - xe tay ga 50cc the he moi voi thiet ke hien dai, dong co on dinh va nhieu mau sac de lua chon, trang bi hop so CVT tien loi.</p>','2024-01-01 00:00:00','SYM Elite 50',11490000,11490000,'SYM-ELITE-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thi, 1 xi-lanh, lam mat bang khong khi',50,'2.2 kW / 7500 rpm','3.5 Nm / 6000 rpm','Tay ga (CVT)','Che hoa khi',3.5,'1.4 lit/100km','1700 x 655 x 1050 mm',76,718,120,'1 nam hoac 10000 km','SYM Viet Nam',0,0,0),
-(135,'2024-01-01 00:00:00','<p>SYM Galaxy 50 - xe tay ga 50cc voi thiet ke tre trung nang dong, chat luong tay ga SYM voi gia ca hop ly phu hop cho hoc sinh sinh vien.</p>','2024-01-01 00:00:00','SYM Galaxy 50',12990000,12990000,'SYM-GALAXY-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thi, 1 xi-lanh, lam mat bang khong khi',50,'2.2 kW / 7500 rpm','3.5 Nm / 6000 rpm','Tay ga (CVT)','Che hoa khi',3.5,'1.4 lit/100km','1710 x 665 x 1060 mm',78,722,122,'1 nam hoac 10000 km','SYM Viet Nam',0,0,0),
-(136,'2024-01-01 00:00:00','<p>SYM Husky Classic 125 - xe so phong cach co dien doc dao trong phan khuc 125cc, dong co tiet kiem nhien lieu va thiet ke retro an tuong.</p>','2024-01-01 00:00:00','SYM Husky Classic 125',35000000,35000000,'SYM-HUSKY-CLASSIC-125',1,0,1,31,NULL,'new',2024,0,'SYM','Xe so',1,'4 thi, 1 xi-lanh, lam mat bang khong khi',125,'6.0 kW / 7000 rpm','9.0 Nm / 5500 rpm','5 so','Phun xang dien tu',12.0,'2.0 lit/100km','2030 x 770 x 1080 mm',128,780,150,'2 nam hoac 20000 km','SYM Viet Nam',1,36,20),
-(137,'2024-01-01 00:00:00','<p>SYM Passing 50 - xe tay ga 50cc pho thong voi gia ca re nhat phan khuc, de bao tri va on dinh, lua chon kinh te cho nguoi di lam hang ngay.</p>','2024-01-01 00:00:00','SYM Passing 50',10990000,10990000,'SYM-PASSING-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thi, 1 xi-lanh, lam mat bang khong khi',50,'2.0 kW / 7000 rpm','3.2 Nm / 5500 rpm','Tay ga (CVT)','Che hoa khi',3.5,'1.4 lit/100km','1680 x 640 x 1040 mm',73,713,118,'1 nam hoac 10000 km','SYM Viet Nam',0,0,0),
-(138,'2024-01-01 00:00:00','<p>SYM Shark 50 - xe tay ga 50cc voi thiet ke the thao an tuong, dong co on dinh va ty le gia tri tot nhat trong dong san pham SYM 50cc.</p>','2024-01-01 00:00:00','SYM Shark 50',12490000,12490000,'SYM-SHARK-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thi, 1 xi-lanh, lam mat bang khong khi',50,'2.2 kW / 7500 rpm','3.5 Nm / 6000 rpm','Tay ga (CVT)','Che hoa khi',3.5,'1.4 lit/100km','1720 x 660 x 1060 mm',79,720,122,'1 nam hoac 10000 km','SYM Viet Nam',0,0,0);
+(101,'2024-01-01 00:00:00','<p>Honda Wave Alpha 110 - mẫu xe số phổ thông bán chạy nhất Việt Nam với thiết kế gọn gàng, tiết kiệm nhiên liệu xuất sắc và độ bền cao.</p>','2024-01-01 00:00:00','Honda Wave Alpha 110',18990000,18990000,'HONDA-WAVE-ALPHA-110',1,0,1,31,NULL,'new',2024,0,'Honda','Xe số',1,'4 thì, SOHC, 2 van, 1 xi-lanh',110,'6.0 kW / 7500 vòng/phút','8.68 Nm / 5500 vòng/phút','4 số','Bộ chế hòa khí',4.0,'1.63 lít/100km','1896 x 694 x 1061 mm',99,761,145,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(102,'2024-01-01 00:00:00','<p>Honda Air Blade 125 - xe tay ga thể thao với thiết kế mạnh mẽ, động cơ eSP tiên tiến cho hiệu suất vượt trội và tiết kiệm nhiên liệu tối ưu.</p>','2024-01-01 00:00:00','Honda Air Blade 125',52900000,52900000,'HONDA-AIR-BLADE-125',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',1,'4 thì, eSP, SOHC, 2 van, 1 xi-lanh',125,'9.2 kW / 8500 vòng/phút','12.0 Nm / 5000 vòng/phút','Tay ga (CVT)','Phun xăng điện tử PGM-FI',5.3,'1.79 lít/100km','1916 x 681 x 1132 mm',118,790,138,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(103,'2024-01-01 00:00:00','<p>Yamaha Exciter 155 VVA - biểu tượng của dòng xe côn tay thể thao với công nghệ VVA, mang lại cảm giác lái phấn khích và mạnh mẽ.</p>','2024-01-01 00:00:00','Yamaha Exciter 155 VVA',52900000,52900000,'YAMAHA-EXCITER-155-VVA',1,0,1,33,NULL,'new',2024,0,'Yamaha','Xe côn tay',1,'4 thì, 4 van, SOHC, VVA, 1 xi-lanh',155,'13.2 kW / 9500 vòng/phút','14.4 Nm / 8000 vòng/phút','6 số','Phun xăng điện tử',5.4,'1.91 lít/100km','1975 x 665 x 1105 mm',119,795,150,'3 năm hoặc 30000 km','Yamaha Việt Nam',1,36,20),
+(104,'2024-01-01 00:00:00','<p>Yamaha Grande 125 Hybrid - xe tay ga cao cấp dành cho phái đẹp với công nghệ hybrid SmartPower, thiết kế sang trọng và nhiều tính năng tiện ích.</p>','2024-01-01 00:00:00','Yamaha Grande 125 Hybrid',49900000,49900000,'YAMAHA-GRANDE-125',1,0,1,32,NULL,'new',2024,0,'Yamaha','Xe tay ga',0,'4 thì, 4 van, SOHC, BluCore, 1 xi-lanh',125,'7.3 kW / 8000 vòng/phút','10.6 Nm / 6000 vòng/phút','Tay ga (CVT)','Phun xăng điện tử',5.5,'1.76 lít/100km','1840 x 680 x 1145 mm',112,761,127,'3 năm hoặc 30000 km','Yamaha Việt Nam',1,36,20),
+(105,'2024-01-01 00:00:00','<p>Suzuki Raider R150 Fi - mẫu xe côn tay thể thao mạnh mẽ với động cơ phun xăng Fi, phong cách hầm hố và hiệu suất vượt trội phân khúc 150cc.</p>','2024-01-01 00:00:00','Suzuki Raider R150 Fi',46990000,46990000,'SUZUKI-RAIDER-R150',1,0,1,33,NULL,'new',2024,0,'Suzuki','Xe côn tay',0,'4 thì, DOHC, 4 van, làm mát bằng dầu, 1 xi-lanh',150,'11.3 kW / 10000 vòng/phút','13.8 Nm / 8000 vòng/phút','6 số','Phun xăng điện tử Fi',4.8,'2.1 lít/100km','1985 x 700 x 1060 mm',126,795,170,'2 năm hoặc 20000 km','Suzuki Việt Nam',1,36,20),
+(106,'2024-01-01 00:00:00','<p>VinFast Evo 200 - xe máy điện thông minh với phạm vi hoạt động lên đến 200km/lần sạc, kết nối điện thoại thông minh và thiết kế hiện đại.</p>','2024-01-01 00:00:00','VinFast Evo 200',29990000,29990000,'VINFAST-EVO-200',1,0,1,34,NULL,'new',2024,0,'VinFast','Xe điện',1,'Động cơ điện 3 pha không chổi than',NULL,'4.0 kW (đỉnh 6.0 kW)',NULL,'Tay ga (1 cấp)','Điện (pin Lithium)',NULL,'1.9 kWh/100km','1840 x 700 x 1100 mm',108,755,140,'3 năm hoặc 30000 km','VinFast Việt Nam',1,36,20),
+(107,'2024-01-01 00:00:00','<p>Honda Wave RSX 110 - xe số thể thao với thiết kế trẻ trung, động cơ 4 thì tiết kiệm nhiên liệu, phù hợp học sinh sinh viên.</p>','2024-01-01 00:00:00','Honda Wave RSX 110',30490000,30490000,'HONDA-WAVE-RSX-110',1,0,1,31,NULL,'new',2024,0,'Honda','Xe số',1,'4 thì, SOHC, 2 van',110,'5.5 kW / 7500 rpm','8.05 Nm / 5500 rpm','4 số','Phun xăng điện tử PGM-FI',3.7,'1.66 lít/100km','1897 x 696 x 1069 mm',101,771,149,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(108,'2024-01-01 00:00:00','<p>Honda Future 125 FI - xe số quốc dân với thiết kế đơn giản, tiết kiệm nhiên liệu và độ bền cao, lựa chọn của hàng triệu người Việt.</p>','2024-01-01 00:00:00','Honda Future 125 FI',30290000,30290000,'HONDA-FUTURE-125-FI',1,0,1,31,NULL,'new',2024,0,'Honda','Xe số',0,'4 thì, SOHC, 2 van',125,'6.7 kW / 7500 rpm','10.0 Nm / 6000 rpm','4 số','Phun xăng điện tử PGM-FI',4.0,'1.58 lít/100km','1924 x 699 x 1076 mm',107,778,148,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(109,'2024-01-01 00:00:00','<p>Honda Super Cub C125 - huyền thoại 60 năm tuổi với thiết kế cổ điển đặc biệt, động cơ 125cc hiện đại và khả năng tiết kiệm nhiên liệu tuyệt vời.</p>','2024-01-01 00:00:00','Honda Super Cub C125',68000000,68000000,'HONDA-SUPER-CUB-C125',1,0,1,31,NULL,'new',2024,0,'Honda','Xe số',1,'4 thì, SOHC, 2 van, làm mát bằng không khí',125,'6.9 kW / 7500 rpm','10.3 Nm / 5500 rpm','4 số tự động','Phun xăng điện tử PGM-FI',3.7,'1.82 lít/100km','1869 x 760 x 1000 mm',102,779,135,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(110,'2024-01-01 00:00:00','<p>Honda Blade 125 - xe số trẻ trung với thiết kế sporty ấn tượng, động cơ 125cc mạnh mẽ và tiết kiệm nhiên liệu với hệ thống phun xăng PGM-FI.</p>','2024-01-01 00:00:00','Honda Blade 125',23990000,23990000,'HONDA-BLADE-125',1,0,1,31,NULL,'new',2024,0,'Honda','Xe số',0,'4 thì, SOHC, 2 van',125,'7.0 kW / 7500 rpm','10.12 Nm / 5500 rpm','4 số','Phun xăng điện tử PGM-FI',3.7,'1.73 lít/100km','1918 x 692 x 1067 mm',103,770,145,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(111,'2024-01-01 00:00:00','<p>Honda Vision - xe tay ga quốc dân với thiết kế thanh lịch, sức chứa hàng hóa lớn và tiết kiệm nhiên liệu xuất sắc, phù hợp cho người đi hàng ngày.</p>','2024-01-01 00:00:00','Honda Vision 110',32990000,32990000,'HONDA-VISION-110',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',1,'4 thì, SOHC, 2 van, làm mát bằng không khí',110,'6.0 kW / 8000 rpm','8.68 Nm / 5500 rpm','Tay ga (CVT)','Phun xăng điện tử PGM-FI',5.0,'1.76 lít/100km','1824 x 683 x 1088 mm',104,761,130,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(112,'2024-01-01 00:00:00','<p>Honda Vario 125 - xe tay ga thể thao với thiết kế khỏe khoắn, động cơ eSP 125cc tiết kiệm nhiên liệu và nhiều tính năng hiện đại.</p>','2024-01-01 00:00:00','Honda Vario 125',39990000,39990000,'HONDA-VARIO-125',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',0,'4 thì, SOHC, 2 van, eSP',125,'8.3 kW / 8500 rpm','10.9 Nm / 5000 rpm','Tay ga (CVT)','Phun xăng điện tử PGM-FI',5.5,'1.76 lít/100km','1939 x 694 x 1133 mm',116,789,140,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(113,'2024-01-01 00:00:00','<p>Honda Vario 160 - xe tay ga phân khúc cao với động cơ 160cc mạnh mẽ, thiết kế sang trọng và nhiều tính năng công nghệ tiên tiến.</p>','2024-01-01 00:00:00','Honda Vario 160',50490000,50490000,'HONDA-VARIO-160',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',1,'4 thì, SOHC, 2 van, eSP+',160,'12.3 kW / 8500 rpm','14.7 Nm / 6500 rpm','Tay ga (CVT)','Phun xăng điện tử PGM-FI',5.5,'1.98 lít/100km','1936 x 694 x 1133 mm',125,790,143,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(114,'2024-01-01 00:00:00','<p>Honda SH Mode 125 - xe tay ga cao cấp phân khúc trung với thiết kế thanh lịch, trang bị đầy đủ tính năng và công nghệ hiện đại.</p>','2024-01-01 00:00:00','Honda SH Mode 125',56990000,56990000,'HONDA-SH-MODE-125',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',0,'4 thì, SOHC, 2 van, eSP',125,'8.7 kW / 8500 rpm','11.2 Nm / 5000 rpm','Tay ga (CVT)','Phun xăng điện tử PGM-FI',5.7,'1.74 lít/100km','1924 x 696 x 1153 mm',129,768,155,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(115,'2024-01-01 00:00:00','<p>Honda SH 160i - biểu tượng xe tay ga cao cấp Việt Nam với động cơ 160cc, thiết kế sang trọng đẳng cấp và nhiều trang bị tiện nghi hàng đầu.</p>','2024-01-01 00:00:00','Honda SH 160i',77990000,77990000,'HONDA-SH-160I',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',0,'4 thì, SOHC, 2 van, eSP+',160,'12.3 kW / 8500 rpm','14.7 Nm / 6500 rpm','Tay ga (CVT)','Phun xăng điện tử PGM-FI',8.0,'2.1 lít/100km','1940 x 698 x 1148 mm',140,790,150,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(116,'2024-01-01 00:00:00','<p>Honda ADV350 - adventure scooter cao cấp với động cơ 350cc, thiết kế khám phá đường trường, trang bị hệ thống ABS và nhiều công nghệ tiên tiến.</p>','2024-01-01 00:00:00','Honda ADV 350',120000000,120000000,'HONDA-ADV-350',1,0,1,32,NULL,'new',2024,0,'Honda','Xe tay ga',1,'4 thì, SOHC, 4 van, làm mát bằng nước',350,'25.8 kW / 7500 rpm','32 Nm / 5250 rpm','Tay ga (CVT)','Phun xăng điện tử PGM-FI',11.0,'3.3 lít/100km','2175 x 815 x 1320 mm',212,805,165,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(117,'2024-01-01 00:00:00','<p>Honda Winner X - xe côn tay thể thao với động cơ 150cc mạnh mẽ, thiết kế hung hãn và hệ thống phun xăng Fi cho hiệu suất vận hành vượt trội.</p>','2024-01-01 00:00:00','Honda Winner X',45690000,45690000,'HONDA-WINNER-X',1,0,1,33,NULL,'new',2024,0,'Honda','Xe côn tay',1,'4 thì, DOHC, 4 van, làm mát bằng nước',150,'12.0 kW / 10000 rpm','13.8 Nm / 8000 rpm','6 số','Phun xăng điện tử PGM-FI',4.8,'2.1 lít/100km','2007 x 698 x 1077 mm',123,795,175,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(118,'2024-01-01 00:00:00','<p>Honda CBR150R - sportbike thuần túy với thiết kế khí động như CBR1000RR, động cơ 150cc DOHC 4 van sức mạnh ấn tượng trong phân khúc 150cc.</p>','2024-01-01 00:00:00','Honda CBR150R',89000000,89000000,'HONDA-CBR150R',1,0,1,33,NULL,'new',2024,0,'Honda','Xe côn tay',1,'4 thì, DOHC, 4 van, làm mát bằng nước',150,'12.5 kW / 10000 rpm','13.8 Nm / 8500 rpm','6 số','Phun xăng điện tử PGM-FI',11.0,'2.8 lít/100km','2012 x 726 x 1064 mm',136,795,170,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(119,'2024-01-01 00:00:00','<p>Honda CB350 - neo-classic phong cách retro với động cơ 350cc 2 xi-lanh, thiết kế cổ điển sang trọng kết hợp công nghệ hiện đại.</p>','2024-01-01 00:00:00','Honda CB350 H-ness',150000000,150000000,'HONDA-CB350-HNESS',1,0,1,33,NULL,'new',2024,0,'Honda','Xe côn tay',1,'4 thì, OHC, 2 xi-lanh song song',350,'21.0 kW / 5500 rpm','29.0 Nm / 3000 rpm','5 số','Phun xăng điện tử PGM-FI',15.0,'3.5 lít/100km','2117 x 800 x 1107 mm',181,800,166,'3 năm hoặc 30000 km','Honda Việt Nam',1,36,20),
+(120,'2024-01-01 00:00:00','<p>Honda CUV e - xe máy điện cao cấp với thiết kế hiện đại, pin Li-ion dung lượng lớn, kết nối smartphone và nhiều tính năng thông minh hàng đầu.</p>','2024-01-01 00:00:00','Honda CUV e',50000000,50000000,'HONDA-CUV-E',1,0,1,34,NULL,'new',2024,0,'Honda','Xe điện',1,'Động cơ điện Hub-motor',NULL,'1.4 kW (đỉnh 4 kW)',NULL,'Tay ga (1 cấp)','Điện (pin Li-ion)',NULL,'2.2 kWh/100km','1875 x 720 x 1082 mm',108,745,152,'3 năm hoặc 30000 km','Honda Việt Nam',1,0,0),
+(121,'2024-01-01 00:00:00','<p>Yamaha Jupiter FI - xe số quen thuộc với người Việt với thiết kế gọn gàng, động cơ 113cc BluCore tiết kiệm nhiên liệu hàng đầu phân khúc.</p>','2024-01-01 00:00:00','Yamaha Jupiter FI',18400000,18400000,'YAMAHA-JUPITER-FI',1,0,1,31,NULL,'new',2024,0,'Yamaha','Xe số',0,'4 thì, SOHC, 2 van, BluCore',113,'6.0 kW / 8000 rpm','8.7 Nm / 6000 rpm','4 số','Phun xăng điện tử',4.2,'1.47 lít/100km','1880 x 695 x 1060 mm',99,763,141,'3 năm hoặc 30000 km','Yamaha Việt Nam',1,36,20),
+(122,'2024-01-01 00:00:00','<p>Yamaha Jupiter Finn - phiên bản nâng cấp của Jupiter với động cơ BluCore thế hệ mới, thiết kế sang trọng và tính năng bảo vệ tự động tiên tiến.</p>','2024-01-01 00:00:00','Yamaha Jupiter Finn',20490000,20490000,'YAMAHA-JUPITER-FINN',1,0,1,31,NULL,'new',2024,0,'Yamaha','Xe số',1,'4 thì, SOHC, 2 van, BluCore',113,'6.0 kW / 8000 rpm','8.7 Nm / 6000 rpm','4 số tự động','Phun xăng điện tử',4.2,'1.47 lít/100km','1880 x 695 x 1060 mm',100,763,141,'3 năm hoặc 30000 km','Yamaha Việt Nam',1,36,20),
+(123,'2024-01-01 00:00:00','<p>Yamaha NVX 155 VVA - xe tay ga thể thao với thiết kế hiệu suất cao, động cơ 155cc VVA cho cảm giác vận hành mạnh mẽ và tiết kiệm nhiên liệu.</p>','2024-01-01 00:00:00','Yamaha NVX 155 VVA',53900000,53900000,'YAMAHA-NVX-155-VVA',1,0,1,32,NULL,'new',2024,0,'Yamaha','Xe tay ga',0,'4 thì, SOHC, 4 van, VVA',155,'11.4 kW / 8000 rpm','14.0 Nm / 6000 rpm','Tay ga (CVT)','Phun xăng điện tử',5.4,'2.0 lít/100km','1940 x 680 x 1140 mm',127,790,150,'3 năm hoặc 30000 km','Yamaha Việt Nam',1,36,20),
+(124,'2024-01-01 00:00:00','<p>Yamaha Janus 125 - xe tay ga phổ thông với thiết kế thanh lịch, động cơ 125cc tiết kiệm nhiên liệu và khoang chứa đồ lớn tiện lợi.</p>','2024-01-01 00:00:00','Yamaha Janus 125',30490000,30490000,'YAMAHA-JANUS-125',1,0,1,32,NULL,'new',2024,0,'Yamaha','Xe tay ga',0,'4 thì, SOHC, 4 van, BluCore',125,'7.0 kW / 8000 rpm','10.0 Nm / 6000 rpm','Tay ga (CVT)','Phun xăng điện tử',4.9,'1.85 lít/100km','1812 x 668 x 1120 mm',98,760,135,'3 năm hoặc 30000 km','Yamaha Việt Nam',1,36,20),
+(125,'2024-01-01 00:00:00','<p>Yamaha Freego 125 - xe tay ga thông minh với hệ thống Y-Connect kết nối smartphone, thiết kế trẻ trung ấn tượng và tính năng Smart Key hiện đại.</p>','2024-01-01 00:00:00','Yamaha Freego 125',31490000,31490000,'YAMAHA-FREEGO-125',1,0,1,32,NULL,'new',2024,0,'Yamaha','Xe tay ga',1,'4 thì, SOHC, 4 van, BluCore',125,'7.3 kW / 8000 rpm','10.6 Nm / 6000 rpm','Tay ga (CVT)','Phun xăng điện tử',5.0,'1.85 lít/100km','1836 x 704 x 1149 mm',104,760,145,'3 năm hoặc 30000 km','Yamaha Việt Nam',1,36,20),
+(126,'2024-01-01 00:00:00','<p>Yamaha Latte 125 - xe tay ga dành cho nữ với thiết kế nhẹ nhàng uyển chuyển, mâm xả phông thấp giữ xe dễ dàng và nhiều tính năng thông minh.</p>','2024-01-01 00:00:00','Yamaha Latte 125',39490000,39490000,'YAMAHA-LATTE-125',1,0,1,32,NULL,'new',2024,0,'Yamaha','Xe tay ga',1,'4 thì, SOHC, 4 van, BluCore',125,'7.0 kW / 8000 rpm','10.0 Nm / 6000 rpm','Tay ga (CVT)','Phun xăng điện tử',4.0,'1.85 lít/100km','1765 x 680 x 1090 mm',97,720,130,'3 năm hoặc 30000 km','Yamaha Việt Nam',1,36,20),
+(127,'2024-01-01 00:00:00','<p>Yamaha MT-15 - naked bike thể thao với thiết kế MT-DNA hung hãn, động cơ 155cc VVA mạnh mẽ và hệ thống traction control cho cảm giác lái đỉnh cao.</p>','2024-01-01 00:00:00','Yamaha MT-15',71900000,71900000,'YAMAHA-MT15',1,0,1,33,NULL,'new',2024,0,'Yamaha','Xe côn tay',1,'4 thì, SOHC, 4 van, VVA, làm mát bằng nước',155,'13.6 kW / 10000 rpm','14.1 Nm / 7500 rpm','6 số','Phun xăng điện tử',10.0,'2.8 lít/100km','1930 x 800 x 1055 mm',139,810,160,'3 năm hoặc 30000 km','Yamaha Việt Nam',1,36,20),
+(128,'2024-01-01 00:00:00','<p>Yamaha MT-03 - naked bike 2 xi-lanh mạnh mẽ với động cơ 321cc, thiết kế MT-DNA dữ dằn ấn tượng và thể tạo vận hành thể thao đỉnh cao.</p>','2024-01-01 00:00:00','Yamaha MT-03',115000000,115000000,'YAMAHA-MT03',1,0,1,33,NULL,'new',2024,0,'Yamaha','Xe côn tay',1,'4 thì, DOHC, 4 van, 2 xi-lanh song song, làm mát bằng nước',321,'31.0 kW / 10750 rpm','29.5 Nm / 9000 rpm','6 số','Phun xăng điện tử',14.0,'3.8 lít/100km','2005 x 740 x 1050 mm',168,780,145,'3 năm hoặc 30000 km','Yamaha Việt Nam',1,36,20),
+(129,'2024-01-01 00:00:00','<p>Yamaha XSR155 - neo-retro sport với thiết kế cổ điển kết hợp hiệu suất hiện đại, động cơ 155cc VVA và khung kim cương chắc chắn cho trải nghiệm lái thú vị.</p>','2024-01-01 00:00:00','Yamaha XSR155',79900000,79900000,'YAMAHA-XSR155',1,0,1,33,NULL,'new',2024,0,'Yamaha','Xe côn tay',1,'4 thì, SOHC, 4 van, VVA, làm mát bằng nước',155,'13.6 kW / 10000 rpm','14.4 Nm / 8000 rpm','6 số','Phun xăng điện tử',10.0,'2.8 lít/100km','2000 x 800 x 1060 mm',134,810,160,'3 năm hoặc 30000 km','Yamaha Việt Nam',1,36,20),
+(130,'2024-01-01 00:00:00','<p>Yamaha YZF-R15M - fullsport thừa hưởng DNA MotoGP, trang bị VVA, TCS và quickshifter, thể hiện tinh thần chiến binh đua trong phân khúc 150cc.</p>','2024-01-01 00:00:00','Yamaha YZF-R15M',90000000,90000000,'YAMAHA-R15M',1,0,1,33,NULL,'new',2024,0,'Yamaha','Xe côn tay',1,'4 thì, SOHC, 4 van, VVA, làm mát bằng nước',155,'13.6 kW / 10000 rpm','14.2 Nm / 8500 rpm','6 số','Phun xăng điện tử',11.0,'2.9 lít/100km','1990 x 720 x 1060 mm',142,815,170,'3 năm hoặc 30000 km','Yamaha Việt Nam',1,36,20),
+(131,'2024-01-01 00:00:00','<p>SYM Angela 50 - xe tay ga phổ thông dành cho nữ với thiết kế nhẹ nhàng, gọn gàng, dễ đi trong nội thành, động cơ 50cc ổn định và tiết kiệm.</p>','2024-01-01 00:00:00','SYM Angela 50',11990000,11990000,'SYM-ANGELA-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thì, 1 xi-lanh, làm mát bằng không khí',50,'2.2 kW / 7500 rpm','3.5 Nm / 6000 rpm','Tay ga (CVT)','Chế hòa khí',3.5,'1.4 lít/100km','1700 x 660 x 1055 mm',77,720,120,'1 năm hoặc 10000 km','SYM Việt Nam',0,0,0),
+(132,'2024-01-01 00:00:00','<p>SYM Attila 50 - xe tay ga cổ điển với thiết kế sang trọng được yêu thích từ nhiều thế hệ, động cơ ổn định, dễ bảo trì và phù hợp sử dụng hàng ngày.</p>','2024-01-01 00:00:00','SYM Attila 50',12490000,12490000,'SYM-ATTILA-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thì, 1 xi-lanh, làm mát bằng không khí',50,'2.2 kW / 7500 rpm','3.5 Nm / 6000 rpm','Tay ga (CVT)','Chế hòa khí',3.5,'1.4 lít/100km','1700 x 660 x 1055 mm',78,720,120,'1 năm hoặc 10000 km','SYM Việt Nam',0,0,0),
+(133,'2024-01-01 00:00:00','<p>SYM Elegant 50 - xe tay ga 50cc phân khúc bình dân với thiết kế đơn giản, gọn nhẹ, dễ bảo trì và giá cả phải chăng, lựa chọn tốt cho học sinh.</p>','2024-01-01 00:00:00','SYM Elegant 50',10490000,10490000,'SYM-ELEGANT-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thì, 1 xi-lanh, làm mát bằng không khí',50,'2.0 kW / 7000 rpm','3.2 Nm / 5500 rpm','Tay ga (CVT)','Chế hòa khí',3.5,'1.4 lít/100km','1690 x 640 x 1040 mm',74,715,120,'1 năm hoặc 10000 km','SYM Việt Nam',0,0,0),
+(134,'2024-01-01 00:00:00','<p>SYM Elite 50 - xe tay ga 50cc thế hệ mới với thiết kế hiện đại, động cơ ổn định và nhiều màu sắc để lựa chọn, trang bị hộp số CVT tiện lợi.</p>','2024-01-01 00:00:00','SYM Elite 50',11490000,11490000,'SYM-ELITE-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thì, 1 xi-lanh, làm mát bằng không khí',50,'2.2 kW / 7500 rpm','3.5 Nm / 6000 rpm','Tay ga (CVT)','Chế hòa khí',3.5,'1.4 lít/100km','1700 x 655 x 1050 mm',76,718,120,'1 năm hoặc 10000 km','SYM Việt Nam',0,0,0),
+(135,'2024-01-01 00:00:00','<p>SYM Galaxy 50 - xe tay ga 50cc với thiết kế trẻ trung năng động, chất lượng tay ga SYM với giá cả hợp lý phù hợp cho học sinh sinh viên.</p>','2024-01-01 00:00:00','SYM Galaxy 50',12990000,12990000,'SYM-GALAXY-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thì, 1 xi-lanh, làm mát bằng không khí',50,'2.2 kW / 7500 rpm','3.5 Nm / 6000 rpm','Tay ga (CVT)','Chế hòa khí',3.5,'1.4 lít/100km','1710 x 665 x 1060 mm',78,722,122,'1 năm hoặc 10000 km','SYM Việt Nam',0,0,0),
+(136,'2024-01-01 00:00:00','<p>SYM Husky Classic 125 - xe số phong cách cổ điển độc đáo trong phân khúc 125cc, động cơ tiết kiệm nhiên liệu và thiết kế retro ấn tượng.</p>','2024-01-01 00:00:00','SYM Husky Classic 125',35000000,35000000,'SYM-HUSKY-CLASSIC-125',1,0,1,31,NULL,'new',2024,0,'SYM','Xe số',1,'4 thì, 1 xi-lanh, làm mát bằng không khí',125,'6.0 kW / 7000 rpm','9.0 Nm / 5500 rpm','5 số','Phun xăng điện tử',12.0,'2.0 lít/100km','2030 x 770 x 1080 mm',128,780,150,'2 năm hoặc 20000 km','SYM Việt Nam',1,36,20),
+(137,'2024-01-01 00:00:00','<p>SYM Passing 50 - xe tay ga 50cc phổ thông với giá cả rẻ nhất phân khúc, dễ bảo trì và ổn định, lựa chọn kinh tế cho người đi làm hàng ngày.</p>','2024-01-01 00:00:00','SYM Passing 50',10990000,10990000,'SYM-PASSING-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thì, 1 xi-lanh, làm mát bằng không khí',50,'2.0 kW / 7000 rpm','3.2 Nm / 5500 rpm','Tay ga (CVT)','Chế hòa khí',3.5,'1.4 lít/100km','1680 x 640 x 1040 mm',73,713,118,'1 năm hoặc 10000 km','SYM Việt Nam',0,0,0),
+(138,'2024-01-01 00:00:00','<p>SYM Shark 50 - xe tay ga 50cc với thiết kế thể thao ấn tượng, động cơ ổn định và tỷ lệ giá trị tốt nhất trong dòng sản phẩm SYM 50cc.</p>','2024-01-01 00:00:00','SYM Shark 50',12490000,12490000,'SYM-SHARK-50',1,0,1,32,NULL,'new',2024,0,'SYM','Xe tay ga',0,'4 thì, 1 xi-lanh, làm mát bằng không khí',50,'2.2 kW / 7500 rpm','3.5 Nm / 6000 rpm','Tay ga (CVT)','Chế hòa khí',3.5,'1.4 lít/100km','1720 x 660 x 1060 mm',79,720,122,'1 năm hoặc 10000 km','SYM Việt Nam',0,0,0);
 
 ALTER TABLE `product` AUTO_INCREMENT = 200;
 
@@ -524,59 +524,59 @@ ALTER TABLE `product` AUTO_INCREMENT = 200;
 -- VARIANT
 -- ============================================================
 INSERT INTO `variant` (`id`,`name`,`color_name`,`color_code`,`stock`,`sold`,`product_id`) VALUES
-(1001,'Tieu Chuan','Do den','#CC0000',50,0,101),
-(1002,'Tieu Chuan','Trang den','#F5F5F5',40,0,101),
-(1003,'Tieu Chuan','Xanh den','#1A3A6B',30,0,101),
-(1004,'Tieu Chuan','Den mo','#2B2B2B',30,0,102),
-(1005,'Cao Cap','Trang ngoc','#E8F5E9',25,0,102),
-(1006,'Dac Biet','Do den','#CC0000',20,0,102),
-(1007,'Tieu Chuan','Den nham','#1C1C1C',25,0,103),
-(1008,'Gioi Han RC','Xanh trang','#0047AB',15,0,103),
-(1009,'Gioi Han RC','Vang den','#FFD700',10,0,103),
-(1010,'Tieu Chuan','Hong trang','#FFB6C1',30,0,104),
-(1011,'Tieu Chuan','Xanh pastel','#B0E0E6',25,0,104),
-(1012,'Cao Cap','Trang bac','#F8F8FF',20,0,104),
-(1013,'Tieu Chuan','Den do','#1C1C1C',20,0,105),
-(1014,'Tieu Chuan','Trang xanh','#FFFFFF',15,0,105),
-(1015,'Ban Tieu Chuan','Trang ngoc','#ECEFF1',40,0,106),
-(1016,'Ban Cao Cap','Xanh duong','#1565C0',30,0,106),
-(1017,'Ban Cao Cap','Den bong','#212121',25,0,106);
+(1001,'Tiêu Chuẩn','Đỏ đen','#CC0000',50,0,101),
+(1002,'Tiêu Chuẩn','Trắng đen','#F5F5F5',40,0,101),
+(1003,'Tiêu Chuẩn','Xanh đen','#1A3A6B',30,0,101),
+(1004,'Tiêu Chuẩn','Đen mờ','#2B2B2B',30,0,102),
+(1005,'Cao Cấp','Trắng ngọc','#E8F5E9',25,0,102),
+(1006,'Đặc Biệt','Đỏ đen','#CC0000',20,0,102),
+(1007,'Tiêu Chuẩn','Đen nhám','#1C1C1C',25,0,103),
+(1008,'Giới Hạn RC','Xanh trắng','#0047AB',15,0,103),
+(1009,'Giới Hạn RC','Vàng đen','#FFD700',10,0,103),
+(1010,'Tiêu Chuẩn','Hồng trắng','#FFB6C1',30,0,104),
+(1011,'Tiêu Chuẩn','Xanh pastel','#B0E0E6',25,0,104),
+(1012,'Cao Cấp','Trắng bạc','#F8F8FF',20,0,104),
+(1013,'Tiêu Chuẩn','Đen đỏ','#1C1C1C',20,0,105),
+(1014,'Tiêu Chuẩn','Trắng xanh','#FFFFFF',15,0,105),
+(1015,'Bản Tiêu Chuẩn','Trắng ngọc','#ECEFF1',40,0,106),
+(1016,'Bản Cao Cấp','Xanh dương','#1565C0',30,0,106),
+(1017,'Bản Cao Cấp','Đen bóng','#212121',25,0,106);
 
 ALTER TABLE `variant` AUTO_INCREMENT = 2000;
 
 INSERT INTO `variant` (`name`,`color_name`,`color_code`,`stock`,`sold`,`product_id`) VALUES
-('Tieu Chuan','Do den','#CC0000',40,0,107),('Tieu Chuan','Trang den','#F5F5F5',35,0,107),
-('Tieu Chuan','Xanh den','#1A237E',40,0,108),('Tieu Chuan','Do den','#B71C1C',35,0,108),
-('Tieu Chuan','Do','#CC0000',20,0,109),('Tieu Chuan','Den','#212121',15,0,109),
-('Tieu Chuan','Do den','#CC0000',45,0,110),('Tieu Chuan','Trang den','#F5F5F5',40,0,110),
-('Tieu Chuan','Trang ngoc trai','#ECEFF1',50,0,111),('Tieu Chuan','Den','#212121',45,0,111),
-('The Thao','Do den','#CC0000',35,0,112),('Tieu Chuan','Trang bac','#F5F5F5',30,0,112),
-('Dac Biet','Xanh xam','#546E7A',25,0,113),('Tieu Chuan','Den nham','#212121',20,0,113),
-('Tieu Chuan','Trang ngoc','#ECEFF1',25,0,114),('Dac Biet','Den bong','#212121',20,0,114),
-('Tieu Chuan','Trang','#FFFFFF',20,0,115),('Dac Biet','Do den','#B71C1C',15,0,115),
-('Tieu Chuan','Do den','#CC0000',10,0,116),('Dac Biet','Xanh bac','#78909C',8,0,116),
-('Tieu Chuan','Den do','#212121',30,0,117),('The Thao','Xanh den','#1A237E',25,0,117),
-('Tieu Chuan','Do den','#CC0000',15,0,118),('Tieu Chuan','Den trang','#212121',12,0,118),
-('Tieu Chuan','Xanh den','#1A237E',8,0,119),('Tieu Chuan','Den','#212121',6,0,119),
-('Ban Tieu Chuan','Trang ngoc trai','#ECEFF1',20,0,120),('Ban Cao Cap','Xanh duong','#1565C0',15,0,120),
-('Tieu Chuan','Do metallic','#CC0000',50,0,121),('Tieu Chuan','Xanh den','#1A237E',45,0,121),
-('Tieu Chuan','Do metallic','#CC0000',40,0,122),('Premium','Vang metallic','#FFD700',30,0,122),
-('Tieu Chuan','Den nham','#212121',30,0,123),('Dac Biet','Do candy','#CC0000',25,0,123),
-('Tieu Chuan','Den metallic','#212121',40,0,124),('Dac Biet','Do metallic','#CC0000',35,0,124),
-('Tieu Chuan','Do metallic','#CC0000',35,0,125),('Dac Biet','Do nham','#B71C1C',30,0,125),
-('Tieu Chuan','Xanh navy','#1A237E',30,0,126),('Gioi Han','Xam den','#546E7A',20,0,126),
-('Tieu Chuan','Den','#212121',20,0,127),('Mau Moi','Xanh den','#1A237E',15,0,127),
-('Tieu Chuan','Den','#212121',10,0,128),('Fluo','Vang xanh','#CDDC39',8,0,128),
-('Tieu Chuan','Den metallic','#212121',15,0,129),('Tieu Chuan','Xam bac','#78909C',12,0,129),
-('60th Anniversary','Trang xanh','#FFFFFF',10,0,130),('Tieu Chuan','Xanh dua','#1565C0',8,0,130),
-('Tieu Chuan','Trang','#FFFFFF',50,0,131),('Tieu Chuan','Hong','#F48FB1',45,0,131),
-('Tieu Chuan','Trang bac','#ECEFF1',45,0,132),('Tieu Chuan','Xanh ngoc','#B2EBF2',40,0,132),
-('Tieu Chuan','Trang','#FFFFFF',50,0,133),('Tieu Chuan','Xanh ngoc','#B2EBF2',45,0,133),
-('Tieu Chuan','Trang','#FFFFFF',45,0,134),('Tieu Chuan','Do','#CC0000',40,0,134),
-('Tieu Chuan','Trang bac','#ECEFF1',45,0,135),('Tieu Chuan','Xanh ngoc','#B2EBF2',40,0,135),
-('Tieu Chuan','Xam den','#546E7A',20,0,136),('Tieu Chuan','Nau den','#4E342E',15,0,136),
-('Tieu Chuan','Trang','#FFFFFF',50,0,137),('Tieu Chuan','Do','#CC0000',45,0,137),
-('Tieu Chuan','Xam nham','#9E9E9E',40,0,138),('Tieu Chuan','Den','#212121',35,0,138);
+('Tiêu Chuẩn','Đỏ đen','#CC0000',40,0,107),('Tiêu Chuẩn','Trắng đen','#F5F5F5',35,0,107),
+('Tiêu Chuẩn','Xanh đen','#1A237E',40,0,108),('Tiêu Chuẩn','Đỏ đen','#B71C1C',35,0,108),
+('Tiêu Chuẩn','Đỏ','#CC0000',20,0,109),('Tiêu Chuẩn','Đen','#212121',15,0,109),
+('Tiêu Chuẩn','Đỏ đen','#CC0000',45,0,110),('Tiêu Chuẩn','Trắng đen','#F5F5F5',40,0,110),
+('Tiêu Chuẩn','Trắng ngọc trai','#ECEFF1',50,0,111),('Tiêu Chuẩn','Đen','#212121',45,0,111),
+('Thể Thao','Đỏ đen','#CC0000',35,0,112),('Tiêu Chuẩn','Trắng bạc','#F5F5F5',30,0,112),
+('Đặc Biệt','Xanh xám','#546E7A',25,0,113),('Tiêu Chuẩn','Đen nhám','#212121',20,0,113),
+('Tiêu Chuẩn','Trắng ngọc','#ECEFF1',25,0,114),('Đặc Biệt','Đen bóng','#212121',20,0,114),
+('Tiêu Chuẩn','Trắng','#FFFFFF',20,0,115),('Đặc Biệt','Đỏ đen','#B71C1C',15,0,115),
+('Tiêu Chuẩn','Đỏ đen','#CC0000',10,0,116),('Đặc Biệt','Xanh bạc','#78909C',8,0,116),
+('Tiêu Chuẩn','Đen đỏ','#212121',30,0,117),('Thể Thao','Xanh đen','#1A237E',25,0,117),
+('Tiêu Chuẩn','Đỏ đen','#CC0000',15,0,118),('Tiêu Chuẩn','Đen trắng','#212121',12,0,118),
+('Tiêu Chuẩn','Xanh đen','#1A237E',8,0,119),('Tiêu Chuẩn','Đen','#212121',6,0,119),
+('Bản Tiêu Chuẩn','Trắng ngọc trai','#ECEFF1',20,0,120),('Bản Cao Cấp','Xanh dương','#1565C0',15,0,120),
+('Tiêu Chuẩn','Đỏ metallic','#CC0000',50,0,121),('Tiêu Chuẩn','Xanh đen','#1A237E',45,0,121),
+('Tiêu Chuẩn','Đỏ metallic','#CC0000',40,0,122),('Premium','Vàng metallic','#FFD700',30,0,122),
+('Tiêu Chuẩn','Đen nhám','#212121',30,0,123),('Đặc Biệt','Đỏ candy','#CC0000',25,0,123),
+('Tiêu Chuẩn','Đen metallic','#212121',40,0,124),('Đặc Biệt','Đỏ metallic','#CC0000',35,0,124),
+('Tiêu Chuẩn','Đỏ metallic','#CC0000',35,0,125),('Đặc Biệt','Đỏ nhám','#B71C1C',30,0,125),
+('Tiêu Chuẩn','Xanh navy','#1A237E',30,0,126),('Giới Hạn','Xám đen','#546E7A',20,0,126),
+('Tiêu Chuẩn','Đen','#212121',20,0,127),('Mẫu Mới','Xanh đen','#1A237E',15,0,127),
+('Tiêu Chuẩn','Đen','#212121',10,0,128),('Fluo','Vàng xanh','#CDDC39',8,0,128),
+('Tiêu Chuẩn','Đen metallic','#212121',15,0,129),('Tiêu Chuẩn','Xám bạc','#78909C',12,0,129),
+('60th Anniversary','Trắng xanh','#FFFFFF',10,0,130),('Tiêu Chuẩn','Xanh đua','#1565C0',8,0,130),
+('Tiêu Chuẩn','Trắng','#FFFFFF',50,0,131),('Tiêu Chuẩn','Hồng','#F48FB1',45,0,131),
+('Tiêu Chuẩn','Trắng bạc','#ECEFF1',45,0,132),('Tiêu Chuẩn','Xanh ngọc','#B2EBF2',40,0,132),
+('Tiêu Chuẩn','Trắng','#FFFFFF',50,0,133),('Tiêu Chuẩn','Xanh ngọc','#B2EBF2',45,0,133),
+('Tiêu Chuẩn','Trắng','#FFFFFF',45,0,134),('Tiêu Chuẩn','Đỏ','#CC0000',40,0,134),
+('Tiêu Chuẩn','Trắng bạc','#ECEFF1',45,0,135),('Tiêu Chuẩn','Xanh ngọc','#B2EBF2',40,0,135),
+('Tiêu Chuẩn','Xám đen','#546E7A',20,0,136),('Tiêu Chuẩn','Nâu đen','#4E342E',15,0,136),
+('Tiêu Chuẩn','Trắng','#FFFFFF',50,0,137),('Tiêu Chuẩn','Đỏ','#CC0000',45,0,137),
+('Tiêu Chuẩn','Xám nhám','#9E9E9E',40,0,138),('Tiêu Chuẩn','Đen','#212121',35,0,138);
 
 -- ============================================================
 -- PRODUCT_IMAGE
