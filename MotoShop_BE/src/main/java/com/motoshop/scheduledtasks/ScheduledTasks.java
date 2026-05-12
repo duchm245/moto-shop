@@ -1,8 +1,6 @@
 package com.motoshop.scheduledtasks;
 
-import com.motoshop.mapper.ColorMapper;
 import com.motoshop.models.*;
-import com.motoshop.repositories.ColorRepository;
 import com.motoshop.repositories.NotificationRepository;
 import com.motoshop.repositories.ProductRepository;
 import com.motoshop.repositories.SaleRepository;
@@ -55,24 +53,23 @@ public class ScheduledTasks {
             }
         }
     }
-    @Scheduled(cron = "0 30 20 ? * * ")
+     @Scheduled(cron = "0 30 20 ? * * ")
     public void scanProduct(){
         List<Product> products = productRepository.findAll();
         for(Product p: products){
-            List<Color> colors = p.getColors();
-            for(Color color: colors){
-                List<Size> sizes = color.getSizes();
-                for (Size size : sizes){
-                    Notification notification = null;
-                    if((size.getTotal() - size.getSold()) <= 100){
-                        notification = new Notification();
-                        notification.setIsRead(false);
-                        notification.setDeliverStatus(false);
-                        notification.setType(3);
-                        notification.setContent(String.format("Sản phẩm %s màu %s size %s sắp hết, kiểm tra ngay nào", p.getName(), color.getValue(), size.getValue()));
-                        notification.setProduct(p);
-                        notificationService.createNotification(notification);
-                    }
+            List<Variant> variants = p.getVariants();
+            for(Variant variant: variants){
+                if((variant.getStock() - variant.getSold()) <= 100){
+                    Notification notification = new Notification();
+                    notification.setIsRead(false);
+                    notification.setDeliverStatus(false);
+                    notification.setType(3);
+                    notification.setContent(String.format(
+                        "Sản phẩm %s phiên bản %s màu %s sắp hết hàng, kiểm tra ngay nào",
+                        p.getName(), variant.getName(), variant.getColorName()
+                    ));
+                    notification.setProduct(p);
+                    notificationService.createNotification(notification);
                 }
             }
         }
