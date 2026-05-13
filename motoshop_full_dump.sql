@@ -378,15 +378,15 @@ VALUES
 (1,'2023-09-17 07:23:11','duchm245@gmail.com','Linh','Quản Trị',
  '2023-09-17 07:23:11',NULL,NULL,
  '$2a$10$1Xmt73dPIjrpTIFrU04hx.WCLdIjaV9yrCUN6QbhjbT8ntIRuOS.i','0966821574',1,'admin'),
-(2,'2023-09-17 07:28:27','thangdv007@gmail.com','Thang','Nguyen Kim',
+(2,'2023-09-17 07:28:27','thangdv007@gmail.com','Linh','Dev',
  '2023-09-17 07:28:27',NULL,NULL,
- '$2a$10$1Xmt73dPIjrpTIFrU04hx.WCLdIjaV9yrCUN6QbhjbT8ntIRuOS.i','0966821574',1,'thangdev'),
-(3,'2023-09-18 22:13:24','thangdvvip@gmail.com','Nguyen Kim','Thang',
+ '$2a$10$1Xmt73dPIjrpTIFrU04hx.WCLdIjaV9yrCUN6QbhjbT8ntIRuOS.i','0334018518',1,'linhdev'),
+(3,'2023-09-18 22:13:24','thangdvvip@gmail.com','Trịnh','',
  '2023-09-18 22:13:24','349757','2023-09-18 22:13:24',
- '$2a$10$1Xmt73dPIjrpTIFrU04hx.WCLdIjaV9yrCUN6QbhjbT8ntIRuOS.i','0966821574',1,'kimthang');
+ '$2a$10$1Xmt73dPIjrpTIFrU04hx.WCLdIjaV9yrCUN6QbhjbT8ntIRuOS.i','0966821574',1,'HuyTrinh');
 ALTER TABLE `user` AUTO_INCREMENT = 4;
 
-INSERT INTO `user_roles` VALUES (1,1),(2,3),(3,2);
+INSERT INTO `user_roles` VALUES (1,1),(2,1),(3,3);
 
 INSERT INTO `sales`
   (`id`,`created_date`,`discount`,`end_date`,`is_active`,`modified_date`,`name`,`start_date`)
@@ -430,7 +430,7 @@ INSERT INTO `orders`
 VALUES
 (3,'Nguyệt Đức','13471626','2023-09-22 13:20:54','251','Nguyễn Kim Thắng',
  b'1','2023-09-22 13:37:17','','2023-09-22 13:20:54','COD',
- '0966821574','26','2023-09-22 13:36:41',25000,4,1,'thangdev','9052',NULL,3),
+ '0966821574','26','2023-09-22 13:36:41',25000,4,1,'linhdev','9052',NULL,3),
 (4,'Nguyệt Đức','72913687','2023-09-22 13:38:05','251','Nguyễn Kim Thắng',
  b'0','2023-09-22 13:38:05','','2023-09-22 13:38:05','COD',
  '0966821574','26',NULL,25000,1,1,NULL,'9052',NULL,3),

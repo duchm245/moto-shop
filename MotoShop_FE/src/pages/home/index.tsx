@@ -237,45 +237,7 @@ const Home = () => {
   React.useEffect(() => {
     getArticle();
   }, []);
-  //đếm ngược
-  const [countdown, setCountdown] = React.useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-  let countdownInterval;
-  React.useEffect(() => {
-    const targetDate = new Date('2026-01-29T08:00:00').getTime();
-    const calculateCountdown = () => {
-      const now = new Date().getTime();
-      const timeDifference = targetDate - now;
 
-      if (timeDifference <= 0) {
-        // Countdown has ended
-        clearInterval(countdownInterval);
-        setCountdown({
-          days: 0,
-          hours: 0,
-          minutes: 0,
-          seconds: 0,
-        });
-      } else {
-        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-        setCountdown({ days, hours, minutes, seconds });
-      }
-    };
-
-    countdownInterval = setInterval(calculateCountdown, 1000);
-
-    return () => {
-      clearInterval(countdownInterval);
-    };
-  }, []);
   //sản phẩm khuyến mãi
   const [activeSlideSale, setActiveSlideSale] = React.useState(0);
   const [swiperSale, setSwiperSale] = React.useState(null);
@@ -318,6 +280,54 @@ const Home = () => {
       });
     }
   }, [productSale]);
+
+  //đếm ngược
+  const [countdown, setCountdown] = React.useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+  const [saleEndDate, setSaleEndDate] = React.useState<Date | null>(null);
+
+  React.useEffect(() => {
+    if (!Array.isArray(productSale) || productSale.length === 0) return;
+    const firstWithSale = productSale.find((p) => p.sale != null && p.sale !== 0);
+    if (!firstWithSale) return;
+    saleApi.getSale(firstWithSale.sale)
+      .then((res) => {
+        if (res.data.status && res.data.data.endDate) {
+          const dateStr: string = res.data.data.endDate;
+          const parts = dateStr.split(' ');
+          if (parts.length < 2) return;
+          const t = parts[0].split(':');
+          const d = parts[1].split('-');
+          const parsed = new Date(+d[2], +d[1] - 1, +d[0], +t[0], +t[1], +t[2]);
+          if (!isNaN(parsed.getTime())) setSaleEndDate(parsed);
+        }
+      })
+      .catch(() => {/* ignore */});
+  }, [productSale]);
+
+  React.useEffect(() => {
+    if (!saleEndDate) return;
+    const tick = () => {
+      const diff = saleEndDate.getTime() - new Date().getTime();
+      if (diff <= 0) {
+        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      } else {
+        setCountdown({
+          days:    Math.floor(diff / 86400000),
+          hours:   Math.floor((diff % 86400000) / 3600000),
+          minutes: Math.floor((diff % 3600000) / 60000),
+          seconds: Math.floor((diff % 60000) / 1000),
+        });
+      }
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [saleEndDate]);
   return (
     <>
       {/* banner */}

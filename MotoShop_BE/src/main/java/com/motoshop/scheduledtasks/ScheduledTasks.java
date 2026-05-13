@@ -39,17 +39,24 @@ public class ScheduledTasks {
 
     }
 
-    @Scheduled(cron = "59 59 23 ? * * ")
+    @Scheduled(cron = "0 * * * * *")  // Chạy mỗi phút
     public void updateSaleStatus() {
-        // Lấy thời gian hiện tại
         Date currentDate = new Date();
-        // Lấy danh sách tất cả các Sale
-        List<Sale> activeSales = saleRepository.findAll();
-        // Kiểm tra và cập nhật trạng thái (isActive) của Sale
-        for (Sale sale : activeSales) {
-            if (sale.getEndDate().before(currentDate)) {
+        List<Sale> allSales = saleRepository.findAll();
+        for (Sale sale : allSales) {
+            boolean started = sale.getStartDate() != null && !sale.getStartDate().after(currentDate);
+            boolean ended   = sale.getEndDate()   != null &&  sale.getEndDate().before(currentDate);
+
+            if (started && !ended && sale.getIsActive() != 1) {
+                // Đến giờ bắt đầu → bật sale
+                sale.setIsActive(1);
+                saleRepository.save(sale);
+                log.info("Sale '{}' đã được kích hoạt", sale.getName());
+            } else if (ended && sale.getIsActive() != 0) {
+                // Hết hạn → tắt sale
                 sale.setIsActive(0);
                 saleRepository.save(sale);
+                log.info("Sale '{}' đã hết hạn và được tắt", sale.getName());
             }
         }
     }

@@ -13,6 +13,20 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
 import path from '~/constants/path';
 
+// Parse "HH:mm:ss dd-MM-yyyy" → Date
+const parseApiDate = (dateStr: string): Date => {
+  try {
+    if (!dateStr) return new Date();
+    // format: "01:57:00 09-08-2023"
+    const [timePart, datePart] = dateStr.split(' ');
+    const [hour, minute, second] = timePart.split(':');
+    const [day, month, year] = datePart.split('-');
+    return new Date(+year, +month - 1, +day, +hour, +minute, +second);
+  } catch {
+    return new Date();
+  }
+};
+
 const EditSale = () => {
   const location = useLocation();
   const id = location.state;
@@ -22,10 +36,10 @@ const EditSale = () => {
   const [productSale, setProductSale] = React.useState<Product[]>([]);
   const [nameSale, setNameSale] = React.useState('');
   const [discount, setDiscount] = React.useState<number>();
-  const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(new Date());
-  const [startDateUD, setStartDateUD] = React.useState(new Date());
-  const [endDateUD, setEndDateUD] = React.useState(new Date());
+  const [startDate, setStartDate] = React.useState<Date>(new Date());
+  const [endDate, setEndDate] = React.useState<Date>(new Date());
+  const [startDateUD, setStartDateUD] = React.useState<Date>(new Date());
+  const [endDateUD, setEndDateUD] = React.useState<Date>(new Date());
   const [isChoose, setIsChoose] = React.useState(false);
   const [productId, setProductId] = React.useState<number[]>([]);
   const [keyword, setKeyword] = React.useState('');
@@ -72,11 +86,11 @@ const EditSale = () => {
         endDate: formatDate(endDateUD),
       };
       try {
-        const url = Api.createSale();
+        const url = Api.updateSale(id);
         const [res] = await Promise.all([
           REQUEST_API({
             url: url,
-            method: 'post',
+            method: 'put',
             token: token,
             data: data,
           }),
@@ -84,8 +98,7 @@ const EditSale = () => {
         console.log(res);
 
         if (res.status) {
-          // navigate(-1);
-          toast.success(`Tạo mới khuyến mãi thành công`, {
+          toast.success(`Cập nhật khuyến mãi thành công`, {
             position: 'top-right',
             pauseOnHover: false,
             theme: 'dark',
@@ -158,8 +171,12 @@ const EditSale = () => {
     if (sale != null) {
       setNameSale(sale?.name || '');
       setDiscount(sale?.discount || null || undefined);
-      setStartDate(sale?.startDate);
-      setEndDate(sale?.endDate);
+      const parsedStart = parseApiDate(sale.startDate);
+      const parsedEnd = parseApiDate(sale.endDate);
+      setStartDate(parsedStart);
+      setEndDate(parsedEnd);
+      setStartDateUD(parsedStart);
+      setEndDateUD(parsedEnd);
     }
   }, [sale]);
 
@@ -267,7 +284,6 @@ const EditSale = () => {
             <span className="text-base text-black font-bold">Ngày bắt đầu: </span>
             <DatePicker
               selected={startDateUD}
-              value={startDate}
               onChange={(date) => setStartDateUD(date)}
               timeInputLabel="Time:"
               dateFormat="dd/MM/yyyy h:mm:ss aa"
@@ -280,7 +296,6 @@ const EditSale = () => {
             <span className="text-base text-black font-bold">Ngày kết thúc: </span>
             <DatePicker
               selected={endDateUD}
-              value={endDate}
               onChange={(date) => setEndDateUD(date)}
               timeInputLabel="Time:"
               dateFormat="dd/MM/yyyy h:mm:ss aa"
