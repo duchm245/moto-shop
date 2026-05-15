@@ -30,4 +30,6 @@ public interface SaleService {
 
     String showSale(Long id);
 
+    String recalculateAllSalePrices();
+
 }

@@ -58,7 +58,9 @@ public class SaleServiceImpl implements SaleService {
         if (sale == null) {
             Sale newSale = saleMapper.mapRequestToModel(saleRequest);
             Date currentDate = new Date();
-            newSale.setIsActive(1);
+            // isActive = 1 nếu startDate đã qua (hoặc null), ngược lại = 0 chờ ScheduledTask kích hoạt
+            boolean alreadyStarted = newSale.getStartDate() == null || !newSale.getStartDate().after(currentDate);
+            newSale.setIsActive(alreadyStarted ? 1 : 0);
             newSale.setCreatedDate(currentDate);
             newSale.setModifiedDate(currentDate);
             Sale saleResp = saleRepository.save(newSale);
@@ -78,6 +80,15 @@ public class SaleServiceImpl implements SaleService {
             Date date = new Date();
             sale.setModifiedDate(date);
             saleRepository.save(sale);
+            // Nếu sale đang active → cập nhật lại salePrice của tất cả sản phẩm theo discount mới
+            if (sale.getIsActive() == 1) {
+                List<Product> products = productRepository.findBySaleId(sale.getId());
+                for (Product product : products) {
+                    int salePrice = (int) Math.round(product.getPrice() * (1.0 - sale.getDiscount() / 100.0));
+                    product.setSalePrice(salePrice);
+                }
+                productRepository.saveAll(products);
+            }
             return saleMapper.mapModelToResponse(sale);
         }
     }
@@ -111,26 +122,21 @@ public class SaleServiceImpl implements SaleService {
     public String addProductsToSale(Long id, List<Long> productIds) {
         Sale sale = saleRepository.findById(id).orElseThrow();
         List<Product> products = productRepository.findAllById(productIds);
-        List<Product> products1 = productRepository.findBySaleId(sale.getId());
-        // Kiểm tra trạng thái (status) của Sale
-        if (sale.getIsActive() == 1) {
-            for (Product product : products) {
-                int salePrice = product.getPrice() - (product.getPrice() * sale.getDiscount() / 100);
-
-                if (products1 != null && products1.contains(product)) {
-                    // Cập nhật giá salePrice của sản phẩm khi tồn tại trong products1
-                    product.setSalePrice(salePrice);
-                } else {
-                    // Cập nhật giá salePrice của sản phẩm khi không tồn tại trong products1
-                    product.setSale(sale);
-                    product.setSalePrice(salePrice);
-                }
+        // Luôn cập nhật sale và salePrice, bất kể isActive
+        for (Product product : products) {
+            product.setSale(sale);
+            if (sale.getIsActive() == 1) {
+                // Sale đang chạy → tính giá giảm ngay
+                int salePrice = (int) Math.round(product.getPrice() * (1.0 - sale.getDiscount() / 100.0));
+                product.setSalePrice(salePrice);
+            } else {
+                // Sale chưa bắt đầu → giữ giá gốc, ScheduledTask sẽ cập nhật sau
+                product.setSalePrice(product.getPrice());
             }
         }
         // Lưu thay đổi vào cơ sở dữ liệu
-        saleRepository.save(sale);
         productRepository.saveAll(products);
-        return "Thêm sản phẩm vào khuyến mãi thành công";
+        return "Đã thêm sản phẩm vào khuyến mãi thành công";
     }
 
     @Override
@@ -171,5 +177,23 @@ public class SaleServiceImpl implements SaleService {
         sale.setModifiedDate(date);
         saleRepository.save(sale);
         return "Khuyến mãi đã được hiện";
+    }
+
+    @Override
+    public String recalculateAllSalePrices() {
+        List<Sale> activeSales = saleRepository.findAll().stream()
+                .filter(s -> s.getIsActive() != null && s.getIsActive() == 1)
+                .toList();
+        int totalUpdated = 0;
+        for (Sale sale : activeSales) {
+            List<Product> products = productRepository.findBySaleId(sale.getId());
+            for (Product product : products) {
+                int salePrice = (int) Math.round(product.getPrice() * (1.0 - sale.getDiscount() / 100.0));
+                product.setSalePrice(salePrice);
+            }
+            productRepository.saveAll(products);
+            totalUpdated += products.size();
+        }
+        return "Đã tính lại giá sale cho " + totalUpdated + " sản phẩm thuộc " + activeSales.size() + " chương trình khuyến mãi";
     }
 }

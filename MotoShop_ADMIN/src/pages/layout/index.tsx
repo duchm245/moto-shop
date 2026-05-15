@@ -13,6 +13,7 @@ import Account from '../account';
 import SuspenseContent from './suspenseContent';
 import AddEmp from '../account/addEmp';
 import DetailAcc from '../account/detaillAcc';
+import EditAcc from '../account/editAcc';
 import { ScrollRestoration } from '~/scroll-restoration';
 import Profile from '../profile';
 import EditProduct from '../products/editProduct';
@@ -94,6 +95,7 @@ const Layout = () => {
               <Route path={path.accounts} element={<Account />} />
               <Route path={path.addEmp} element={<AddEmp />} />
               <Route path={path.detailAcc} element={<DetailAcc />} />
+              <Route path={path.editAcc} element={<EditAcc />} />
               <Route path={path.profile} element={<Profile />} />
               <Route path={path.editProduct} element={<EditProduct />} />
               <Route path={path.addProduct} element={<AddProduct />} />

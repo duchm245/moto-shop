@@ -56,4 +56,18 @@ public class SaleRest {
 //                    .body("Lỗi! " + e.getMessage());
 //        }
 //    }
+
+    /**
+     * Tính lại salePrice cho tất cả sản phẩm đang thuộc sale active.
+     * POST /api/sale/recalculate-prices
+     */
+    @PostMapping("/recalculate-prices")
+    public ResponseEntity<?> recalculatePrices() {
+        try {
+            String result = saleService.recalculateAllSalePrices();
+            return new ResponseEntity<>(ApiResponse.build(200, true, result, null), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi: " + e.getMessage());
+        }
+    }
 }

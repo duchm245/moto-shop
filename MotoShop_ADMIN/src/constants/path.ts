@@ -14,6 +14,7 @@ const path = {
   chat : '/chat',
   settings : "/settings",
   detailAcc : '/detailAcc',
+  editAcc   : '/editAcc',
   profile: '/profile',
   banners: '/banners',
   //product
