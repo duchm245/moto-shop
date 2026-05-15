@@ -22,6 +22,7 @@ import saleApi from '~/apis/sale.apis';
 import { Sale } from '~/types/sale.type';
 import ItemProduct from '~/components/product';
 import ConsultModal from '~/components/consultModal/ConsultModal';
+import InstallmentCalculator from '~/components/installmentCalculator/InstallmentCalculator';
 
 import './styles.css';
 import ImageMagnifier from '~/components/imageMagnifier';
@@ -40,7 +41,6 @@ const DetailProduct = () => {
   const [product, setProduct] = React.useState<Product>();
   const [selectedVariantI, setSelectedVariantI] = React.useState(0);
   const [selectedVariant, setSelectedVariant] = React.useState<Variant | null>(null);
-  const [showInstallment, setShowInstallment] = React.useState(false);
   const [showConsult, setShowConsult] = React.useState(false);
   const [quantity, setQuantity] = React.useState(1);
   const [productImage, setProductImage] = React.useState<ProductImages[]>([]);
@@ -437,33 +437,6 @@ const DetailProduct = () => {
                               </div>
                             )}
 
-                            {/* trả góp */}
-                            {product?.installmentSupported && (
-                              <div className="product-installment" style={{ marginTop: 12, borderTop: '1px solid #eee', paddingTop: 12 }}>
-                                <button
-                                  type="button"
-                                  className="button btnborder"
-                                  style={{ fontSize: 13, padding: '6px 14px' }}
-                                  onClick={() => setShowInstallment(!showInstallment)}
-                                >
-                                  {showInstallment ? 'Ẩn thông tin trả góp' : 'Xem trả góp'}
-                                </button>
-                                {showInstallment && (
-                                  <div className="installment-info" style={{ marginTop: 10, background: '#f9f9f9', padding: 12, borderRadius: 6, fontSize: 13 }}>
-                                    <p><strong>Trả góp {product.name}</strong></p>
-                                    <p>Giá xe: <strong>{formatPrice(product.salePrice)}</strong></p>
-                                    <p>Trả trước {product.downPaymentPercent}%: <strong>{formatPrice(product.salePrice * product.downPaymentPercent / 100)}</strong></p>
-                                    {[24, 36].filter(m => m <= product.installmentMonths).map((months) => {
-                                      const loan = product.salePrice * (1 - product.downPaymentPercent / 100);
-                                      const rate = 0.012;
-                                      const monthly = Math.round(loan * rate * Math.pow(1 + rate, months) / (Math.pow(1 + rate, months) - 1));
-                                      return <p key={months}>Góp {months} tháng: ~<strong>{formatPrice(monthly)}</strong>/tháng</p>;
-                                    })}
-                                    <p style={{ color: '#999', fontSize: 11 }}>* Lãi suất tham khảo 1.2%/tháng. Liên hệ showroom để được tư vấn.</p>
-                                  </div>
-                                )}
-                              </div>
-                            )}
                             {/* thay đổi số lượng */}
                             <div className="product-quantity ">
                               <div className="pro-qty d-flex align-items-center">
@@ -849,6 +822,18 @@ const DetailProduct = () => {
                     </div>
                   </div>
                 </div>
+                {/* trả góp - full width section */}
+                {product?.installmentSupported && (
+                  <div className="col-12 product-installment-section">
+                    <InstallmentCalculator
+                      productPrice={product.salePrice}
+                      productName={product.name}
+                      defaultDownPaymentPercent={product.downPaymentPercent || 30}
+                      maxInstallmentMonths={product.installmentMonths || 60}
+                      interestRatePerMonth={1.2}
+                    />
+                  </div>
+                )}
                 {/* mô tả sản phẩm */}
                 <div className="col-lg-12 col-md-12 col-12 product-tabs">
                   <ul className="nav tab-title" role="tablist">
