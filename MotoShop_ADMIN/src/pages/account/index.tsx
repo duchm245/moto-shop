@@ -272,7 +272,7 @@ const Account = () => {
                       ></i>
                       <i
                         className="bx bxs-pencil text-2xl font-semibold text-blue pt-2"
-                        onClick={() => navigate('/', { state: item.id })}
+                        onClick={() => navigate(path.detailAcc, { state: item.id })}
                       ></i>
                     </td>
                   </tr>

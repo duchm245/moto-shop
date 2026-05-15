@@ -16,9 +16,19 @@ const CreateBanner = () => {
   const [name, setName] = React.useState('');
   const [categoryId, setCategoryId] = React.useState<number>();
   const [categories, setCategories] = React.useState<Category[]>([]);
-  const [fileImg, setFileImg] = React.useState<File>();
-  const img = React.useMemo(() => {
-    return fileImg ? URL.createObjectURL(fileImg) : '';
+  const [fileImg, setFileImg] = React.useState<File | undefined>();
+  const [img, setImg] = React.useState<string>('');
+
+  // Cập nhật img mỗi khi fileImg thay đổi
+  React.useEffect(() => {
+    if (!fileImg) {
+      setImg('');
+      return;
+    }
+    const objectUrl = URL.createObjectURL(fileImg);
+    setImg(objectUrl);
+    // Revoke URL khi fileImg đổi hoặc component unmount
+    return () => URL.revokeObjectURL(objectUrl);
   }, [fileImg]);
   const refInputImage = React.useRef<HTMLInputElement>(null);
   const handleUpload = () => {
@@ -26,9 +36,11 @@ const CreateBanner = () => {
   };
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileFromLocal = event.target.files?.[0];
-    // pushDa(fileFromLocal);
-    setFileImg(fileFromLocal);
-    // console.log(fileFromLocal);
+    if (fileFromLocal) {
+      setFileImg(fileFromLocal);
+    }
+    // Reset để có thể chọn lại cùng 1 file
+    event.target.value = '';
   };
 
   const createBanner = async () => {
@@ -171,10 +183,10 @@ const CreateBanner = () => {
             />
             <div className="flex items-center justify-around cursor-pointer">
               {img ? (
-                <div className="relative">
+                <div className="relative" onClick={handleUpload} title="Bấm để đổi ảnh">
                   <img src={img} className="w-auto h-auto object-contain" />
                   <div
-                    onClick={() => setFileImg('')}
+                    onClick={(e) => { e.stopPropagation(); setFileImg(undefined); }}
                     className="absolute w-[20px] h-[20px] rounded items-center justify-center flex bg-[#00000080] top-0 right-0"
                   >
                     <img src={Images.iconX} className="w-[10px] h-[10px]" />

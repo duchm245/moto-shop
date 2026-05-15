@@ -4,9 +4,9 @@
 --  Không cần chạy thêm bất kỳ file migration nào khác.
 --
 --  Tài khoản mặc định (mật khẩu đều là: 123456)
---    admin     → ROLE_ADMIN    (duchm245@gmail.com)
---    thangdev  → ROLE_EMPLOYEE (thangdv007@gmail.com)
---    kimthang  → ROLE_USER     (thangdvvip@gmail.com)
+--    admin    → ROLE_ADMIN    (duchm245@gmail.com)
+--    linhdev  → ROLE_EMPLOYEE (thangdv007@gmail.com)
+--    HuyTrinh → ROLE_USER     (thangdvvip@gmail.com)
 --
 --  Cách chạy:
 --    mysql -u root -p < motoshop_full_dump.sql
@@ -418,48 +418,29 @@ INSERT INTO `address`
   (`id`,`address_detail`,`created_date`,`district`,`first_name`,`focus`,
    `last_name`,`modified_date`,`phone`,`province`,`status`,`wards`,`user_id`)
 VALUES
-(1,'Nguyệt Đức','2023-09-22 13:19:36','251','Kim Thắng',0,
- 'Nguyễn','2023-09-22 13:19:36','0966821574','26',1,'9052',3);
+(1,'Nguyệt Đức','2023-09-22 13:19:36','251','Huy',0,
+ 'Trinh','2023-09-22 13:19:36','0966821574','26',1,'9052',3);
 ALTER TABLE `address` AUTO_INCREMENT = 2;
 
-INSERT INTO `orders`
-  (`id`,`address_detail`,`code_orders`,`create_date`,`district`,`full_name`,
-   `is_checkout`,`modified_date`,`note`,`order_date`,`payment_method`,
-   `phone`,`province`,`ship_date`,`shipping_fee`,`status`,`type`,
-   `user_name_emp`,`wards`,`address_id`,`user_id`)
-VALUES
-(3,'Nguyệt Đức','13471626','2023-09-22 13:20:54','251','Nguyễn Kim Thắng',
- b'1','2023-09-22 13:37:17','','2023-09-22 13:20:54','COD',
- '0966821574','26','2023-09-22 13:36:41',25000,4,1,'linhdev','9052',NULL,3),
-(4,'Nguyệt Đức','72913687','2023-09-22 13:38:05','251','Nguyễn Kim Thắng',
- b'0','2023-09-22 13:38:05','','2023-09-22 13:38:05','COD',
- '0966821574','26',NULL,25000,1,1,NULL,'9052',NULL,3),
-(5,'Nguyệt Đức','60195487','2023-09-22 14:17:55','251','Nguyễn Kim Thắng',
- b'0','2023-09-22 14:17:55','','2023-09-22 14:17:55','COD',
- '0966821574','26',NULL,25000,1,1,NULL,'9052',NULL,3),
 (7,NULL,'72129668','2023-10-04 14:32:34',NULL,NULL,
  b'0','2023-10-04 14:32:34',NULL,NULL,NULL,
  NULL,NULL,NULL,25000,0,0,NULL,NULL,NULL,3);
 ALTER TABLE `orders` AUTO_INCREMENT = 8;
 
-INSERT INTO `notifications` VALUES
-(1,'Đơn hàng 13471626 vừa được tạo, xác nhận ngay nào',b'1',b'0',1,3,NULL),
-(2,'Đơn hàng 72913687 vừa được tạo, xác nhận ngay nào',b'1',b'0',1,4,NULL),
-(3,'Đơn hàng 60195487 vừa được tạo, xác nhận ngay nào',b'1',b'0',1,5,NULL);
 ALTER TABLE `notifications` AUTO_INCREMENT = 4;
 
 INSERT INTO `article`
   (`id`,`author`,`content`,`created_date`,`image`,`modified_date`,
    `short_content`,`status`,`title`,`category_id`,`user_id`)
 VALUES
-(1,'Nguyen Kim Thang',
+(1,'Huy Trinh',
  '<p>Mẹo chọn mua xe máy phù hợp: Cần xem xét mục đích sử dụng, ngân sách, thương hiệu và dịch vụ hậu mãi. Cập nhật nội dung qua trang quản trị.</p>',
- '2023-09-19 13:46:41','blog_1.jpg','2023-09-19 13:46:41',
+ '2026-05-05 09:30:00','blog_1.jpg','2026-05-05 09:30:00',
  '<p>Hướng dẫn chọn mua xe máy phù hợp với nhu cầu và ngân sách.</p>',
  1,'Mẹo chọn mua xe máy phù hợp cho người mới',35,2),
-(2,'Nguyen Kim Thang',
+(2,'Huy Trinh',
  '<p>Bảo dưỡng xe máy định kỳ giúp xe hoạt động ổn định, tiết kiệm nhiên liệu và tăng tuổi thọ động cơ. Cập nhật nội dung qua trang quản trị.</p>',
- '2023-09-19 13:49:34','blog_2.jpg','2023-09-19 13:49:34',
+ '2026-05-10 14:15:00','blog_2.jpg','2026-05-10 14:15:00',
  '<p>Hướng dẫn bảo dưỡng xe máy định kỳ để xe luôn hoạt động tốt và bền bỉ.</p>',
  1,'Hướng dẫn bảo dưỡng xe máy định kỳ đúng cách',35,2);
 ALTER TABLE `article` AUTO_INCREMENT = 3;

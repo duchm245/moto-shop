@@ -38,6 +38,8 @@ import EditArticle from '../article/editArticle';
 import Order from '../order';
 import DetailOrder from '../order/detailOrder';
 import EditOrder from '../order/editOrder';
+import ChatPage from '../chat';
+import SettingsPage from '../settings';
 
 import './styles.css';
 import Analytics from '../analytics';
@@ -117,6 +119,8 @@ const Layout = () => {
               <Route path={path.detailOrder} element={<DetailOrder />} />
               <Route path={path.editOrder} element={<EditOrder />} />
               <Route path={path.analytics} element={<Analytics />} />
+              <Route path={path.chat} element={<ChatPage />} />
+              <Route path={path.settings} element={<SettingsPage />} />
             </Routes>
           </Suspense>
         </div>

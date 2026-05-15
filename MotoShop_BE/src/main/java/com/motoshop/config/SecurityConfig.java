@@ -68,6 +68,7 @@ public class SecurityConfig {
                 .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/consult").permitAll()
                 .requestMatchers("/api/consult/admin/**").hasAnyRole("ADMIN", "EMPLOYEE")
                 .requestMatchers("/error").permitAll()
+                .requestMatchers("/src/static/images/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

@@ -84,13 +84,19 @@ const Footer = () => {
                 <div className="widget-footer__content block-collapse" style={ContentStyle1}>
                   <div className="content-info">
                     <div className="ft-logo">
-                      <Link to="/">
-                        <img
-                          itemProp="logo"
-                          src={Images.logo}
-                          className="img-responsive logoimg ls-is-cached lazyloaded"
-                          style={{ maxWidth: 160 }}
-                        />
+                      <Link to="/" style={{ textDecoration: 'none' }}>
+                        <span style={{
+                          fontFamily: "'Montserrat', 'Inter', sans-serif",
+                          fontWeight: 800,
+                          fontSize: '26px',
+                          letterSpacing: '0.5px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}>
+                          <span style={{ color: '#fff' }}>LT</span>
+                          <span style={{ color: '#e74c3c' }}>Motor</span>
+                        </span>
                       </Link>
                     </div>
                     <div className="address-footer">
@@ -247,7 +253,7 @@ const Footer = () => {
                   <ul className="footerNav-social">
                     <li>
                       <Link
-                        to="https://www.facebook.com/profile.php?id=100045761117043"
+                        to="https://www.facebook.com/quanglinhdzvkl"
                         target="_blank"
                         rel="noopener"
                         title="Facebook"
@@ -286,7 +292,7 @@ const Footer = () => {
                     </li>
                     <li>
                       <Link
-                        to="https://www.tiktok.com/"
+                        to="https://www.tiktok.com/@quanglinhads"
                         target="_blank"
                         rel="noopener"
                         title="TikTok"

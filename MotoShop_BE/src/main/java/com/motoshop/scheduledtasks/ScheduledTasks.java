@@ -51,12 +51,24 @@ public class ScheduledTasks {
                 // Đến giờ bắt đầu → bật sale
                 sale.setIsActive(1);
                 saleRepository.save(sale);
-                log.info("Sale '{}' đã được kích hoạt", sale.getName());
+                // Cập nhật salePrice cho tất cả sản phẩm thuộc sale
+                List<Product> products = productRepository.findBySaleId(sale.getId());
+                for (Product p : products) {
+                    int discounted = (int) Math.round(p.getPrice() * (1.0 - sale.getDiscount() / 100.0));
+                    p.setSalePrice(discounted);
+                    productRepository.save(p);
+                }
+                log.info("Sale '{}' đã được kích hoạt, cập nhật giá {} sản phẩm", sale.getName(), products.size());
             } else if (ended && sale.getIsActive() != 0) {
-                // Hết hạn → tắt sale
+                // Hết hạn → tắt sale, reset giá về giá gốc
                 sale.setIsActive(0);
                 saleRepository.save(sale);
-                log.info("Sale '{}' đã hết hạn và được tắt", sale.getName());
+                List<Product> products = productRepository.findBySaleId(sale.getId());
+                for (Product p : products) {
+                    p.setSalePrice(p.getPrice());
+                    productRepository.save(p);
+                }
+                log.info("Sale '{}' đã hết hạn, reset giá {} sản phẩm", sale.getName(), products.size());
             }
         }
     }

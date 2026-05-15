@@ -52,7 +52,19 @@ const DetailProduct = () => {
     { id: 1, label: 'Mô tả sản phẩm' },
     { id: 2, label: 'Bảo hành & Bảo dưỡng' },
     { id: 3, label: 'Điều khoản dịch vụ' },
+    { id: 4, label: 'Đánh giá' },
   ];
+  // State cho đánh giá
+  const [reviewRating, setReviewRating] = React.useState(5);
+  const [reviewHover, setReviewHover] = React.useState(0);
+  const [reviewName, setReviewName] = React.useState('');
+  const [reviewText, setReviewText] = React.useState('');
+  const [reviews, setReviews] = React.useState([
+    { id: 1, name: 'Nguyễn Văn A', rating: 5, date: '10/05/2026', text: 'Xe rất đẹp, đi mượt mà và êm. Showroom phục vụ tận tình, giao hàng đúng hẹn. Rất hài lòng!' },
+    { id: 2, name: 'Trần Thị B', rating: 4, date: '08/05/2026', text: 'Sản phẩm chất lượng, giá hợp lý. Nhân viên hỗ trợ nhiệt tình. Giảm 1 sao vì phải đợi hơi lâu.' },
+    { id: 3, name: 'Lê Minh C', rating: 5, date: '01/05/2026', text: 'Mua lần 2 tại đây, chất lượng luôn ổn định. Xe mạnh, tiết kiệm xăng. Sử dụng được 3 tháng không có vấn đề gì.' },
+  ]);
+  const [submitSuccess, setSubmitSuccess] = React.useState(false);
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex);
   };
@@ -106,7 +118,10 @@ const DetailProduct = () => {
     }
   };
   const handlePlusClick = () => {
-    setQuantity(quantity + 1);
+    const maxStock = selectedVariant?.stock ?? Infinity;
+    if (quantity < maxStock) {
+      setQuantity(quantity + 1);
+    }
   };
   const handleVariantChoose = (i: number) => {
     const variants = product?.variants || [];
@@ -483,6 +498,18 @@ const DetailProduct = () => {
                                   </svg>
                                 </button>
                               </div>
+                              {/* Hiển thị tồn kho */}
+                              {selectedVariant && (
+                                <div style={{ marginTop: 6, fontSize: 13 }}>
+                                  {selectedVariant.stock > 0 ? (
+                                    <span style={{ color: '#27ae60', fontWeight: 500 }}>
+                                      ✓ Còn hàng: <strong>{selectedVariant.stock}</strong> chiếc
+                                    </span>
+                                  ) : (
+                                    <span style={{ color: '#e74c3c', fontWeight: 600 }}>Hết hàng</span>
+                                  )}
+                                </div>
+                              )}
                               <div className="pro-share" id="share-mobile">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
@@ -978,6 +1005,131 @@ const DetailProduct = () => {
                           <strong>:</strong>&nbsp;Thanh toán online qua thẻ tín dụng, chuyển khoản
                         </span>
                       </p>
+                    </div>
+                    {/* Tab đánh giá */}
+                    <div className={`tab-pane fade ${activeTab === 4 ? 'active show' : ''}`} style={{ padding: '24px 0' }}>
+                      {/* Tổng quan rating */}
+                      <div style={{ display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap', marginBottom: 32 }}>
+                        <div style={{ textAlign: 'center', minWidth: 120 }}>
+                          <div style={{ fontSize: 56, fontWeight: 700, color: '#e74c3c', lineHeight: 1 }}>
+                            {reviews.length > 0 ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : '0.0'}
+                          </div>
+                          <div style={{ color: '#f39c12', fontSize: 22, margin: '6px 0' }}>
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <span key={i}>{i < Math.round(reviews.reduce((s, r) => s + r.rating, 0) / (reviews.length || 1)) ? '★' : '☆'}</span>
+                            ))}
+                          </div>
+                          <div style={{ color: '#888', fontSize: 13 }}>{reviews.length} đánh giá</div>
+                        </div>
+                        <div style={{ flex: 1, minWidth: 200 }}>
+                          {[5, 4, 3, 2, 1].map(star => {
+                            const count = reviews.filter(r => r.rating === star).length;
+                            const pct = reviews.length ? (count / reviews.length) * 100 : 0;
+                            return (
+                              <div key={star} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                                <span style={{ minWidth: 16, fontSize: 13, color: '#555' }}>{star}</span>
+                                <span style={{ color: '#f39c12', fontSize: 14 }}>★</span>
+                                <div style={{ flex: 1, background: '#f0f0f0', borderRadius: 4, height: 8, overflow: 'hidden' }}>
+                                  <div style={{ width: `${pct}%`, background: '#f39c12', height: '100%', borderRadius: 4, transition: 'width 0.4s' }} />
+                                </div>
+                                <span style={{ minWidth: 28, fontSize: 12, color: '#888' }}>{count}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      {/* Danh sách reviews */}
+                      <div style={{ borderTop: '1px solid #eee', paddingTop: 20, marginBottom: 28 }}>
+                        {reviews.map(r => (
+                          <div key={r.id} style={{ borderBottom: '1px solid #f5f5f5', paddingBottom: 16, marginBottom: 16 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                              <div style={{ width: 38, height: 38, borderRadius: '50%', background: '#c0392b', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 16, flexShrink: 0 }}>
+                                {r.name.charAt(0)}
+                              </div>
+                              <div>
+                                <div style={{ fontWeight: 600, fontSize: 14 }}>{r.name}</div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                  <span style={{ color: '#f39c12', fontSize: 14 }}>
+                                    {Array.from({ length: 5 }).map((_, i) => (
+                                      <span key={i}>{i < r.rating ? '★' : '☆'}</span>
+                                    ))}
+                                  </span>
+                                  <span style={{ color: '#aaa', fontSize: 12 }}>{r.date}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <p style={{ margin: 0, fontSize: 14, color: '#444', lineHeight: 1.6 }}>{r.text}</p>
+                          </div>
+                        ))}
+                      </div>
+                      {/* Form gửi đánh giá */}
+                      <div style={{ background: '#fafafa', border: '1px solid #eee', borderRadius: 8, padding: 20 }}>
+                        <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 14, marginTop: 0 }}>Đánh giá của bạn</h3>
+                        {submitSuccess ? (
+                          <div style={{ color: '#27ae60', fontWeight: 600, fontSize: 15, padding: '12px 0' }}>✔ Cảm ơn bạn đã gửi đánh giá!</div>
+                        ) : (
+                          <form onSubmit={e => {
+                            e.preventDefault();
+                            if (!reviewName.trim() || !reviewText.trim()) return;
+                            setReviews(prev => [{
+                              id: Date.now(),
+                              name: reviewName.trim(),
+                              rating: reviewRating,
+                              date: new Date().toLocaleDateString('vi-VN'),
+                              text: reviewText.trim(),
+                            }, ...prev]);
+                            setReviewName('');
+                            setReviewText('');
+                            setReviewRating(5);
+                            setSubmitSuccess(true);
+                            setTimeout(() => setSubmitSuccess(false), 4000);
+                          }}>
+                            <div style={{ marginBottom: 12 }}>
+                              <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 4 }}>Chấm điểm</label>
+                              <div style={{ display: 'flex', gap: 4 }}>
+                                {[1, 2, 3, 4, 5].map(star => (
+                                  <span
+                                    key={star}
+                                    onClick={() => setReviewRating(star)}
+                                    onMouseEnter={() => setReviewHover(star)}
+                                    onMouseLeave={() => setReviewHover(0)}
+                                    style={{ fontSize: 28, cursor: 'pointer', color: star <= (reviewHover || reviewRating) ? '#f39c12' : '#ddd', transition: 'color 0.15s' }}
+                                  >★</span>
+                                ))}
+                              </div>
+                            </div>
+                            <div style={{ marginBottom: 12 }}>
+                              <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 4 }}>Họ tên *</label>
+                              <input
+                                type="text"
+                                value={reviewName}
+                                onChange={e => setReviewName(e.target.value)}
+                                placeholder="Nhập họ tên của bạn"
+                                required
+                                style={{ width: '100%', padding: '8px 12px', border: '1px solid #ddd', borderRadius: 6, fontSize: 14, boxSizing: 'border-box' }}
+                              />
+                            </div>
+                            <div style={{ marginBottom: 16 }}>
+                              <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 4 }}>Nội dung đánh giá *</label>
+                              <textarea
+                                value={reviewText}
+                                onChange={e => setReviewText(e.target.value)}
+                                placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm..."
+                                required
+                                rows={4}
+                                style={{ width: '100%', padding: '8px 12px', border: '1px solid #ddd', borderRadius: 6, fontSize: 14, resize: 'vertical', boxSizing: 'border-box' }}
+                              />
+                            </div>
+                            <button
+                              type="submit"
+                              className="button btn-addtocart"
+                              style={{ minWidth: 140 }}
+                            >
+                              Gửi đánh giá
+                            </button>
+                          </form>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

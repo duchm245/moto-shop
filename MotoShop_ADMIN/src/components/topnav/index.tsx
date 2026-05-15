@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './styles.css';
 import Dropdown from '../dropdown';
-import ThemeMenu from '../thememenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/redux/reducers';
 import { toast } from 'react-toastify';
@@ -206,9 +205,6 @@ const TopNav = () => {
             // renderFooter={() => <Link to="/">View All</Link>}
           />
           {/* dropdown here */}
-        </div>
-        <div className="topnav__right-item">
-          <ThemeMenu />
         </div>
       </div>
     </div>

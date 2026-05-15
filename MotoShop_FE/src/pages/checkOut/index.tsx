@@ -46,6 +46,8 @@ const CheckOut = () => {
   const [zaloPay, setZaloPay] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [saveAddressChecked, setSaveAddressChecked] = React.useState(false);
+  const [showZaloPayModal, setShowZaloPayModal] = React.useState(false);
+  const [showBankModal, setShowBankModal] = React.useState(false);
 
   const getCities = async () => {
     try {
@@ -222,12 +224,14 @@ const CheckOut = () => {
         });
       } catch (_) {}
     }
-    if (bankTransfer || payOnDelivery) {
+    if (payOnDelivery) {
       createOrder();
+    } else if (bankTransfer) {
+      setShowBankModal(true);
     } else if (vnPay) {
       createVnPay();
     } else if (zaloPay) {
-      createZaloPay();
+      setShowZaloPayModal(true);
     }
   };
   const handlePayOnDelivery = () => {
@@ -1002,38 +1006,12 @@ const CheckOut = () => {
                             </div>
                             {bankTransfer && (
                               <div className="radio-wrapper content-box-row content-box-row-secondary">
-                                <div className="blank-slate">
-                                  Anh/Chị vui lòng chuyển khoản vào tài khoản sau đây: - Ngân hàng: BIDV (Ngân hàng TMCP
-                                  Đầu Tư & Phát Triển Việt Nam) - Tên tài khoản: NGUYEN KIM THANG - Số tài khoản:
-                                  {SHOP_INFO.phone} - Chi nhánh Quang Minh * Nội Dung Chuyển Khoản: Online ck + SĐT đặt hàng.
-                                  Chuyển khoản thành công Anh/Chị cho em xin ảnh chụp sao kê giao dịch và báo lại với
-                                  nhân viên khi xác nhận ạ
+                                <div className="blank-slate" style={{ padding: '10px 14px', fontSize: 13, color: '#555', textAlign: 'left' }}>
+                                  <strong>TECHCOMBANK</strong> · HOANG QUANG LINH · <strong>19072950797012</strong><br />
+                                  <span style={{ color: '#888' }}>Bấm "Hoàn tất đơn hàng" để xem mã QR chuyển khoản</span>
                                 </div>
                               </div>
                             )}
-                            <div className="radio-wrapper content-box-row" onClick={handleVNPay}>
-                              <label className="radio-label" htmlFor="payment_method_id_1003697638">
-                                <div className="radio-input payment-method-checkbox">
-                                  <input
-                                    type-id={8}
-                                    id="payment_method_id_1003697638"
-                                    className="input-radio"
-                                    name="payment_method_id"
-                                    type="radio"
-                                  />
-                                </div>
-                                <div className="radio-content-input">
-                                  <img className="main-img" src={Images.LogoVnPay} />
-                                  <div>
-                                    <span className="radio-label-primary">
-                                      Thẻ ATM/Visa/Master/JCB/QR Pay qua cổng VNPAY
-                                    </span>
-                                    <span className="quick-tagline hidden" />
-                                    <img className="child-img" src={Images.atmvisamaster} />
-                                  </div>
-                                </div>
-                              </label>
-                            </div>
                             <div className="radio-wrapper content-box-row" onClick={handleZaloPay}>
                               <label className="radio-label" htmlFor="payment_method_id_zalo">
                                 <div className="radio-input payment-method-checkbox">
@@ -1080,6 +1058,98 @@ const CheckOut = () => {
         </div>
       </div>
       {isLoading && <LoadingPage />}
+
+      {/* ── Modal QR ZaloPay ── */}
+      {showZaloPayModal && (
+        <div
+          style={{
+            position: 'fixed', inset: 0, zIndex: 9999,
+            background: 'rgba(0,0,0,0.55)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: 16,
+          }}
+          onClick={() => setShowZaloPayModal(false)}
+        >
+          <div
+            style={{
+              background: '#fff', borderRadius: 20, padding: '28px 24px',
+              maxWidth: 360, width: '100%', textAlign: 'center',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+              position: 'relative',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Nút đóng */}
+            <button
+              onClick={() => setShowZaloPayModal(false)}
+              style={{
+                position: 'absolute', top: 12, right: 14,
+                background: 'none', border: 'none', fontSize: 22,
+                cursor: 'pointer', color: '#999', lineHeight: 1,
+              }}
+            >✕</button>
+
+            {/* Logo ZaloPay */}
+            <img src={Images.logoZaloPay} alt="ZaloPay" style={{ height: 36, marginBottom: 10 }} />
+
+            <p style={{ fontSize: 15, fontWeight: 600, color: '#333', marginBottom: 4 }}>
+              Quét mã để thanh toán
+            </p>
+            <p style={{ fontSize: 13, color: '#666', marginBottom: 14 }}>
+              Chủ tài khoản: <strong style={{ color: '#0068ff' }}>HOANG QUANG LINH</strong>
+            </p>
+
+            {/* QR */}
+            <img
+              src={Images.qrZaloPay}
+              alt="QR ZaloPay"
+              style={{
+                width: 220, height: 'auto',
+                borderRadius: 16,
+                border: '3px solid #0068ff',
+                display: 'block', margin: '0 auto 14px',
+              }}
+            />
+
+            <p style={{ fontSize: 13, color: '#0068ff', fontWeight: 600, marginBottom: 6 }}>
+              📱 Mở ZaloPay → Quét mã → Nhập số tiền → Xác nhận
+            </p>
+            <p style={{ fontSize: 12, color: '#888', marginBottom: 20 }}>
+              Số tiền: <strong style={{ color: '#e74c3c' }}>
+                {formatPrice(totalAmount + (carts?.shippingFee || 0))}
+              </strong>
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {/* Đã quét xong → tạo đơn + đóng modal */}
+              <button
+                style={{
+                  background: 'linear-gradient(135deg, #0068ff, #0051cc)',
+                  color: '#fff', border: 'none', borderRadius: 10,
+                  padding: '12px 0', fontSize: 14, fontWeight: 700,
+                  cursor: 'pointer', width: '100%',
+                }}
+                onClick={() => { setShowZaloPayModal(false); createOrder(); }}
+              >
+                ✅ Đã thanh toán xong
+              </button>
+
+              {/* Chuyển sang cổng ZaloPay */}
+              <button
+                style={{
+                  background: 'transparent', color: '#0068ff',
+                  border: '1.5px solid #0068ff', borderRadius: 10,
+                  padding: '11px 0', fontSize: 13, fontWeight: 600,
+                  cursor: 'pointer', width: '100%',
+                }}
+                onClick={() => { setShowZaloPayModal(false); createZaloPay(); }}
+              >
+                Thanh toán qua cổng ZaloPay →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,3 +1,175 @@
-tspan{
+/* ─── Analytics Page ─── */
+tspan { font-size: 14px; }
+
+.analytics-page {
+  padding: 24px;
+  min-height: 100vh;
+}
+
+.analytics-page__title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 24px 0;
+  color: var(--txt-color);
+}
+
+/* ── Stat cards ── */
+.analytics-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.analytics-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 14px;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  position: relative;
+  overflow: hidden;
+}
+.analytics-stat-card::after {
+  content: '';
+  position: absolute;
+  right: -16px;
+  bottom: -16px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+}
+
+.analytics-stat-card--blue   { background: linear-gradient(135deg, #3498db, #2980b9); }
+.analytics-stat-card--green  { background: linear-gradient(135deg, #27ae60, #219150); }
+.analytics-stat-card--purple { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+.analytics-stat-card--red    { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+
+.analytics-stat-card__icon {
+  font-size: 32px;
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+.analytics-stat-card__label {
+  font-size: 12px;
+  opacity: 0.85;
+  margin: 0 0 4px 0;
+  font-weight: 500;
+}
+.analytics-stat-card__value {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* ── Charts ── */
+.analytics-charts-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.analytics-chart-card {
+  background: var(--main-bg);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.analytics-chart-card--lg   { flex: 6; }
+.analytics-chart-card--sm   { flex: 4; }
+.analytics-chart-card--full { flex: 1; }
+
+.analytics-chart-card__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #bbb;
+  gap: 8px;
   font-size: 14px;
+}
+.analytics-chart-card__empty i { font-size: 42px; }
+
+/* ── Top Users ── */
+.analytics-top-users {
+  background: var(--main-bg);
+  border-radius: 14px;
+  padding: 20px 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.analytics-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  color: var(--txt-color);
+}
+.analytics-top-table-wrap { overflow-x: auto; }
+.analytics-top-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.analytics-top-table th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #888;
+  border-bottom: 2px solid rgba(0,0,0,0.06);
+}
+.analytics-top-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  color: var(--txt-color);
+  vertical-align: middle;
+}
+.analytics-top-table tbody tr:last-child td { border-bottom: none; }
+.analytics-top-table tbody tr:hover { background: rgba(52,152,219,0.04); }
+
+.analytics-rank { font-size: 18px; }
+.analytics-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.analytics-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3498db, #9b59b6);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.analytics-email { color: #888; font-size: 12.5px; }
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .analytics-stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .analytics-charts-row { flex-direction: column; }
+  .analytics-stats { grid-template-columns: 1fr 1fr; }
+  .analytics-stat-card__value { font-size: 16px; }
+}
+@media (max-width: 480px) {
+  .analytics-stats { grid-template-columns: 1fr; }
 }

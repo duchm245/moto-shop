@@ -16,7 +16,19 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="sidebar__logo">
-        <img src={logoImage} alt="company logo" />
+        <span style={{
+          fontFamily: "'Montserrat', 'Inter', sans-serif",
+          fontWeight: 800,
+          fontSize: '24px',
+          letterSpacing: '0.5px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '4px',
+          userSelect: 'none',
+        }}>
+          <span style={{ color: themeReducer.mode === 'theme-mode-light' ? '#1a1a1a' : '#f0f0f0' }}>LT</span>
+          <span style={{ color: '#e74c3c' }}>Motor</span>
+        </span>
       </div>
       {sidebar_items.map((item, index) => (
         <Link to={item.route} key={index}>

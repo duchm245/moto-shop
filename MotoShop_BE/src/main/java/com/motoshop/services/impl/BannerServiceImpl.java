@@ -152,7 +152,22 @@ public class BannerServiceImpl implements BannerService {
         if (banner == null) {
             return null; // Không tìm thấy banner
         }
-        bannerMapper.updateModel(banner, bannerRequest);
+        // Update name và src
+        if (bannerRequest.getName() != null) {
+            banner.setName(bannerRequest.getName());
+        }
+        if (bannerRequest.getSrc() != null) {
+            banner.setSrc(bannerRequest.getSrc());
+        }
+        // Update category theo categoryId
+        if (bannerRequest.getCategoryId() == null || bannerRequest.getCategoryId() == 0) {
+            // categoryId = null hoặc 0 → Banner home, không gắn với category nào
+            banner.setCategory(null);
+        } else {
+            Category category = categoryRepository.findById(bannerRequest.getCategoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("category", "id", bannerRequest.getCategoryId()));
+            banner.setCategory(category);
+        }
         Date currentDate = new Date();
         banner.setModifiedDate(currentDate);
         bannerRepository.save(banner);

@@ -143,13 +143,21 @@ const Header = () => {
                 {/* logo */}
                 <div className="header-wrap-logo">
                   <div className="wrap-logo" onClick={() => navigate('/')}>
-                    <a href="#">
-                      <img
-                        src={Images.logo}
-                        alt="MotoShop"
-                        className="img-responsive logoimg ls-is-cached lazyloaded"
-                        style={{ width: '140px', height: 'auto' }}
-                      />
+                    <a href="#" style={{ textDecoration: 'none' }}>
+                      <span style={{
+                        fontFamily: '\'Montserrat\', \'Inter\', sans-serif',
+                        fontWeight: 800,
+                        fontSize: '22px',
+                        letterSpacing: '0.5px',
+                        color: '#c0392b',
+                        textTransform: 'uppercase',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}>
+                        <span style={{ color: '#1a1a1a' }}>LT</span>
+                        <span style={{ color: '#c0392b' }}>Motor</span>
+                      </span>
                     </a>
                   </div>
                 </div>
@@ -167,8 +175,8 @@ const Header = () => {
                         onMouseEnter={openProductMenu}
                         onMouseLeave={scheduleCloseProductMenu}
                       >
-                        <a onClick={() => navigate(path.product)} title="Danh mục xe" className="cursor-pointer">
-                          Danh mục xe
+                        <a onClick={() => navigate(path.product)} title="Loại xe" className="cursor-pointer">
+                          Loại xe
                           {category.length > 0 && (
                             <svg xmlns="http://www.w3.org/2000/svg" width={12} height={12} viewBox="0 0 128 128" style={{ marginLeft: 4 }}>
                               <path d="m64 88c-1.023 0-2.047-.391-2.828-1.172l-40-40c-1.563-1.563-1.563-4.094 0-5.656s4.094-1.563 5.656 0l37.172 37.172 37.172-37.172c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656l-40 40c-.781.781-1.805 1.172-2.828 1.172z" />
@@ -467,7 +475,7 @@ const Header = () => {
                       </a>
                     </li>
                     <li className="has-submenu level0 " onClick={() => navigate(path.product)}>
-                      <a title="Danh mục xe">Danh mục xe</a>
+                      <a title="Loại xe">Loại xe</a>
                     </li>
                     {!!category &&
                       !!category.length &&
@@ -561,13 +569,19 @@ const Header = () => {
               <div className="row">
                 <div className="col-lg-3 logo">
                   <div className="wrap-logo" onClick={() => navigate('/')}>
-                    <a href="#">
-                      <img
-                        src={Images.logo}
-                        alt="MotoShop"
-                        className="img-responsive logoimg ls-is-cached lazyloaded"
-                        style={{ width: '140px', height: 'auto' }}
-                      />
+                    <a href="#" style={{ textDecoration: 'none' }}>
+                      <span style={{
+                        fontFamily: '\'Montserrat\', \'Inter\', sans-serif',
+                        fontWeight: 800,
+                        fontSize: '22px',
+                        letterSpacing: '0.5px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}>
+                        <span style={{ color: '#1a1a1a' }}>LT</span>
+                        <span style={{ color: '#c0392b' }}>Motor</span>
+                      </span>
                     </a>
                   </div>
                 </div>
