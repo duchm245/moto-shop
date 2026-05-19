@@ -25,3 +25,23 @@ replay_pid*
 
 # Claude Code
 .claude/
+
+# Node.js dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Temp folders
+pptx_temp/
+
+# npm/yarn lock (optional - keep if you want reproducible builds)
+# package-lock.json
