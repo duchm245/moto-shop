@@ -1,4 +1,5 @@
 import React from 'react';
+import quyTrinhImg from '~/static/images/quy-trinh-mua-xe-motor.png';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -914,7 +915,158 @@ const Home = () => {
           </div>
         </div>
       </div>
+      {/* ===== TẠI SAO CHỌN CHÚNG TÔI ===== */}
+      <section className="section-home-whyus">
+        <div className="container">
+          <div className="whyus-inner">
+            {/* Nội dung bên trái */}
+            <div className="whyus-content">
+              <h2 className="whyus-title">Mua xe tại <span>{SHOP_INFO.name}</span></h2>
+              <div className="whyus-features">
+                <div className="whyus-feature-item">
+                  <div className="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                    </svg>
+                  </div>
+                  <div className="feature-body">
+                    <h3>Thủ tục đơn giản, nhanh gọn</h3>
+                    <p>Giấy tờ tối giản, hỗ trợ làm hồ sơ trả góp ngay tại showroom. Nhận xe trong ngày mà không cần chờ đợi lâu.</p>
+                  </div>
+                </div>
+                <div className="whyus-feature-item">
+                  <div className="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                  </div>
+                  <div className="feature-body">
+                    <h3>Có nhân viên chăm sóc tận tình</h3>
+                    <p>Đội ngũ tư vấn viên giàu kinh nghiệm luôn sẵn sàng hỗ trợ bạn chọn xe phù hợp với nhu cầu và ngân sách.</p>
+                  </div>
+                </div>
+                <div className="whyus-feature-item">
+                  <div className="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                  </div>
+                  <div className="feature-body">
+                    <h3>Có bộ phận giải đáp sau bán hàng</h3>
+                    <p>Hỗ trợ kỹ thuật, bảo dưỡng định kỳ và giải đáp mọi thắc mắc sau khi mua xe. Gọi <b>{SHOP_INFO.phoneDisplay}</b> — miễn phí 24/7.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Ảnh bên phải */}
+            <div className="whyus-image">
+              <img
+                src={quyTrinhImg}
+                alt="Quy trình mua xe tại LT Motor"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* ===== GIẢI THƯỞNG & CHỨNG NHẬN ===== */}
+      <section className="section-home-awards">
+        <div className="container">
+          <div className="section-title" style={{ textAlign: 'center' }}>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: 700 }}>Giải thưởng &amp; Chứng nhận</h2>
+            <p style={{ color: '#666', marginTop: '8px' }}>Được công nhận bởi các tổ chức uy tín trong ngành xe máy Việt Nam</p>
+          </div>
+          <div className="awards-grid">
+            <div className="award-item">
+              <div className="award-icon">🏆</div>
+              <div className="award-info">
+                <h4>Top 10 Đại lý Honda</h4>
+                <p>Uy tín nhất miền Trung 2023</p>
+              </div>
+            </div>
+            <div className="award-item">
+              <div className="award-icon">⭐</div>
+              <div className="award-info">
+                <h4>Dịch vụ xuất sắc</h4>
+                <p>Chứng nhận chất lượng ISO 9001</p>
+              </div>
+            </div>
+            <div className="award-item">
+              <div className="award-icon">🥇</div>
+              <div className="award-info">
+                <h4>Đại lý Yamaha chính hãng</h4>
+                <p>Được ủy quyền phân phối chính thức</p>
+              </div>
+            </div>
+            <div className="award-item">
+              <div className="award-icon">💎</div>
+              <div className="award-info">
+                <h4>Khách hàng hài lòng nhất</h4>
+                <p>Bình chọn từ 5.000+ khách hàng</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CHỈ DẪN ĐỊA CHỈ + BẢN ĐỒ ===== */}
+      <section className="section-home-map">
+        <div className="container">
+          <div className="section-title" style={{ textAlign: 'center' }}>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: 700 }}>Tìm đường đến showroom</h2>
+            <p style={{ color: '#666', marginTop: '8px' }}>Ghé thăm chúng tôi để trải nghiệm xe trực tiếp</p>
+          </div>
+          <div className="map-wrapper">
+            <div className="map-info">
+              <div className="map-info-item">
+                <div className="map-info-icon">📍</div>
+                <div>
+                  <h4>Địa chỉ showroom</h4>
+                  <p>{SHOP_INFO.address}</p>
+                </div>
+              </div>
+              <div className="map-info-item">
+                <div className="map-info-icon">📞</div>
+                <div>
+                  <h4>Hotline tư vấn</h4>
+                  <p><a href={`tel:${SHOP_INFO.phone}`}>{SHOP_INFO.phoneDisplay}</a></p>
+                </div>
+              </div>
+              <div className="map-info-item">
+                <div className="map-info-icon">🕐</div>
+                <div>
+                  <h4>Giờ mở cửa</h4>
+                  <p>Thứ 2 – Thứ 7: 8:00 – 18:00</p>
+                  <p>Chủ nhật: 8:00 – 12:00</p>
+                </div>
+              </div>
+              <div className="map-info-item">
+                <div className="map-info-icon">✉️</div>
+                <div>
+                  <h4>Email</h4>
+                  <p><a href={`mailto:${SHOP_INFO.email}`}>{SHOP_INFO.email}</a></p>
+                </div>
+              </div>
+            </div>
+            <div className="map-embed">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3834.0!2d108.2!3d16.07!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTbCsDA0JzEyLjAiTiAxMDjCsDEyJzAwLjAiRQ!5e0!3m2!1svi!2svn!4v1620000000000!5m2!1svi!2svn"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Bản đồ showroom QuangLinhMoto"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* gần cuối */}
+
       <div className="section-home-policy">
         <div className="container">
           <div className="list-policy-row row">
