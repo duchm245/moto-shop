@@ -1,0 +1,169 @@
+/* ════════════════════════════════════════
+   Floating Contact Buttons
+   Hiệu ứng tham khảo: kuongngan.com
+   ════════════════════════════════════════ */
+
+.fc-wrapper {
+  position: fixed;
+  right: 12px;
+  bottom: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  z-index: 999;
+}
+
+/* ────────────────────────────────────────
+   Nút Gọi điện (3 lớp vòng đồng tâm)
+   ──────────────────────────────────────── */
+/* Container — height bằng với simple-btn (48px) để flex gap đều,
+   overflow:visible cho các vòng hiện ra ngoài */
+.fc-phone-ring {
+  position: relative;
+  width: 110px;
+  height: 48px;
+  overflow: visible;
+}
+
+/* Lớp 1: Vòng ngoài 85×85, căn tâm so với height 48px
+   center-y = 24 → top = 24 - 42.5 = -18.5 ≈ -19px
+   center-x = 55 → left = 55 - 42.5 = 12.5 ≈ 13px          */
+.fc-outer-ring {
+  position: absolute;
+  width: 85px;
+  height: 85px;
+  top: -19px;
+  left: 13px;
+  border-radius: 50%;
+  border: 2px solid #25a642;
+  background: transparent;
+  opacity: 0.5;
+  animation: fc-outer-pulse 1.2s infinite ease-in-out;
+  transform-origin: 50% 50%;
+}
+
+/* Lớp 2: Vòng giữa 55×55
+   top = 24 - 27.5 = -3.5 ≈ -4px   left = 55 - 27.5 = 27.5 ≈ 28px */
+.fc-mid-ring {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  top: -4px;
+  left: 28px;
+  border-radius: 50%;
+  background: rgba(37, 166, 66, 0.65);
+  border: 2px solid transparent;
+  animation: fc-mid-scale 2.3s infinite ease-in-out;
+  transform-origin: 50% 50%;
+}
+
+/* Lớp 3 — nút thật 38×38
+   top = 24 - 19 = 5px   left = 55 - 19 = 36px               */
+.fc-inner-btn--phone {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  top: 5px;
+  left: 36px;
+  border-radius: 50%;
+  background: #25a642;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(37, 166, 66, 0.5);
+  animation: fc-phone-shake 1s infinite ease-in-out;
+  transform-origin: 50% 50%;
+}
+
+.fc-inner-btn--phone:hover {
+  background: #1e8f38;
+  animation-play-state: paused;
+}
+
+/* ────────────────────────────────────────
+   Nút Zalo & Tư vấn (dạng tròn đơn giản)
+   ──────────────────────────────────────── */
+.fc-simple-btn {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  text-decoration: none;
+  box-shadow: 0 0 22px rgba(100, 97, 97, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fc-simple-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  text-decoration: none;
+}
+
+.fc-simple-btn--zalo  { background: #0068ff; }
+.fc-simple-btn--consult { background: #e67e22; }
+
+.fc-simple-label {
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.2px;
+}
+
+/* ────────────────────────────────────────
+   Keyframes (chép từ kuongngan, đổi màu)
+   ──────────────────────────────────────── */
+
+/* Vòng ngoài: scale nhỏ → vừa → to, opacity 0.1 → 0.5 → 0.1 */
+@keyframes fc-outer-pulse {
+  0%   { transform: rotate(0) scale(0.5) skew(1deg); opacity: 0.1; }
+  50%  { transform: rotate(0) scale(0.7) skew(1deg); opacity: 0.5; }
+  100% { transform: rotate(0) scale(1)   skew(1deg); opacity: 0.1; }
+}
+
+/* Vòng giữa: scale 0.7 → 1 → 0.7 */
+@keyframes fc-mid-scale {
+  0%   { transform: rotate(0) scale(0.7) skew(1deg); opacity: 0.6; }
+  50%  { transform: rotate(0) scale(1)   skew(1deg); opacity: 0.6; }
+  100% { transform: rotate(0) scale(0.7) skew(1deg); opacity: 0.6; }
+}
+
+/* Icon trong: rung ±25° liên tục */
+@keyframes fc-phone-shake {
+  0%   { transform: rotate(0)    scale(1) skew(1deg); }
+  10%  { transform: rotate(-25deg) scale(1) skew(1deg); }
+  20%  { transform: rotate(25deg)  scale(1) skew(1deg); }
+  30%  { transform: rotate(-25deg) scale(1) skew(1deg); }
+  40%  { transform: rotate(25deg)  scale(1) skew(1deg); }
+  50%  { transform: rotate(-25deg) scale(1) skew(1deg); }
+  60%  { transform: rotate(25deg)  scale(1) skew(1deg); }
+  100% { transform: rotate(0)    scale(1) skew(1deg); }
+}
+
+/* ────────────────────────────────────────
+   Responsive — mobile nhỏ
+   ──────────────────────────────────────── */
+@media (max-width: 480px) {
+  .fc-wrapper {
+    right: 6px;
+    bottom: 170px;
+  }
+
+  .fc-phone-ring { width: 90px; height: 42px; }
+
+  /* center-y=21, center-x=45 */
+  .fc-outer-ring { width: 70px; height: 70px; top: -14px; left: 10px; }
+  .fc-mid-ring   { width: 46px; height: 46px; top:  -2px; left: 22px; }
+  .fc-inner-btn--phone { width: 32px; height: 32px; top: 5px; left: 29px; }
+
+  .fc-simple-btn { width: 42px; height: 42px; }
+}

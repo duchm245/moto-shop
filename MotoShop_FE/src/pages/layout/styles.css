@@ -31,46 +31,33 @@
     opacity: 1;
   }
 }
-/*---------------------- Sroll to Top -------------------*/
+/*---------------------- Scroll to Top -------------------*/
 .back-to-top {
   position: fixed;
-  right: 10px;
-  bottom: 150px;
+  right: 18px;
+  bottom: 80px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #25a642;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
   opacity: 0;
   visibility: hidden;
-  z-index: 99;
- }
+  z-index: 999;
+  box-shadow: 0 3px 12px rgba(37, 166, 66, 0.45);
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
 
 .back-to-top.show {
   opacity: 1;
   visibility: visible;
-  -webkit-transition: opacity .3s ease;
-  -moz-transition: opacity .3s ease;
-  transition: opacity .3s ease; 
 }
 
-.back-to-top .btt-label-back {
-  display: inline-block;
-  vertical-align: middle;
-  line-height: 40px;
-  -webkit-transform: rotate(-90deg) translateX(50%) translateY(50%);
-  -moz-transform: rotate(-90deg) translateX(50%) translateY(50%);
-  transform: rotate(-90deg) translateX(50%) translateY(50%);
-}
-
-.back-to-top .btt-icon-back {
-  position: absolute;
-  bottom: 275%;
-  left: 76%;
-  -webkit-transform: translateX(-50%) translateY(0);
-  -moz-transform: translateX(-50%) translateY(0);
-  transform: translateX(-50%) translateY(0);
-  -webkit-transition: -webkit-transform 0.45s cubic-bezier(0, 0.95, 0.77, 1);
-  transition: transform 0.45s cubic-bezier(0, 0.95, 0.77, 1);
-  will-change: transform; 
-}
-.btt-back span{
-  color:blue;
-  font-size: 14px;
-  font-weight: 600;
+.back-to-top:hover {
+  transform: translateY(-3px);
+  background: #1e8f38;
 }
