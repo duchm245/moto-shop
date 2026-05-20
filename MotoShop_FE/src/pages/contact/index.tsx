@@ -119,7 +119,7 @@ const Contact = () => {
                       <div className="right">
                         <strong>Showroom MotoShop</strong>
                         <br />
-                        Số 19, nghách 103/80 Xuân Phương, phường Phương Canh, quận Nam Từ Liêm, Tp.Hà Nội
+                        Số 34 ngõ 445 Nguyễn Khang, Cầu Giấy, Hà Nội
                         <br />
                         <span style={{ color: '#e53e3e', fontSize: '13px' }}>★ Đại lý ủy quyền Honda, Yamaha, Suzuki</span>
                       </div>

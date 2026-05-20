@@ -8,7 +8,7 @@ export const SHOP_INFO = {
   phoneDisplay: '0334 018 518',
   zaloPhone:    '0334018518',
   email:        'quanglinhmoto@gmail.com',
-  address:      'Quang Minh, Mê Linh, Hà Nội',
+  address:      'Số 34 ngõ 445 Nguyễn Khang, Cầu Giấy, Hà Nội',
 } as const;
 
 const formatPrice = (price: number): string => {
