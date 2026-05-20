@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Api from '~/api/apis';
 import { REQUEST_API } from '~/constants/method';
 import { RootState } from '~/redux/reducers';
@@ -133,6 +134,34 @@ const EditBanner = () => {
     setCategoryId(selected); // Giữ dạng string, convert sang số khi gửi API
   };
 
+  // Upload ảnh mới lên server, trả về tên file đã lưu
+  const uploadImage = async (file: File): Promise<string | null> => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await axios.post(Api.uploadBannerImage(), formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.data?.status) {
+        return res.data.data as string;
+      } else {
+        toast.error(`Upload ảnh thất bại: ${res.data?.data}`, {
+          position: 'top-right',
+          pauseOnHover: false,
+          theme: 'dark',
+        });
+        return null;
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast.error('Lỗi khi upload ảnh', { position: 'top-right', pauseOnHover: false, theme: 'dark' });
+      return null;
+    }
+  };
+
   const updateBanner = async () => {
     if (!!token) {
       try {
@@ -152,10 +181,19 @@ const EditBanner = () => {
           });
           return;
         }
+
+        // Nếu là file mới từ máy → upload lên server trước
+        let savedFilename = fileImg.name;
+        if (isLocalFile) {
+          const uploaded = await uploadImage(fileImg);
+          if (!uploaded) return; // Upload thất bại, dừng lại
+          savedFilename = uploaded;
+        }
+
         const data = {
           name: name,
           categoryId: categoryId !== '' ? Number(categoryId) : null,
-          src: fileImg?.name,
+          src: savedFilename,
         };
         const url = Api.updateBanner(bannerId);
         const [res] = await Promise.all([

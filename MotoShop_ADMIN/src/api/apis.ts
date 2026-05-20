@@ -48,6 +48,7 @@ const Api = {
   //banner
   getAllBanner: (params) => API_URL + `/api/admin/banner/allBanner?${new URLSearchParams (params)}`,
   createBanner : () => API_URL +`/api/admin/banner/create`,
+  uploadBannerImage : () => API_URL +`/api/admin/banner/upload`,
   updateBanner : (id) => API_URL +`/api/admin/banner/update/${id}`,
   hideBanner : (id) => API_URL +`/api/admin/banner/hideBanner/${id}`,
   showBanner : (id) => API_URL +`/api/admin/banner/showBanner/${id}`,
