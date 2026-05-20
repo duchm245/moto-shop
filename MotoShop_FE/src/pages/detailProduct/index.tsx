@@ -16,6 +16,7 @@ import cartApi from '~/apis/cart.apis';
 import CartAction from '~/redux/actions/cartAction';
 import { toast } from 'react-toastify';
 import productApi from '~/apis/product.apis';
+import reviewApi from '~/apis/review.apis';
 import path from '~/constants/path';
 import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
 import saleApi from '~/apis/sale.apis';
@@ -57,14 +58,11 @@ const DetailProduct = () => {
   // State cho đánh giá
   const [reviewRating, setReviewRating] = React.useState(5);
   const [reviewHover, setReviewHover] = React.useState(0);
-  const [reviewName, setReviewName] = React.useState('');
   const [reviewText, setReviewText] = React.useState('');
-  const [reviews, setReviews] = React.useState([
-    { id: 1, name: 'Nguyễn Văn A', rating: 5, date: '10/05/2026', text: 'Xe rất đẹp, đi mượt mà và êm. Showroom phục vụ tận tình, giao hàng đúng hẹn. Rất hài lòng!' },
-    { id: 2, name: 'Trần Thị B', rating: 4, date: '08/05/2026', text: 'Sản phẩm chất lượng, giá hợp lý. Nhân viên hỗ trợ nhiệt tình. Giảm 1 sao vì phải đợi hơi lâu.' },
-    { id: 3, name: 'Lê Minh C', rating: 5, date: '01/05/2026', text: 'Mua lần 2 tại đây, chất lượng luôn ổn định. Xe mạnh, tiết kiệm xăng. Sử dụng được 3 tháng không có vấn đề gì.' },
-  ]);
+  const [reviews, setReviews] = React.useState<{ id: number; name: string; rating: number; date: string; text: string }[]>([]);
   const [submitSuccess, setSubmitSuccess] = React.useState(false);
+  const [reviewError, setReviewError] = React.useState('');
+  const [reviewLoading, setReviewLoading] = React.useState(false);
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex);
   };
@@ -112,6 +110,30 @@ const DetailProduct = () => {
       getRelatedProduct();
     }
   }, [product]);
+
+  const fetchReviews = async () => {
+    if (!id) return;
+    try {
+      const res = await reviewApi.getReviews(id);
+      if (res.data.status) {
+        const data = res.data.data as any[];
+        setReviews(data.map((r: any) => ({
+          id: r.id,
+          name: r.userName,
+          rating: r.rating,
+          date: r.createdDate,
+          text: r.content,
+        })));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchReviews();
+  }, [id]);
+
   const handleMinusClick = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
@@ -1050,25 +1072,50 @@ const DetailProduct = () => {
                       {/* Form gửi đánh giá */}
                       <div style={{ background: '#fafafa', border: '1px solid #eee', borderRadius: 8, padding: 20 }}>
                         <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 14, marginTop: 0 }}>Đánh giá của bạn</h3>
-                        {submitSuccess ? (
+                        {!user ? (
+                          <div style={{ textAlign: 'center', padding: '18px 0' }}>
+                            <p style={{ color: '#555', marginBottom: 12 }}>Vui lòng đăng nhập để gửi đánh giá</p>
+                            <button
+                              className="button btn-addtocart"
+                              style={{ minWidth: 140 }}
+                              onClick={() => navigate('/login')}
+                            >
+                              Đăng nhập
+                            </button>
+                          </div>
+                        ) : submitSuccess ? (
                           <div style={{ color: '#27ae60', fontWeight: 600, fontSize: 15, padding: '12px 0' }}>✔ Cảm ơn bạn đã gửi đánh giá!</div>
                         ) : (
-                          <form onSubmit={e => {
+                          <form onSubmit={async e => {
                             e.preventDefault();
-                            if (!reviewName.trim() || !reviewText.trim()) return;
-                            setReviews(prev => [{
-                              id: Date.now(),
-                              name: reviewName.trim(),
-                              rating: reviewRating,
-                              date: new Date().toLocaleDateString('vi-VN'),
-                              text: reviewText.trim(),
-                            }, ...prev]);
-                            setReviewName('');
-                            setReviewText('');
-                            setReviewRating(5);
-                            setSubmitSuccess(true);
-                            setTimeout(() => setSubmitSuccess(false), 4000);
+                            if (!reviewText.trim()) return;
+                            setReviewLoading(true);
+                            setReviewError('');
+                            try {
+                              const res = await reviewApi.addReview({
+                                userId: user.id,
+                                productId: Number(id),
+                                rating: reviewRating,
+                                content: reviewText.trim(),
+                              });
+                              if (res.data.status) {
+                                setReviewText('');
+                                setReviewRating(5);
+                                setSubmitSuccess(true);
+                                setTimeout(() => setSubmitSuccess(false), 4000);
+                                fetchReviews();
+                              } else {
+                                setReviewError(res.data.message || 'Gửi đánh giá thất bại');
+                              }
+                            } catch {
+                              setReviewError('Có lỗi xảy ra, vui lòng thử lại');
+                            } finally {
+                              setReviewLoading(false);
+                            }
                           }}>
+                            <div style={{ marginBottom: 8, fontSize: 13, color: '#555' }}>
+                              Đánh giá với tên: <strong>{user.lastName} {user.firstName || user.username}</strong>
+                            </div>
                             <div style={{ marginBottom: 12 }}>
                               <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 4 }}>Chấm điểm</label>
                               <div style={{ display: 'flex', gap: 4 }}>
@@ -1083,17 +1130,6 @@ const DetailProduct = () => {
                                 ))}
                               </div>
                             </div>
-                            <div style={{ marginBottom: 12 }}>
-                              <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 4 }}>Họ tên *</label>
-                              <input
-                                type="text"
-                                value={reviewName}
-                                onChange={e => setReviewName(e.target.value)}
-                                placeholder="Nhập họ tên của bạn"
-                                required
-                                style={{ width: '100%', padding: '8px 12px', border: '1px solid #ddd', borderRadius: 6, fontSize: 14, boxSizing: 'border-box' }}
-                              />
-                            </div>
                             <div style={{ marginBottom: 16 }}>
                               <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 4 }}>Nội dung đánh giá *</label>
                               <textarea
@@ -1105,12 +1141,16 @@ const DetailProduct = () => {
                                 style={{ width: '100%', padding: '8px 12px', border: '1px solid #ddd', borderRadius: 6, fontSize: 14, resize: 'vertical', boxSizing: 'border-box' }}
                               />
                             </div>
+                            {reviewError && (
+                              <div style={{ color: '#e74c3c', fontSize: 13, marginBottom: 10 }}>{reviewError}</div>
+                            )}
                             <button
                               type="submit"
                               className="button btn-addtocart"
-                              style={{ minWidth: 140 }}
+                              style={{ minWidth: 140, opacity: reviewLoading ? 0.7 : 1 }}
+                              disabled={reviewLoading}
                             >
-                              Gửi đánh giá
+                              {reviewLoading ? 'Đang gửi...' : 'Gửi đánh giá'}
                             </button>
                           </form>
                         )}
