@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
@@ -20,11 +23,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String location = imagePath.startsWith("file:") ? imagePath : "file:" + imagePath;
-        // Đảm bảo path kết thúc bằng /
-        if (!location.endsWith("/")) {
-            location = location + "/";
-        }
+        // Resolve to absolute path để đảm bảo Spring Boot serve đúng trên mọi môi trường
+        Path absolutePath = Paths.get(imagePath).toAbsolutePath().normalize();
+        // Dùng forward slash và đảm bảo kết thúc bằng /
+        String location = "file:" + absolutePath.toString().replace("\\", "/") + "/";
+
         registry.addResourceHandler("/src/static/images/**")
                 .addResourceLocations(location);
     }

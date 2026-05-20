@@ -42,11 +42,15 @@ public class ABannerRest {
             if (file == null || file.isEmpty()) {
                 return new ResponseEntity<>(ApiResponse.build(201, false, "Thất bại", "File rỗng"), HttpStatus.OK);
             }
-            String filename = file.getOriginalFilename();
-            if (filename == null || filename.isBlank()) {
+            String originalFilename = file.getOriginalFilename();
+            if (originalFilename == null || originalFilename.isBlank()) {
                 return new ResponseEntity<>(ApiResponse.build(201, false, "Thất bại", "Tên file không hợp lệ"), HttpStatus.OK);
             }
-            Path uploadDir = Paths.get(imagePath);
+            // Chỉ lấy tên file (không lấy path đầy đủ), tránh path traversal
+            String filename = Paths.get(originalFilename).getFileName().toString();
+
+            // Dùng absolute path để đảm bảo cùng thư mục với WebMvcConfig
+            Path uploadDir = Paths.get(imagePath).toAbsolutePath().normalize();
             if (!Files.exists(uploadDir)) {
                 Files.createDirectories(uploadDir);
             }
@@ -57,6 +61,7 @@ public class ABannerRest {
             return new ResponseEntity<>("Lỗi upload: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 
     @PostMapping("/create")
