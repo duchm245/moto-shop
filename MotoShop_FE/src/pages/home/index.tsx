@@ -1037,8 +1037,8 @@ const Home = () => {
                 <div className="map-info-icon">🕐</div>
                 <div>
                   <h4>Giờ mở cửa</h4>
-                  <p>Thứ 2 – Thứ 7: 8:00 – 18:00</p>
-                  <p>Chủ nhật: 8:00 – 12:00</p>
+                  <p>{SHOP_INFO.hoursWeekdays}</p>
+                  <p>{SHOP_INFO.hoursSunday}</p>
                 </div>
               </div>
               <div className="map-info-item">

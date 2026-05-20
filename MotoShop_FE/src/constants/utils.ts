@@ -9,6 +9,8 @@ export const SHOP_INFO = {
   zaloPhone:    '0334018518',
   email:        'quanglinhmoto@gmail.com',
   address:      'Số 34 ngõ 445 Nguyễn Khang, Cầu Giấy, Hà Nội',
+  hoursWeekdays: 'Thứ 2 – Thứ 7: 8:00 – 18:00',
+  hoursSunday:   'Chủ nhật: 8:00 – 12:00',
 } as const;
 
 const formatPrice = (price: number): string => {

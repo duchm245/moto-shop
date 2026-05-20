@@ -192,8 +192,8 @@ const Contact = () => {
                       <div className="right">
                         <strong>Giờ mở cửa Showroom</strong>
                         <br />
-                        Thứ 2 đến Thứ 6: 8h00 – 18h00
-                        <br /> Thứ 7 và Chủ nhật: 8h00 – 17h00
+                        {SHOP_INFO.hoursWeekdays}
+                        <br /> {SHOP_INFO.hoursSunday}
                         <br />
                         <span style={{ fontSize: '13px', color: '#666' }}>Tư vấn mua xe & trả góp tại showroom</span>
                       </div>

@@ -192,8 +192,8 @@ const ConsultPage = () => {
               <div className="info-card__icon">🕐</div>
               <div>
                 <p className="info-card__label">Giờ làm việc</p>
-                <p className="info-card__value">Thứ 2 – Thứ 7: 8:00 – 18:00</p>
-                <p className="info-card__sub">Chủ nhật: 8:00 – 17:00</p>
+                <p className="info-card__value">{SHOP_INFO.hoursWeekdays}</p>
+                <p className="info-card__sub">{SHOP_INFO.hoursSunday}</p>
               </div>
             </div>
 
