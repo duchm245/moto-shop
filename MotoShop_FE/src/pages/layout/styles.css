@@ -39,7 +39,7 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #25a642;
+  background: #6c8ebf;
   color: white;
   display: flex;
   align-items: center;
@@ -48,7 +48,7 @@
   opacity: 0;
   visibility: hidden;
   z-index: 999;
-  box-shadow: 0 3px 12px rgba(37, 166, 66, 0.45);
+  box-shadow: 0 3px 12px rgba(108, 142, 191, 0.4);
   transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
@@ -59,5 +59,5 @@
 
 .back-to-top:hover {
   transform: translateY(-3px);
-  background: #1e8f38;
+  background: #5a7aab;
 }
