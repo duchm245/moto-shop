@@ -27,6 +27,10 @@ SwiperCore.use([Navigation]);
 const Home = () => {
   const navigate = useNavigate();
   const [slide, setSlide] = React.useState<Banner[]>([]);
+  const [searchKeyword, setSearchKeyword] = React.useState('');
+  const [activeTabId, setActiveTabId] = React.useState<number | null>(null);
+  const [tabProducts, setTabProducts] = React.useState<Product[]>([]);
+  const [tabLoading, setTabLoading] = React.useState(false);
   const [productBestSeller, setProductBestSeller] = React.useState<Product[]>([]);
   //PBS === productBestSeller
   const [sales, setSales] = React.useState<Sale[]>([]);
@@ -92,6 +96,42 @@ const Home = () => {
       setActiveSlide((prev) => Math.min(totalSlides - 1, prev + 1));
     }
   };
+
+  const handleSearch = () => {
+    navigate(path.product, {
+      state: { keyword: searchKeyword.trim() || undefined },
+    });
+  };
+
+  const fetchTabProducts = async (categoryId?: number | null) => {
+    try {
+      setTabLoading(true);
+      const params: any = {
+        minPrice: 0,
+        maxPrice: 200000000,
+        pageNo: 1,
+        sortBy: 'id',
+        sortDirection: 'desc',
+      };
+      if (categoryId) params.categoryId = categoryId;
+      const res = await productApi.getAllProducts(params);
+      if (res.data.status) {
+        const data: Product[] = res.data.data?.data ?? [];
+        setTabProducts(data.slice(0, 9));
+      } else {
+        setTabProducts([]);
+      }
+    } catch (e) {
+      console.error(e);
+      setTabProducts([]);
+    } finally {
+      setTabLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchTabProducts();
+  }, []);
 
   //getProductBestSeller
   const getProBestSeller = async () => {
@@ -360,128 +400,118 @@ const Home = () => {
             })}
         </Swiper>
       </div>
-      {/* danh mục nổi bật */}
-      <div className="section-home-category">
-        <div className="container">
-          <div className="section-title">
-            <h2 className="text-start">
-              <Link to={path.product}>Danh mục nổi bật</Link>
-            </h2>{' '}
-            <div className="swiper-nav">
-              <span
-                className={`swiper-button swiper-category-prev ${!swiper || swiper.isBeginning ? 'swiper-button-disabled' : ''}`}
-                role="button"
-                tabIndex={-1}
-                onClick={handlePrevClick}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 511.993 511.993">
-                  <g>
-                    <g>
-                      <g>
-                        <path d="M487.292,235.408H20.59c-11.372,0-20.59,9.224-20.59,20.59c0,11.366,9.217,20.59,20.59,20.59h466.702 c11.372,0,20.59-9.217,20.59-20.59C507.882,244.625,498.665,235.408,487.292,235.408z" />
-                      </g>
-                    </g>
-                    <g>
-                      <g>
-                        <path d="M505.96,241.434L304.187,39.653c-8.044-8.037-21.07-8.037-29.114,0c-8.044,8.044-8.044,21.084,0,29.121l187.216,187.223 L275.073,443.221c-8.044,8.037-8.044,21.077,0,29.114c4.022,4.022,9.286,6.033,14.557,6.033s10.535-2.011,14.557-6.033	l201.773-201.78C514.004,262.511,514.004,249.47,505.96,241.434z" />
-                      </g>
-                    </g>
-                  </g>
-                </svg>
-              </span>
-              <span
-                className={`swiper-button swiper-category-next ${
-                  !swiper || swiper.isEnd ? 'swiper-button-disabled' : ''
-                }`}
-                role="button"
-                tabIndex={0}
-                onClick={handleNextClick}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 511.993 511.993">
-                  <g>
-                    <g>
-                      <g>
-                        <path d="M487.292,235.408H20.59c-11.372,0-20.59,9.224-20.59,20.59c0,11.366,9.217,20.59,20.59,20.59h466.702 c11.372,0,20.59-9.217,20.59-20.59C507.882,244.625,498.665,235.408,487.292,235.408z" />
-                      </g>
-                    </g>
-                    <g>
-                      <g>
-                        <path d="M505.96,241.434L304.187,39.653c-8.044-8.037-21.07-8.037-29.114,0c-8.044,8.044-8.044,21.084,0,29.121l187.216,187.223 L275.073,443.221c-8.044,8.037-8.044,21.077,0,29.114c4.022,4.022,9.286,6.033,14.557,6.033s10.535-2.011,14.557-6.033	l201.773-201.78C514.004,262.511,514.004,249.47,505.96,241.434z" />
-                      </g>
-                    </g>
-                  </g>
-                </svg>
-              </span>
+      {/* Phong Cách Riêng Của Bạn */}
+      <div className="section-home-style-explorer">
+        <div className="style-explorer-glow style-explorer-glow--left" />
+        <div className="style-explorer-glow style-explorer-glow--right" />
+        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+
+          {/* Header */}
+          <div className="style-explorer-header">
+            <span className="style-explorer-label">Lựa Chọn</span>
+            <h2 className="style-explorer-title">Phong Cách Riêng Của Bạn</h2>
+          </div>
+
+          {/* Search bar */}
+          <div className="style-explorer-search">
+            <div className="style-search-box">
+              <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <circle cx={11} cy={11} r={8} />
+                <path strokeLinecap="round" d="M21 21l-4.35-4.35" />
+              </svg>
+              <input
+                id="home-style-search-input"
+                type="text"
+                className="style-search-input"
+                placeholder="Nhập tên sản phẩm bạn cần tìm kiếm"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              />
             </div>
-          </div>
-          <div className="section-content">
-            <Swiper
-              onSwiper={setSwiperRef}
-              onSlideChange={(s) => setActiveSlide(s.activeIndex)}
-              observer={true}
-              observeParents={true}
-              slidesPerView={4}
-              breakpoints={{
-                0: {
-                  slidesPerView: 1.4,
-                  spaceBetween: 30,
-                },
-                760: {
-                  slidesPerView: 2,
-                  spaceBetween: 30,
-                },
-                990: {
-                  slidesPerView: 3,
-                  spaceBetween: 30,
-                },
-                1200: {
-                  slidesPerView: 4,
-                  spaceBetween: 30,
-                },
-              }}
-              spaceBetween={30}
-              modules={[Navigation]}
-              className="list-category-slide"
+            <button
+              id="home-style-search-btn"
+              className="style-search-btn"
+              onClick={handleSearch}
             >
-              {!!category &&
-                !!category.length &&
-                category.map((item, i) => (
-                  <SwiperSlide key={i} className="category-item">
-                    <div
-                      className="category-item__inner"
-                      onClick={() => navigate(path.product, { state: { categoryId: item.id } })}
-                    >
-                      <div className="category-item__img boxlazy-img">
-                        <div className="cursor-pointer">
-                          <img className="swiper-lazy swiper-lazy-loaded" src={`${API_URL_IMAGE}${item.urlImage}`} />
-                        </div>
-                      </div>
-                      <div className="category-item__info cursor-pointer">
-                        <div className="info-title">
-                          <h3>
-                            <a className="cursor-pointer">{item.title}</a>
-                          </h3>
-                        </div>
-                        <div className="info-icon">
-                          <div className="cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 22 22">
-                              <g>
-                                <path
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  d="m4 13c-.26901 0-.50292-.0994-.70175-.2982-.19883-.1989-.29825-.4328-.29825-.7018 0-.2807.09942-.5146.29825-.7018.19883-.1988.43274-.2982.70175-.2982h16c.2807 0 .5146.0994.7018.2982.1988.1872.2982.4211.2982.7018 0 .269-.0994.5029-.2982.7018-.1872.1988-.4211.2982-.7018.2982zm9.7018 6.7018c-.1755.1988-.4094.2982-.7018.2982-.269 0-.5029-.0994-.7018-.2982-.1988-.1989-.2982-.4328-.2982-.7018 0-.2924.0994-.5263.2982-.7018l6.8948-6.8947c.0585-.0585.0994.0292.1228.2632.0234.2222.0234.4503 0 .6842-.0234.2222-.0643.3041-.1228.2456l-6.8948-6.89475c-.1988-.18713-.2982-.42105-.2982-.70175s.0994-.51462.2982-.70176c.1989-.19882.4328-.29824.7018-.29824.2924 0 .5263.09942.7018.29824l6.8947 6.89476c.2222.2105.3333.4795.3333.807 0 .3158-.1111.5848-.3333.807z"
-                                />
-                              </g>
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-            </Swiper>
+              <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <circle cx={11} cy={11} r={8} />
+                <path strokeLinecap="round" d="M21 21l-4.35-4.35" />
+              </svg>
+              Tìm kiếm
+            </button>
           </div>
+
+          {/* Category tabs */}
+          <div className="style-category-tabs">
+            <button
+              id="style-tab-all"
+              className={`style-tab-btn${activeTabId === null ? ' style-tab-active' : ''}`}
+              onClick={() => { setActiveTabId(null); fetchTabProducts(null); }}
+            >
+              Tất cả
+            </button>
+            {!!category && category.map((item, i) => (
+              <button
+                key={i}
+                id={`style-tab-${item.id}`}
+                className={`style-tab-btn${activeTabId === item.id ? ' style-tab-active' : ''}`}
+                onClick={() => { setActiveTabId(item.id); fetchTabProducts(item.id); }}
+              >
+                {item.title}
+              </button>
+            ))}
+          </div>
+
         </div>
       </div>
+
+      {/* Danh sách sản phẩm theo tab */}
+      <div className="section-home-collection collection-1-tabs">
+        <div className="container">
+          {tabLoading ? (
+            <div className="tab-grid-loading">
+              <div className="tab-grid-spinner" />
+            </div>
+          ) : tabProducts.length > 0 ? (
+            <>
+              <div className="list-product-row row">
+                {tabProducts.map((item, i) => (
+                  <React.Fragment key={i}>
+                    <ItemProduct
+                      id={item.id}
+                      name={item.name}
+                      price={item.price}
+                      salePrice={item.salePrice}
+                      img1={item.images?.[0]?.url ?? ''}
+                      img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
+                      sale=""
+                      slide={false}
+                      condition={item.condition}
+                      isNew={item.isNew}
+                      displacement={item.displacement}
+                    />
+                  </React.Fragment>
+                ))}
+              </div>
+              <div
+                className="see-more-product d-flex"
+                onClick={() => navigate(path.product, activeTabId ? { state: { categoryId: activeTabId } } : {})}
+              >
+                <a className="button btnlight btn-see-more cursor-pointer">
+                  Xem tất cả <strong className="coll-title">SẢN PHẨM</strong>
+                </a>
+              </div>
+            </>
+          ) : (
+            <div className="tab-grid-empty">
+              <p>Không tìm thấy sản phẩm nào trong danh mục này</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+
       {/* sản phẩm khuyến mãi */}
       <section className="section-home-collection collection-flashsale">
         <div className="container">
