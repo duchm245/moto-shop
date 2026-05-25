@@ -422,6 +422,11 @@ VALUES
  'Trinh','2023-09-22 13:19:36','0966821574','26',1,'9052',3);
 ALTER TABLE `address` AUTO_INCREMENT = 2;
 
+INSERT INTO `orders`
+  (`id`,`address_detail`,`code_orders`,`create_date`,`district`,`full_name`,
+   `is_checkout`,`modified_date`,`note`,`order_date`,`payment_method`,
+   `phone`,`province`,`ship_date`,`shipping_fee`,`status`,`type`,`user_name_emp`,`wards`,`address_id`,`user_id`)
+VALUES
 (7,NULL,'72129668','2023-10-04 14:32:34',NULL,NULL,
  b'0','2023-10-04 14:32:34',NULL,NULL,NULL,
  NULL,NULL,NULL,25000,0,0,NULL,NULL,NULL,3);
