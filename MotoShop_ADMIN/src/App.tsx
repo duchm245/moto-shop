@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Login from './pages/user/login';
 import Layout from './pages/layout';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,8 +13,9 @@ import ForgotPassword from './pages/user/forgotpass';
 import jwt_decode from 'jwt-decode';
 import { User } from './types/user.type';
 
-const App = () => {
+const AppContent = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user: User = useSelector((state: RootState) => state.ReducerAuth.user);
   const token = useSelector((state: RootState) => state.ReducerAuth.token);
 
@@ -29,50 +30,53 @@ const App = () => {
       });
     }
   };
+
   React.useEffect(() => {
     if (!user) {
       checkData();
     }
   }, [user]);
-  const isTokenExpired = (token) => {
+
+  const isTokenExpired = (tkn) => {
     try {
-      const decodedToken = jwt_decode(token);
-      const currentTime = Date.now() / 1000; // Thời gian hiện tại tính bằng giây
-      return decodedToken.exp < currentTime; // Kiểm tra nếu thời gian hết hạn của token nhỏ hơn thời gian hiện tại
+      const decodedToken = jwt_decode(tkn);
+      const currentTime = Date.now() / 1000;
+      return decodedToken.exp < currentTime;
     } catch (error) {
-      return true; // Xảy ra lỗi khi giải mã token, coi như token đã hết hạn
+      return true;
     }
   };
-  const checkTokenExpired = () => {
+
+  React.useEffect(() => {
     if (token && isTokenExpired(token)) {
       toast.error('Vui lòng đăng nhập lại', {
         position: 'top-right',
         pauseOnHover: false,
         theme: 'dark',
       });
-      <Navigate to={path.login} />;
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      dispatch({ type: Types.LOGOUT });
+      navigate(path.login, { replace: true });
     }
-  };
-  React.useEffect(() => {
-    checkTokenExpired();
-  }, []);
-
-  React.useEffect(() => {
-    if (!user) {
-      checkTokenExpired();
-    }
-  }, [user]);
+  }, [token]);
 
   return (
-    <Router>
+    <>
       <ToastContainer />
       <Routes>
         <Route path={path.login} element={<Login />} />
         <Route path={path.forgotpass} element={<ForgotPassword />} />
         <Route path="*" element={!token ? <Navigate to={path.login} replace /> : <Layout />} />
       </Routes>
-    </Router>
+    </>
   );
 };
+
+const App = () => (
+  <Router>
+    <AppContent />
+  </Router>
+);
 
 export default App;

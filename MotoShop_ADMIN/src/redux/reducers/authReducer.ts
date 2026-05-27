@@ -3,7 +3,7 @@ import Types from "../types";
 const userLocal: string | null = localStorage.getItem('user');
 const initialState = {
   user: userLocal ? JSON.parse(userLocal) : null,
-  token: localStorage.getItem('token') || "",
+  token: localStorage.getItem('token') || null,
 };
 
 const ReducerAuth = (state = initialState, action) => {
@@ -15,9 +15,11 @@ const ReducerAuth = (state = initialState, action) => {
         token: value.token,
       };
     case Types.LOGOUT:
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
       return {
         user: null,
-        token: "",
+        token: null,
       };
 
     default: {

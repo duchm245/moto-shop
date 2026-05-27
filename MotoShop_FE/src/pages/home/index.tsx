@@ -758,68 +758,7 @@ const Home = () => {
           </div>
         </div>
       </div> */}
-      {/* sản phẩm collection */}
-      <div className="section-home-collection collection-1-tabs collection-tabs">
-        <div className="container">
-          <div className="section-title">
-            <div className="title-tabs__navigation">
-              <ul className="nav tabs-navigation" data-limit-desktop={10} data-limit-mobile={6} data-index={2}>
-                {!!category &&
-                  !!category.length &&
-                  category.map((item, index) => (
-                    <li className="nav-item tab-header" key={index}>
-                      <a
-                        className={`tab-title nav-link ${activeTab === item.id ? 'active' : ''}`}
-                        onClick={() => handleTabClick(item.id)}
-                      >
-                        {item.title}
-                      </a>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          </div>
-          <div className="tab-content section-content">
-            <div className="list-product-row row">
-              {!!productColection &&
-                !!productColection.length &&
-                productColection.map((item, i) => {
-                  if (i > 10) {
-                    return;
-                  }
-                  return (
-                    <React.Fragment key={`product-${item.id}`}>
-                      <ItemProduct
-                        id={item.id}
-                        name={item.name}
-                        price={item.price}
-                        salePrice={item.salePrice}
-                        img1={item.images?.[0]?.url ?? ''}
-                        img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
-                        sale={`${salesColection[item.sale]}`}
-                        slide={false}
-                        condition={item.condition}
-                        isNew={item.isNew}
-                        displacement={item.displacement}
-                      />
-                    </React.Fragment>
-                  );
-                })}
-            </div>
-            <div
-              className="see-more-product d-flex cursor-pointer"
-              onClick={() =>
-                navigate(path.product, { state: { categoryId: category.find((item) => item.id === activeTab)?.id } })
-              }
-            >
-              <a className="button btnlight btn-see-more">
-                Xem tất cả{' '}
-                <strong className="coll-title">{category.find((item) => item.id === activeTab)?.title}</strong>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+
       {/* bài viết */}
       <div className="section-home-blogs">
         <div className="container">
