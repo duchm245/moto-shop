@@ -162,11 +162,7 @@ const Article = () => {
             [category.id]: category.title,
           }));
         } else {
-          toast.error(`Có lỗi xảy ra`, {
-            position: 'top-right',
-            pauseOnHover: false,
-            theme: 'dark',
-          });
+          console.warn(`Không tìm thấy danh mục với id: ${id}`);
         }
       } catch (error) {
         console.error(error);
@@ -191,11 +187,7 @@ const Article = () => {
             [user.id]: user.username,
           }));
         } else {
-          toast.error(`Có lỗi xảy ra`, {
-            position: 'top-right',
-            pauseOnHover: false,
-            theme: 'dark',
-          });
+          console.warn(`Không tìm thấy người dùng với id: ${id}`);
         }
       } catch (error) {
         console.error(error);

@@ -238,8 +238,9 @@ const Order = () => {
   React.useEffect(() => {
     if (orders.length > 0) {
       orders.forEach(async (item) => {
-        if (item.district !== null && item.district !== undefined && !Number.isNaN(item.district)) {
-          await getWards(parseInt(item.district));
+        const districtId = parseInt(item.district);
+        if (!isNaN(districtId)) {
+          await getWards(districtId);
         }
       });
     }
@@ -247,8 +248,9 @@ const Order = () => {
   React.useEffect(() => {
     if (orders.length > 0) {
       orders.forEach(async (item) => {
-        if (item.province !== null && item.province !== undefined && !Number.isNaN(item.province)) {
-          await getDistricts(parseInt(item.province));
+        const provinceId = parseInt(item.province);
+        if (!isNaN(provinceId)) {
+          await getDistricts(provinceId);
         }
       });
     }
