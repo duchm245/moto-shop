@@ -45,4 +45,8 @@ public class ConsultRequest {
 
     @Column
     private Date updatedDate;
+
+    // Ghi chú nội bộ của nhân viên (không hiển thị cho khách)
+    @Column(length = 2000)
+    private String staffNote;
 }

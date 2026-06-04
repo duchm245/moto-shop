@@ -104,4 +104,26 @@ public class ConsultRest {
             );
         }
     }
+
+    /**
+     * PUT /api/consult/admin/{id}/note — Nhân viên lưu ghi chú nội bộ
+     */
+    @PutMapping("/admin/{id}/note")
+    public ResponseEntity<?> updateNote(
+            @PathVariable Long id,
+            @RequestParam String staffNote
+    ) {
+        try {
+            ConsultRequest entity = consultRequestRepository.findById(id).orElseThrow();
+            entity.setStaffNote(staffNote);
+            entity.setUpdatedDate(new Date());
+            consultRequestRepository.save(entity);
+            return new ResponseEntity<>(ApiResponse.build(200, true, "Đã lưu ghi chú", null), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                ApiResponse.build(500, false, "Lỗi hệ thống", null),
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
 }

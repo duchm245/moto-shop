@@ -17,6 +17,7 @@ interface ConsultItem {
   status: number; // 0: Chờ xử lý, 1: Đang xử lý, 2: Đã xong
   createdDate: string;
   updatedDate: string;
+  staffNote?: string; // Ghi chú nội bộ của nhân viên
 }
 
 const STATUS_OPTIONS = [
@@ -47,6 +48,8 @@ const ChatPage = () => {
   const [totalPages, setTotalPages]   = React.useState(0);
   const [totalElements, setTotalElements] = React.useState(0);
   const [updatingId, setUpdatingId]   = React.useState<number | null>(null);
+  const [noteMap, setNoteMap]         = React.useState<Record<number, string>>({});
+  const [savingNoteId, setSavingNoteId] = React.useState<number | null>(null);
 
   const fetchData = async (p = 0, status = filterStatus) => {
     if (!token) return;
@@ -57,10 +60,15 @@ const ChatPage = () => {
       const res = await REQUEST_API({ url, method: 'get', token });
       if (res && res.status) {
         const data = res.data;
-        setItems(data.content || []);
+        const list: ConsultItem[] = data.content || [];
+        setItems(list);
         setTotalPages(data.totalPages || 0);
         setTotalElements(data.totalElements || 0);
         setPage(p);
+        // Khởi tạo noteMap từ dữ liệu server
+        const map: Record<number, string> = {};
+        list.forEach(item => { map[item.id] = item.staffNote || ''; });
+        setNoteMap(prev => ({ ...map, ...Object.fromEntries(Object.entries(prev).filter(([k]) => list.some(i => i.id === Number(k)))) }));
       }
     } catch {
       toast.error('Không thể tải danh sách yêu cầu tư vấn');
@@ -92,6 +100,25 @@ const ChatPage = () => {
       toast.error('Cập nhật thất bại');
     } finally {
       setUpdatingId(null);
+    }
+  };
+
+  const handleSaveNote = async (id: number) => {
+    if (!token) return;
+    setSavingNoteId(id);
+    try {
+      const note = noteMap[id] ?? '';
+      const url = `${API_URL}/api/consult/admin/${id}/note?staffNote=${encodeURIComponent(note)}`;
+      const res = await REQUEST_API({ url, method: 'put', token });
+      if (res && res.status) {
+        toast.success('Đã lưu ghi chú nội bộ!');
+      } else {
+        toast.error('Lưu ghi chú thất bại');
+      }
+    } catch {
+      toast.error('Lỗi khi lưu ghi chú');
+    } finally {
+      setSavingNoteId(null);
     }
   };
 
@@ -148,7 +175,8 @@ const ChatPage = () => {
                 <th>Khách hàng</th>
                 <th>Liên hệ</th>
                 <th>Sản phẩm</th>
-                <th>Ghi chú</th>
+                <th>Ghi chú KH</th>
+                <th>Ghi chú nội bộ</th>
                 <th>Ngày gửi</th>
                 <th>Trạng thái</th>
                 <th>Hành động</th>
@@ -189,6 +217,27 @@ const ChatPage = () => {
                       <span className="chat-page__note" title={item.note}>
                         {item.note || '—'}
                       </span>
+                    </td>
+                    <td>
+                      <div className="chat-page__staff-note">
+                        <textarea
+                          className="chat-page__note-input"
+                          rows={2}
+                          placeholder={item.status === 2 ? 'Đã khóa' : 'Nhập ghi chú nội bộ...'}
+                          value={noteMap[item.id] ?? ''}
+                          disabled={item.status === 2}
+                          onChange={e => setNoteMap(prev => ({ ...prev, [item.id]: e.target.value }))}
+                          title={item.status === 2 ? 'Yêu cầu đã hoàn thành, không thể chỉnh sửa' : ''}
+                        />
+                        <button
+                          className="chat-page__btn chat-page__btn--note"
+                          disabled={savingNoteId === item.id || item.status === 2}
+                          onClick={() => handleSaveNote(item.id)}
+                          title={item.status === 2 ? 'Yêu cầu đã hoàn thành, không thể chỉnh sửa' : 'Lưu ghi chú nội bộ'}
+                        >
+                          {savingNoteId === item.id ? '...' : 'Lưu'}
+                        </button>
+                      </div>
                     </td>
                     <td className="chat-page__date">{formatDateStr(item.createdDate)}</td>
                     <td>
