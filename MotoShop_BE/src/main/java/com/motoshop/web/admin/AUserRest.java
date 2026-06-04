@@ -94,7 +94,7 @@ public class AUserRest {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PutMapping("user/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updateUser(@PathVariable(name = "id") Long userId,
                                         @RequestBody UserRequest userRequest) {
         try {
