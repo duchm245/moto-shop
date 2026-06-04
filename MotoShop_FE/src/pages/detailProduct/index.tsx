@@ -103,8 +103,19 @@ const DetailProduct = () => {
     }
   };
   React.useEffect(() => {
+    // Reset state khi chuyển sang sản phẩm khác
+    setProduct(undefined);
+    setProductImage([]);
+    setSale(undefined);
+    setRelatedProduct([]);
+    setSaleRelated([]);
+    setSelectedVariant(null);
+    setSelectedVariantI(0);
+    setQuantity(1);
+    // Scroll về đầu trang
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     getProduct();
-  }, []);
+  }, [id]);
   React.useEffect(() => {
     if (product?.category !== 0 && product?.category !== null && product?.category !== undefined) {
       getRelatedProduct();
