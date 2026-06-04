@@ -3,7 +3,7 @@
     display: none;
   }
 
-  .mainHeader .header-wrap-menu .menuList-main li.has-submenu.is-open > .menuList-submain {
+  .mainHeader .navbar-mainmenu .menuList-main li.has-submenu.is-open > .menuList-submain {
     pointer-events: auto;
     visibility: visible;
     top: 100%;
@@ -23,4 +23,112 @@
   z-index: 999;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOP BAR ── */
+.header-top {
+  background-color: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+.header-top .flex-container-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-top-links .top-link-item {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+  transition: color 0.2s;
+  padding: 5px 10px;
+}
+.header-top-links .top-link-item:hover {
+  color: #c0392b;
+}
+
+/* ── BOTTOM BAR ── */
+.bg-red {
+  background-color: #c0392b; /* LTMoto Red */
+}
+.header-bottom {
+  box-shadow: 0 4px 6px -2px rgba(0,0,0,0.1);
+}
+.header-bottom .navbar-mainmenu {
+  display: flex;
+  justify-content: center;
+}
+.header-bottom .menuList-main {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  justify-content: space-between;
+}
+.header-bottom .menuList-main > li {
+  position: relative;
+  flex: 1;
+  text-align: center;
+}
+.header-bottom .menuList-main > li > a {
+  display: block;
+  padding: 14px 20px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+.header-bottom .menuList-main > li:hover > a,
+.header-bottom .menuList-main > li > a:hover {
+  background-color: #a93226; /* Darker red on hover */
+}
+
+/* ── SUBMENU ── */
+.menuList-submain {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 240px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-top: 3px solid #c0392b;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  text-align: left;
+}
+.menuList-submain ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menuList-submain ul li {
+  border-bottom: 1px solid #f1f1f1;
+}
+.menuList-submain ul li:last-child {
+  border-bottom: none;
+}
+.menuList-submain ul li a {
+  display: block;
+  padding: 12px 16px;
+  color: #333;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.2s, background-color 0.2s;
+}
+.menuList-submain ul li a:hover {
+  color: #c0392b;
+  background-color: #f9f9f9;
+}
+
+/* ── OVERRIDES CHO HEADER CU ── */
+.mainHeader--height {
+  height: auto;
 }
