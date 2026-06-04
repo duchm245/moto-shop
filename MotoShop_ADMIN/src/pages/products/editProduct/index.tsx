@@ -11,6 +11,7 @@ import { Category } from '~/types/category.type';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Product, ProductImages } from '~/types/product.type';
 import { API_URL_IMAGE } from '~/constants/utils';
+import path from '~/constants/path';
 
 interface VariantForm {
   id?: number | string;
@@ -278,9 +279,8 @@ const EditProduct = () => {
       const url = Api.updateProduct();
       const [res] = await Promise.all([REQUEST_API({ url, method: 'put', token, data })]);
       if (res.status) {
-        getProduct();
-        setNewImages([]);
         toast.success('Cập nhật sản phẩm thành công', { position: 'top-right', pauseOnHover: false, theme: 'dark' });
+        navigate(path.products);
       } else {
         toast.error(`${res.data}`, { position: 'top-right', pauseOnHover: false, theme: 'dark' });
       }
