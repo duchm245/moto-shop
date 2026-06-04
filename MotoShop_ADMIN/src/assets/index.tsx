@@ -1,4 +1,4 @@
-import logoLight from './images/logoLight.png';
+import logoLight from './images/logoLight.svg';
 import logoDark from './images/logoDark.png';
 import userNone from './images/userNone.jpg';
 import chooseImage from './images/chooseImage.svg';
