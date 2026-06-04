@@ -70,10 +70,10 @@ const TopNav = () => {
   const handleLogout = async () => {
     const res = await authApi.logout();
     if (res.status) {
-      navigate('/login');
-      localStorage.setItem('user', null);
-      localStorage.setItem('token', '');
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
       dispatch({ type: Types.LOGOUT });
+      navigate('/login');
     } else {
       toast.error('Lỗi', {
         position: 'top-right',
@@ -151,13 +151,16 @@ const TopNav = () => {
       }
     }
   };
+  // Load thông báo lần đầu khi mount
   React.useEffect(() => {
     getNotification();
-  }, [notifications2.length]);
+  }, []);
 
+  // Push notification chạy 1 lần khi mount, không phụ thuộc notifications2.length
+  // tránh vòng lặp: pushNotification → setNotifications2 → length thay đổi → gọi lại
   React.useEffect(() => {
     pushNotification();
-  }, [notifications2.length]);
+  }, []);
 
   const readNotification = async (item: Notification) => {
     if (!!token) {
