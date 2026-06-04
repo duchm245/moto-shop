@@ -57,6 +57,7 @@ const ChatPage = () => {
   const [selectedItem, setSelectedItem]     = React.useState<ConsultItem | null>(null);
   const [modalNote, setModalNote]           = React.useState<string>('');
   const [saving, setSaving]                 = React.useState(false);
+  const [showConfirm, setShowConfirm]       = React.useState(false);
 
   const fetchData = async (p = 0, status = filterStatus) => {
     if (!token) return;
@@ -440,15 +441,43 @@ const ChatPage = () => {
                     <button
                       className="chat-modal__btn chat-modal__btn--save"
                       disabled={saving}
-                      style={{ backgroundColor: nextAction.color }}
-                      onClick={handleAdvanceStatus}
+                      onClick={() => setShowConfirm(true)}
                     >
-                      {saving ? 'Đang lưu...' : nextAction.label + ' ✓'}
+                      {nextAction.label} ✓
                     </button>
                   )}
                 </>
               )}
             </div>
+
+            {/* Xác nhận đóng yêu cầu */}
+            {showConfirm && (
+              <div className="chat-confirm__overlay">
+                <div className="chat-confirm__box">
+                  <div className="chat-confirm__icon">⚠️</div>
+                  <p className="chat-confirm__title">Xác nhận đóng yêu cầu?</p>
+                  <p className="chat-confirm__desc">
+                    Hành động này sẽ đánh dấu yêu cầu là <strong>Đã xong</strong> và khóa toàn bộ chỉnh sửa.<br />
+                    Chỉ xác nhận khi đã liên hệ và tư vấn xong cho khách hàng.
+                  </p>
+                  <div className="chat-confirm__actions">
+                    <button
+                      className="chat-confirm__btn chat-confirm__btn--cancel"
+                      onClick={() => setShowConfirm(false)}
+                    >
+                      Huỷ, chưa xong
+                    </button>
+                    <button
+                      className="chat-confirm__btn chat-confirm__btn--ok"
+                      disabled={saving}
+                      onClick={() => { setShowConfirm(false); handleAdvanceStatus(); }}
+                    >
+                      {saving ? 'Đang lưu...' : 'Xác nhận đóng'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
           </div>
         </div>
