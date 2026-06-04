@@ -34,6 +34,7 @@ const DetailArticle = () => {
     }
   };
   React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     getArticle();
   }, [id]);
   const getArticleRelated = async () => {
@@ -86,7 +87,13 @@ const DetailArticle = () => {
                   </div>
                   <div className="wrapper-content">
                     <div className="article-image">
-                      <img src={`${API_URL_IMAGE}${article?.image}`} />
+                      <img
+                        src={`${API_URL_IMAGE}${article?.image}`}
+                        alt={article?.title}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = `${API_URL_IMAGE}slide_home_1.jpg`;
+                        }}
+                      />
                     </div>
                     <div
                       className="article-body article-table-contents typeList-style"
@@ -147,11 +154,23 @@ const DetailArticle = () => {
                         if (item.id !== article?.id) {
                           return (
                             <SwiperSlide key={i} className="">
-                              <div className="article-loop">
+                              <div
+                                className="article-loop"
+                                onClick={() => navigate(path.detailArticle, { state: item.id })}
+                                style={{ cursor: 'pointer' }}
+                              >
                                 <div className="article-inner">
                                   <div className="article-image">
                                     <a className="blog-post-thumbnail cursor-pointer">
-                                      <img className=" ls-is-cached lazyloaded" src={`${API_URL_IMAGE}${item.image}`} />
+                                      <img
+                                        className="ls-is-cached lazyloaded"
+                                        src={`${API_URL_IMAGE}${item.image}`}
+                                        alt={item.title}
+                                        onError={(e) => {
+                                          const idx = (item.id ?? 0) % 3 + 1;
+                                          (e.target as HTMLImageElement).src = `${API_URL_IMAGE}slide_home_${idx}.jpg`;
+                                        }}
+                                      />
                                     </a>
                                   </div>
                                   <div className="article-detail">
@@ -160,7 +179,10 @@ const DetailArticle = () => {
                                         <a>{item.title}</a>
                                       </h3>
                                     </div>
-                                    <p className="entry-content">{item.shortContent}</p>
+                                    <p
+                                      className="entry-content"
+                                      dangerouslySetInnerHTML={{ __html: item.shortContent }}
+                                    />
                                     <div className="article-post-meta">
                                       <span className="date">
                                         {item.modifiedDate && <time>{formatDateString(item.modifiedDate)}</time>}
@@ -204,7 +226,15 @@ const DetailArticle = () => {
                               >
                                 <div className="item-article__image">
                                   <a className="cursor-pointer">
-                                    <img className=" lazyloaded" src={`${API_URL_IMAGE}${item.image}`} />
+                                    <img
+                                      className="lazyloaded"
+                                      src={`${API_URL_IMAGE}${item.image}`}
+                                      alt={item.title}
+                                      onError={(e) => {
+                                        const idx = (item.id ?? 0) % 3 + 1;
+                                        (e.target as HTMLImageElement).src = `${API_URL_IMAGE}slide_home_${idx}.jpg`;
+                                      }}
+                                    />
                                   </a>
                                 </div>
                                 <div className="item-article__detail">

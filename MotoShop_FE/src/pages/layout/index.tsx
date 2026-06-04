@@ -22,6 +22,14 @@ import Articles from '../articles';
 import ConsultPage from '../consult';
 import ComparePage from '../compare';
 import CompareTray from '~/components/compareTray';
+import AboutPage from '../staticPages/AboutPage';
+import FaqPage from '../staticPages/FaqPage';
+import ShowroomPage from '../staticPages/ShowroomPage';
+import PaymentPolicyPage from '../staticPages/PaymentPolicyPage';
+import ShippingPolicyPage from '../staticPages/ShippingPolicyPage';
+import ReturnPolicyPage from '../staticPages/ReturnPolicyPage';
+import PrivacyPolicyPage from '../staticPages/PrivacyPolicyPage';
+import WarrantyPolicyPage from '../staticPages/WarrantyPolicyPage';
 import FloatingContact from '~/components/floatingContact/FloatingContact';
 
 const Layout = () => {
@@ -87,6 +95,16 @@ const Layout = () => {
           <Route path={path.article} element={<Articles />} />
           <Route path={path.consult} element={<ConsultPage />} />
           <Route path={path.compare} element={<ComparePage />} />
+          {/* Trang tĩnh footer */}
+          <Route path={path.about} element={<AboutPage />} />
+          <Route path={path.faq} element={<FaqPage />} />
+          <Route path={path.showroom} element={<ShowroomPage />} />
+          <Route path={path.news} element={<Articles />} />
+          <Route path={path.paymentPolicy} element={<PaymentPolicyPage />} />
+          <Route path={path.shippingPolicy} element={<ShippingPolicyPage />} />
+          <Route path={path.returnPolicy} element={<ReturnPolicyPage />} />
+          <Route path={path.privacyPolicy} element={<PrivacyPolicyPage />} />
+          <Route path={path.warrantyPolicy} element={<WarrantyPolicyPage />} />
         </Routes>
       </div>
       <Footer />

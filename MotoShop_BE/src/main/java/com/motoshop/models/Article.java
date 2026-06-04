@@ -24,7 +24,6 @@ public class Article {
 	private String shortContent;
 
 	@Column(columnDefinition = "TEXT")
-	@Lob
 	private String content;
 
 	@Column

@@ -5,6 +5,7 @@ import com.motoshop.models.*;
 import com.motoshop.repositories.ArticleImageRepository;
 import com.motoshop.repositories.ArticleRepository;
 import com.motoshop.repositories.CategoryRepository;
+import com.motoshop.repositories.UserRepository;
 import com.motoshop.services.ArticleService;
 import com.motoshop.web.dto.request.*;
 import com.motoshop.web.dto.response.ArticleResponse;
@@ -28,14 +29,16 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleImageRepository articleImageRepository;
     private final CategoryRepository categoryRepository;
     private final ArticleMapper articleMapper;
+    private final UserRepository userRepository;
 
     public ArticleServiceImpl(ArticleRepository articleRepository,
                               ArticleImageRepository articleImageRepository, CategoryRepository categoryRepository,
-                              ArticleMapper articleMapper) {
+                              ArticleMapper articleMapper, UserRepository userRepository) {
         this.articleRepository = articleRepository;
         this.articleImageRepository = articleImageRepository;
         this.categoryRepository = categoryRepository;
         this.articleMapper = articleMapper;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -142,11 +145,16 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleRepository.findById(id).orElseThrow();
         articleMapper.updateModel(article, articleRequest);
 
-        // Tự lookup Category từ DB để đảm bảo JPA nhận managed entity
-        // (MapStruct mapping category.id không đáng tin với @MappingTarget)
+        // Lookup Category từ DB để tránh detached entity (MapStruct chỉ set id)
         if (articleRequest.getCategoryId() != null) {
             Category category = categoryRepository.findById(articleRequest.getCategoryId()).orElse(null);
             article.setCategory(category);
+        }
+
+        // Lookup User từ DB để tránh detached entity (MapStruct chỉ set id)
+        if (articleRequest.getUserId() != null) {
+            User user = userRepository.findById(articleRequest.getUserId()).orElse(null);
+            article.setUser(user);
         }
 
         Date currentDate = new Date();

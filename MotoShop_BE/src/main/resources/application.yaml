@@ -9,7 +9,7 @@ spring:
 
   datasource:
     # url: ${DB_URL:jdbc:mysql://localhost:3306/motorbike_shop?useSSL=false}
-    url: ${DB_URL:jdbc:mysql://localhost:3306/motorbike_shop?useSSL=false&allowPublicKeyRetrieval=true}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/motorbike_shop?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8}
     username: ${DB_USERNAME:CHANGE_ME}
     password: ${DB_PASSWORD:CHANGE_ME}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -22,6 +22,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+        connection:
+          characterEncoding: UTF-8
+          useUnicode: true
 
   jackson:
     serialization:

@@ -326,6 +326,7 @@ const Header = () => {
                                     placeholder="Tìm kiếm sản phẩm..."
                                     value={keyword}
                                     onChange={(e) => setKeyword(e.target.value)}
+                                    onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
                                   />
                                 </div>
                                 <div
@@ -598,6 +599,8 @@ const Header = () => {
                         placeholder="Tìm kiếm sản phẩm..."
                         value={keyword}
                         onChange={(e) => setKeyword(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
+                        autoFocus
                       />
                     </div>
                     <div className="btn-search btn cursor-pointor" aria-label="button search" onClick={handleSearch}>

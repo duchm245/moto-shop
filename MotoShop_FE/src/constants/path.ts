@@ -33,5 +33,19 @@ const path = {
 
   //so sánh xe
   compare: '/compare',
+
+  // ── Trang tĩnh footer ──────────────────────────────────────
+  // Thông tin
+  about: '/pages/gioi-thieu',
+  faq: '/pages/cau-hoi-thuong-gap',
+  showroom: '/lien-he',
+  news: '/tin-tuc',
+
+  // Chính sách
+  paymentPolicy: '/pages/chinh-sach-thanh-toan',
+  shippingPolicy: '/pages/chinh-sach-van-chuyen',
+  returnPolicy: '/pages/chinh-sach-doi-tra',
+  privacyPolicy: '/pages/chinh-sach-bao-mat',
+  warrantyPolicy: '/pages/chinh-sach-bao-hanh',
 } as const;
  export default path;

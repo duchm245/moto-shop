@@ -127,34 +127,34 @@ const Footer = () => {
                 <div className="widget-footer__content block-collapse">
                   <ul className="footerNav-link">
                     <li className="item">
-                      <a href="/pages/gioi-thieu" title="Về chúng tôi">
+                      <Link to={path.about} title="Về chúng tôi">
                         Về chúng tôi
-                      </a>
+                      </Link>
                     </li>
                     <li className="item">
-                      <a href="/pages/cau-hoi-thuong-gap" title="Câu hỏi thường gặp">
+                      <Link to={path.faq} title="Câu hỏi thường gặp">
                         Câu hỏi thường gặp
-                      </a>
+                      </Link>
                     </li>
                     <li className="item">
-                      <a href="/tin-tuc" title="Tin tức sự kiện">
+                      <Link to={`${path.news}?filter=tin-tuc`} title="Tin tức sự kiện">
                         Tin tức sự kiện
-                      </a>
+                      </Link>
                     </li>
                     <li className="item">
-                      <a href="/tin-tuc" title="Khuyến mãi">
+                      <Link to={`${path.news}?filter=khuyen-mai`} title="Khuyến mãi">
                         Khuyến mãi
-                      </a>
+                      </Link>
                     </li>
                     <li className="item">
-                      <a href="/tu-van-mua-ban-xe" title="Tư vấn mua – bán xe">
+                      <Link to={path.consult} title="Tư vấn mua – bán xe">
                         Tư vấn mua – bán xe
-                      </a>
+                      </Link>
                     </li>
                     <li className="item">
-                      <a href="/lien-he" title="Hệ thống Showroom">
+                      <Link to={path.showroom} title="Hệ thống Showroom">
                         Hệ thống Showroom
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                   <div className="footer-shipment">
@@ -169,34 +169,34 @@ const Footer = () => {
                 <div className="widget-footer__content block-collapse">
                   <ul className="footerNav-link">
                     <li className="item">
-                      <a href="/pages/chinh-sach-thanh-toan" title="Chính sách thanh toán">
+                      <Link to={path.paymentPolicy} title="Chính sách thanh toán">
                         Chính sách thanh toán
-                      </a>
+                      </Link>
                     </li>
                     <li className="item">
-                      <a href="/pages/chinh-sach-van-chuyen" title="Chính sách vận chuyển">
+                      <Link to={path.shippingPolicy} title="Chính sách vận chuyển">
                         Chính sách vận chuyển
-                      </a>
+                      </Link>
                     </li>
                     <li className="item">
-                      <a href="/pages/chinh-sach-doi-tra" title="Chính sách đổi trả">
+                      <Link to={path.returnPolicy} title="Chính sách đổi trả">
                         Chính sách đổi trả
-                      </a>
+                      </Link>
                     </li>
                     <li className="item">
-                      <a href="/pages/chinh-sach-bao-mat" title="Chính sách bảo mật">
+                      <Link to={path.privacyPolicy} title="Chính sách bảo mật">
                         Chính sách bảo mật
-                      </a>
+                      </Link>
                     </li>
                     <li className="item">
-                      <a href="/pages/chinh-sach-bao-hanh" title="Chính sách bảo hành">
+                      <Link to={path.warrantyPolicy} title="Chính sách bảo hành">
                         Chính sách bảo hành
-                      </a>
+                      </Link>
                     </li>
                     <li className="item">
-                      <a href="/tu-van-mua-ban-xe" title="Hướng dẫn mua xe trả góp">
+                      <Link to={path.consult} title="Hướng dẫn mua xe trả góp">
                         Hướng dẫn mua xe trả góp
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>
