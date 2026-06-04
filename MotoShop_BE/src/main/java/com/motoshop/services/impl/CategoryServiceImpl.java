@@ -198,8 +198,9 @@ public class CategoryServiceImpl implements CategoryService {
         categoryMapper.updateModel(category, categoryRequest);
         Date currentDate = new Date();
         category.setModifiedDate(currentDate);
-        if (categoryRequest.getParentCategoryId() != 0) {
-            Category parentCategory = categoryRepository.findById(categoryRequest.getParentCategoryId()).orElseThrow();
+        Long parentCategoryId = categoryRequest.getParentCategoryId();
+        if (parentCategoryId != null && parentCategoryId != 0) {
+            Category parentCategory = categoryRepository.findById(parentCategoryId).orElseThrow();
             category.setParentCategory(parentCategory);
         } else {
             category.setParentCategory(null);

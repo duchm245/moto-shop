@@ -86,7 +86,7 @@ const EditCategory = () => {
           });
         }
       } catch (error) {
-        toast.error(`Vui lòng đăng nhập lại`, {
+        toast.error(`Có lỗi kết nối, vui lòng thử lại`, {
           position: 'top-right',
           pauseOnHover: false,
           theme: 'dark',
@@ -138,7 +138,7 @@ const EditCategory = () => {
           });
         }
       } catch (error) {
-        toast.error(`Vui lòng đăng nhập lại`, {
+        toast.error(`Có lỗi xảy ra, vui lòng thử lại`, {
           position: 'top-right',
           pauseOnHover: false,
           theme: 'dark',
