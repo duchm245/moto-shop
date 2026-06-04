@@ -27,9 +27,9 @@ const STATUS_OPTIONS = [
   { value: 2,  label: 'Đã xong',    color: '#27ae60' },
 ];
 
-// Bước thủ công duy nhất: nhân viên xác nhận đã tư vấn xong
+// Bước thủ công duy nhất: nhân viên đóng yêu cầu khi đã xử lý xong hoàn toàn
 const NEXT_ACTION: Record<number, { label: string; color: string; nextStatus: number }> = {
-  1: { label: 'Đã tư vấn xong', color: '#27ae60', nextStatus: 2 },
+  1: { label: 'Đóng yêu cầu', color: '#27ae60', nextStatus: 2 },
 };
 
 const getStatusBadge = (status: number) => {
@@ -140,7 +140,7 @@ const ChatPage = () => {
         }));
       }
       await Promise.all(promises);
-      toast.success(`Đã chuyển sang "${action.label.replace('Đánh dấu ', '')}"!`);
+      toast.success('Đã đóng yêu cầu!');
       handleCloseModal();
       fetchData(page, filterStatus);
     } catch {
@@ -150,8 +150,8 @@ const ChatPage = () => {
     }
   };
 
-  // Chỉ lưu ghi chú nội bộ (không đổi trạng thái)
-  const handleSaveNoteOnly = async () => {
+  // Chỉ lưu ghi chú (không đổi trạng thái) — dùng trong quá trình xử lý
+  const handleSaveNote = async () => {
     if (!token || !selectedItem) return;
     if (modalNote === (selectedItem.staffNote || '')) {
       toast.info('Ghi chú chưa thay đổi');
@@ -165,9 +165,9 @@ const ChatPage = () => {
         token,
       });
       toast.success('Đã lưu ghi chú!');
-      fetchData(page, filterStatus);
-      // Cập nhật selectedItem local để không mất dữ liệu
+      // Cập nhật local để lần sau so sánh đúng
       setSelectedItem(prev => prev ? { ...prev, staffNote: modalNote } : prev);
+      setItems(prev => prev.map(i => i.id === selectedItem.id ? { ...i, staffNote: modalNote } : i));
     } catch {
       toast.error('Lưu ghi chú thất bại');
     } finally {
@@ -408,24 +408,16 @@ const ChatPage = () => {
                 )}
               </div>
 
-              {/* Ghi chú nội bộ */}
+              {/* Ghi chú quá trình xử lý */}
               <div className="chat-modal__note-wrap">
-                <p className="chat-modal__note-label">
-                  Ghi chú nội bộ
-                  <span className="chat-modal__note-badge">Chỉ nhân viên thấy</span>
-                </p>
+                <p className="chat-modal__note-label">Ghi chú quá trình xử lý</p>
                 <textarea
                   className="chat-modal__note-textarea"
-                  placeholder={isDone ? 'Yêu cầu đã hoàn thành, không thể chỉnh sửa' : 'Ghi lại kết quả tư vấn, thông tin đã trao đổi với khách...'}
+                  placeholder={isDone ? 'Yêu cầu đã đóng, không thể chỉnh sửa' : 'VD: Gọi lần 1 chưa bắt máy. Gọi lại lần 2 đã tư vấn, KH hẹn qua xem thứ 7...'}
                   value={modalNote}
                   disabled={isDone}
                   onChange={e => setModalNote(e.target.value)}
                 />
-                {!isDone && (
-                  <p className="chat-modal__note-hint">
-                    Ghi chú sẽ tự động lưu khi bấm nút hành động, hoặc bấm "Lưu ghi chú" để lưu riêng
-                  </p>
-                )}
               </div>
 
             </div>
@@ -440,7 +432,7 @@ const ChatPage = () => {
                   <button
                     className="chat-modal__btn chat-modal__btn--note-save"
                     disabled={saving}
-                    onClick={handleSaveNoteOnly}
+                    onClick={handleSaveNote}
                   >
                     Lưu ghi chú
                   </button>
@@ -451,7 +443,7 @@ const ChatPage = () => {
                       style={{ backgroundColor: nextAction.color }}
                       onClick={handleAdvanceStatus}
                     >
-                      {saving ? 'Đang lưu...' : nextAction.label + ' →'}
+                      {saving ? 'Đang lưu...' : nextAction.label + ' ✓'}
                     </button>
                   )}
                 </>
