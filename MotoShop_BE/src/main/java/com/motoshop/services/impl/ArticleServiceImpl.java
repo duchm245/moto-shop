@@ -141,6 +141,14 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleResponse updateArticle(long id, ArticleRequest articleRequest) {
         Article article = articleRepository.findById(id).orElseThrow();
         articleMapper.updateModel(article, articleRequest);
+
+        // Tự lookup Category từ DB để đảm bảo JPA nhận managed entity
+        // (MapStruct mapping category.id không đáng tin với @MappingTarget)
+        if (articleRequest.getCategoryId() != null) {
+            Category category = categoryRepository.findById(articleRequest.getCategoryId()).orElse(null);
+            article.setCategory(category);
+        }
+
         Date currentDate = new Date();
         article.setModifiedDate(currentDate);
         articleRepository.save(article);
