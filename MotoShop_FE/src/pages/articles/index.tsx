@@ -126,7 +126,14 @@ const Articles = () => {
                         title={item.title}
                         rel="nofollow"
                       >
-                        <img src={`${API_URL_IMAGE}${item.image}`} className="lazyloaded" alt={item.title} />
+                        <img
+                          src={`${API_URL_IMAGE}${item.image}`}
+                          className="lazyloaded"
+                          alt={item.title}
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=No+Image';
+                          }}
+                        />
                       </a>
                     </div>
                     <div className="article-detail">
@@ -181,7 +188,14 @@ const Articles = () => {
                           >
                             <div className="item-article__image">
                               <a className="cursor-pointer">
-                                <img className="lazyloaded" src={`${API_URL_IMAGE}${item.image}`} alt={item.title} />
+                                <img
+                                  className="lazyloaded"
+                                  src={`${API_URL_IMAGE}${item.image}`}
+                                  alt={item.title}
+                                  onError={(e) => {
+                                    (e.target as HTMLImageElement).src = 'https://placehold.co/150x100?text=No+Image';
+                                  }}
+                                />
                               </a>
                             </div>
                             <div className="item-article__detail">
