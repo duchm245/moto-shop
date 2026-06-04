@@ -15,11 +15,10 @@ import { Order } from '~/types/order.type';
 import { User } from '~/types/user.type';
 import './styles.css';
 
-interface ITopUser {
-  id: number;
-  username: string;
-  totalOrder: number;
-  totalIncome: number;
+interface ITopProduct {
+  productName: string;
+  totalQuantity: number;
+  totalRevenue: number;
 }
 interface IOrderByMonth {
   month: string;
@@ -48,7 +47,7 @@ const Dashboard = () => {
   const [totalProduct, setToTalProduct] = React.useState();
   const [totalInCome, setTotalInCome] = React.useState();
   const [totalOrderNoProcess, setTotalOrderNoProcess] = React.useState();
-  const [topUser, setTopUser] = React.useState<ITopUser[]>([]);
+  const [topProducts, setTopProducts] = React.useState<ITopProduct[]>([]);
   const [orders, setOrders] = React.useState<Order[]>([]);
   const [user, setUser] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
@@ -107,11 +106,11 @@ const Dashboard = () => {
       if (res?.status) setTotalOrderNoProcess(res.data);
     } catch { /* ignore */ }
   };
-  const findTopUser = async () => {
+  const findTopProducts = async () => {
     if (!token) return;
     try {
-      const res = await REQUEST_API({ url: Api.findTopUser(), method: 'get', token });
-      if (res?.status) setTopUser(res.data);
+      const res = await REQUEST_API({ url: Api.findTopSellingProducts(), method: 'get', token });
+      if (res?.status) setTopProducts(res.data);
     } catch { /* ignore */ }
   };
   const getAllOrders = async () => {
@@ -149,7 +148,7 @@ const Dashboard = () => {
 
   React.useEffect(() => {
     getCountOrders(); getTotalProduct(); getTotalInCome();
-    getTotalOrderNoProcesse(); findTopUser();
+    getTotalOrderNoProcesse(); findTopProducts();
     getOrderByMonthSuccess(); getOrderByMonthUnSuccess(); getAllOrders();
   }, []);
 
@@ -299,28 +298,28 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Top users */}
+        {/* Top products */}
         <div className="col-4">
           <div className="card">
             <div className="card__header">
-              <h3>Top người dùng mua hàng nhiều nhất</h3>
+              <h3>Top sản phẩm bán nhiều nhất</h3>
             </div>
             <div className="card__body">
               <div className="table-wrapper">
                 <table>
                   <thead>
                     <tr>
-                      <th className="text-center">Tên Tài Khoản</th>
-                      <th className="text-center">Số Đơn Hàng</th>
-                      <th className="text-center">Tổng Tiền</th>
+                      <th className="text-center">Tên Sản Phẩm</th>
+                      <th className="text-center">Số Lượng Bán</th>
+                      <th className="text-center">Doanh Thu</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {topUser.map((item, i) => (
+                    {topProducts.map((item, i) => (
                       <tr key={i}>
-                        <td className="text-center">{item.username}</td>
-                        <td className="text-center">{item.totalOrder}</td>
-                        <td className="text-center">{formatPrice(item.totalIncome)}</td>
+                        <td className="text-center">{item.productName}</td>
+                        <td className="text-center">{item.totalQuantity}</td>
+                        <td className="text-center">{formatPrice(item.totalRevenue)}</td>
                       </tr>
                     ))}
                   </tbody>

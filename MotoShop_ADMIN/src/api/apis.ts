@@ -83,6 +83,7 @@ const Api = {
   totalInCome: () => API_URL + `/api/admin/order/totalInCome`,
   totalOrderNoProcess: () =>  API_URL + `/api/admin/order/totalOrderNoProcess`,
   findTopUser: () => API_URL + `/api/admin/user/findTopUser`,
+  findTopSellingProducts: () => API_URL + `/api/admin/order/findTopSellingProducts`,
   getOrderByMonth: (status) => API_URL +`/api/admin/order/getOrderByMonth?status=${status}`,
 }
 export default Api;

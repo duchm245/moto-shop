@@ -3,6 +3,7 @@ package com.motoshop.services;
 import com.motoshop.web.dto.request.*;
 import com.motoshop.web.dto.response.OrdersResponse;
 import com.motoshop.web.dto.response.ProductResponse;
+import com.motoshop.models.dtos.TopProductDto;
 import org.springframework.data.util.Pair;
 
 import java.util.Date;
@@ -11,6 +12,8 @@ import java.util.Map;
 
 public interface OrdersService {
     OrdersResponse getOrderByType(long userId, int type);
+
+    List<TopProductDto> findTopSellingProducts();
 
     List<OrdersResponse> getOrders(long userId, int type);
 

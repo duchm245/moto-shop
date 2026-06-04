@@ -154,7 +154,17 @@ public class AOrdersRest {
             Long t = ordersService.getTotalSoldProducts();
             return new ResponseEntity<>(ApiResponse.build(200, true, "Thành công", t), HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hủy đơn hàng không thành công! Lỗi " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/findTopSellingProducts")
+    public ResponseEntity<?> findTopSellingProducts() {
+        try {
+            java.util.List<com.motoshop.models.dtos.TopProductDto> t = ordersService.findTopSellingProducts();
+            return new ResponseEntity<>(ApiResponse.build(200, true, "Thành công", t), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi: " + e.getMessage());
         }
     }
 

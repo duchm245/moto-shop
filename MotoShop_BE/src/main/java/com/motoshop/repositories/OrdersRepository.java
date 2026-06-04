@@ -60,6 +60,15 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
     @Query("SELECT COUNT(o) FROM Orders o WHERE (o.status = 1 OR o.status = 2 OR o.status = 3) AND o.type = 1")
     Long totalOrderNoProcess();
 
+    @Query(value = "SELECT oi.product_name, SUM(oi.quantity) as totalQuantity, SUM(oi.sell_price * oi.quantity) as totalRevenue " +
+            "FROM order_item oi " +
+            "JOIN orders o ON o.id = oi.order_id " +
+            "WHERE o.status = 4 " +
+            "GROUP BY oi.product_name " +
+            "ORDER BY totalQuantity DESC " +
+            "LIMIT 5", nativeQuery = true)
+    List<Object[]> findTopSellingProducts();
+
     @Query("SELECT DATE_FORMAT(o.orderDate, '%Y-%m') AS month, o.status, COUNT(o.id) AS orderCount " +
             "FROM Orders o " +
             "WHERE o.status = :status " +

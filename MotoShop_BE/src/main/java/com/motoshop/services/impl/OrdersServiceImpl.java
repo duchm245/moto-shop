@@ -634,6 +634,19 @@ public class OrdersServiceImpl implements OrdersService {
         return ordersRepository.totalSoldProducts();
     }
 
+    @Override
+    public List<com.motoshop.models.dtos.TopProductDto> findTopSellingProducts() {
+        List<Object[]> results = ordersRepository.findTopSellingProducts();
+        List<com.motoshop.models.dtos.TopProductDto> topProducts = new java.util.ArrayList<>();
+        for (Object[] row : results) {
+            String productName = (String) row[0];
+            Long totalQuantity = ((Number) row[1]).longValue();
+            Long totalRevenue = ((Number) row[2]).longValue();
+            topProducts.add(new com.motoshop.models.dtos.TopProductDto(productName, totalQuantity, totalRevenue));
+        }
+        return topProducts;
+    }
+
     //Tổng thu nhập
     @Override
     public Long totalInCome() {
