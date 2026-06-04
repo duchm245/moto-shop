@@ -191,12 +191,12 @@ const EditArticle = () => {
           }),
         ]);
         if (res.status) {
-          // navigate(-1);
           toast.success(`Cập nhật bài viết thành công`, {
             position: 'top-right',
             pauseOnHover: false,
             theme: 'dark',
           });
+          navigate(-1);
         } else {
           toast.error(`${res.data}`, {
             position: 'top-right',
@@ -211,8 +211,8 @@ const EditArticle = () => {
   };
   const handleCategoryChange = (e) => {
     const selectedCategory = e.target.value;
-    if (selectedCategory !== '--Chọn danh mục--') {
-      setCategoryId(selectedCategory);
+    if (selectedCategory !== '--Chọn danh mục--' && selectedCategory !== '') {
+      setCategoryId(Number(selectedCategory));
     }
   };
 

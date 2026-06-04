@@ -24,6 +24,8 @@ public interface ArticleMapper {
     Article mapRequestToModel(ArticleRequest articleRequest);
 
 
+    @Mapping(target = "category.id", source = "categoryId")
+    @Mapping(target = "user.id", source = "userId")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateModel(@MappingTarget Article article, ArticleRequest articleRequest);
 }
