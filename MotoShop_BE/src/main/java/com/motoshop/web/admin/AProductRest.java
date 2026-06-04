@@ -72,7 +72,7 @@ public class AProductRest {
             ProductResponse product2 = productService.getProductAdmin(productRequest.getId());
             if (product != null) {
                 // Nếu sản phẩm đã tồn tại theo tên
-                if (product2 != null && product2.getId() == product.getId()) {
+                if (product2 != null && Objects.equals(product2.getId(), product.getId())) {
                     // Sản phẩm2 chính là sản phẩm cần cập nhật, không cần cảnh báo
                     ProductResponse productResponse = productService.updateProduct(productRequest);
                     if (productResponse != null) {
