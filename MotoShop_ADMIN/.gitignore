@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Temporary/test screenshots - do not commit
+src/static/images/Screenshot*.png
+src/static/images/Screenshot*.jpg
