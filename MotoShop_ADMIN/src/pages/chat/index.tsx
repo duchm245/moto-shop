@@ -27,11 +27,11 @@ const STATUS_OPTIONS = [
   { value: 2,  label: 'Đã xong',    color: '#27ae60' },
 ];
 
-const STATUS_SELECTABLE = [
-  { value: 0, label: 'Chờ xử lý',  color: '#f39c12' },
-  { value: 1, label: 'Đang xử lý', color: '#3498db' },
-  { value: 2, label: 'Đã xong',    color: '#27ae60' },
-];
+// Bước tiếp theo theo luồng tuyến tính: 0→1→2, không cho đi ngược
+const NEXT_ACTION: Record<number, { label: string; color: string; nextStatus: number }> = {
+  0: { label: 'Tiếp nhận xử lý', color: '#3498db', nextStatus: 1 },
+  1: { label: 'Đánh dấu hoàn thành', color: '#27ae60', nextStatus: 2 },
+};
 
 const getStatusBadge = (status: number) => {
   const s = STATUS_OPTIONS.find(o => o.value === status);
@@ -56,7 +56,6 @@ const ChatPage = () => {
 
   // Modal state
   const [selectedItem, setSelectedItem]     = React.useState<ConsultItem | null>(null);
-  const [modalStatus, setModalStatus]       = React.useState<number>(0);
   const [modalNote, setModalNote]           = React.useState<string>('');
   const [saving, setSaving]                 = React.useState(false);
 
@@ -93,7 +92,6 @@ const ChatPage = () => {
   // Mở modal chi tiết
   const handleOpenModal = (item: ConsultItem) => {
     setSelectedItem(item);
-    setModalStatus(item.status);
     setModalNote(item.staffNote || '');
   };
 
@@ -102,33 +100,30 @@ const ChatPage = () => {
     setSelectedItem(null);
   };
 
-  // Lưu tất cả thay đổi (trạng thái + ghi chú) trong 1 lần
-  const handleSaveAll = async () => {
+  // Chuyển sang bước tiếp theo + lưu ghi chú cùng lúc
+  const handleAdvanceStatus = async () => {
     if (!token || !selectedItem) return;
+    const action = NEXT_ACTION[selectedItem.status];
+    if (!action) return;
     setSaving(true);
     try {
-      const promises: Promise<any>[] = [];
-
-      // Cập nhật trạng thái nếu thay đổi
-      if (modalStatus !== selectedItem.status) {
-        const urlStatus = `${API_URL}/api/consult/admin/${selectedItem.id}/status?status=${modalStatus}`;
-        promises.push(REQUEST_API({ url: urlStatus, method: 'put', token }));
-      }
-
-      // Cập nhật ghi chú nội bộ nếu thay đổi
+      const promises: Promise<any>[] = [
+        REQUEST_API({
+          url: `${API_URL}/api/consult/admin/${selectedItem.id}/status?status=${action.nextStatus}`,
+          method: 'put',
+          token,
+        }),
+      ];
+      // Lưu ghi chú nếu có thay đổi
       if (modalNote !== (selectedItem.staffNote || '')) {
-        const urlNote = `${API_URL}/api/consult/admin/${selectedItem.id}/note?staffNote=${encodeURIComponent(modalNote)}`;
-        promises.push(REQUEST_API({ url: urlNote, method: 'put', token }));
+        promises.push(REQUEST_API({
+          url: `${API_URL}/api/consult/admin/${selectedItem.id}/note?staffNote=${encodeURIComponent(modalNote)}`,
+          method: 'put',
+          token,
+        }));
       }
-
-      if (promises.length === 0) {
-        toast.info('Không có thay đổi nào để lưu');
-        setSaving(false);
-        return;
-      }
-
       await Promise.all(promises);
-      toast.success('Đã lưu thay đổi!');
+      toast.success(`Đã chuyển sang "${action.label.replace('Đánh dấu ', '')}"!`);
       handleCloseModal();
       fetchData(page, filterStatus);
     } catch {
@@ -138,7 +133,33 @@ const ChatPage = () => {
     }
   };
 
+  // Chỉ lưu ghi chú nội bộ (không đổi trạng thái)
+  const handleSaveNoteOnly = async () => {
+    if (!token || !selectedItem) return;
+    if (modalNote === (selectedItem.staffNote || '')) {
+      toast.info('Ghi chú chưa thay đổi');
+      return;
+    }
+    setSaving(true);
+    try {
+      await REQUEST_API({
+        url: `${API_URL}/api/consult/admin/${selectedItem.id}/note?staffNote=${encodeURIComponent(modalNote)}`,
+        method: 'put',
+        token,
+      });
+      toast.success('Đã lưu ghi chú!');
+      fetchData(page, filterStatus);
+      // Cập nhật selectedItem local để không mất dữ liệu
+      setSelectedItem(prev => prev ? { ...prev, staffNote: modalNote } : prev);
+    } catch {
+      toast.error('Lưu ghi chú thất bại');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const isDone = selectedItem?.status === 2;
+  const nextAction = selectedItem ? NEXT_ACTION[selectedItem.status] : null;
 
   return (
     <div className="chat-page">
@@ -344,27 +365,30 @@ const ChatPage = () => {
                 </div>
               </div>
 
-              {/* Trạng thái xử lý */}
+              {/* Trạng thái xử lý — chỉ đọc, không cho chọn tự do */}
               <div className="chat-modal__status-wrap">
-                <p className="chat-modal__status-label">
-                  Trạng thái xử lý
-                  {isDone && <span style={{ color: '#27ae60', fontWeight: 400, marginLeft: 8, fontSize: 12 }}>
-                    (đã hoàn thành — không thể thay đổi)
-                  </span>}
-                </p>
-                <div className="chat-modal__status-options">
-                  {STATUS_SELECTABLE.map(s => (
-                    <button
-                      key={s.value}
-                      className={`chat-modal__status-btn${modalStatus === s.value ? ' selected' : ''}`}
-                      disabled={isDone}
-                      style={modalStatus === s.value ? { backgroundColor: s.color, borderColor: s.color } : {}}
-                      onClick={() => setModalStatus(s.value)}
-                    >
-                      {s.label}
-                    </button>
-                  ))}
+                <p className="chat-modal__status-label">Trạng thái hiện tại</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  {(() => {
+                    const badge = getStatusBadge(selectedItem!.status);
+                    return (
+                      <span
+                        className="chat-page__badge"
+                        style={{ backgroundColor: badge.color + '22', color: badge.color, borderColor: badge.color }}
+                      >
+                        {badge.label}
+                      </span>
+                    );
+                  })()}
+                  {isDone && (
+                    <span style={{ fontSize: 12, color: '#27ae60' }}>✓ Đã hoàn thành</span>
+                  )}
                 </div>
+                {nextAction && (
+                  <p className="chat-modal__note-hint" style={{ marginTop: 8 }}>
+                    Bước tiếp theo: bấm nút <strong style={{ color: nextAction.color }}>"{nextAction.label}"</strong> ở dưới để chuyển trạng thái
+                  </p>
+                )}
               </div>
 
               {/* Ghi chú nội bộ */}
@@ -381,25 +405,39 @@ const ChatPage = () => {
                   onChange={e => setModalNote(e.target.value)}
                 />
                 {!isDone && (
-                  <p className="chat-modal__note-hint">Ghi chú này sẽ được lưu cùng với trạng thái khi bấm "Lưu thay đổi"</p>
+                  <p className="chat-modal__note-hint">
+                    Ghi chú sẽ tự động lưu khi bấm nút hành động, hoặc bấm "Lưu ghi chú" để lưu riêng
+                  </p>
                 )}
               </div>
 
             </div>
 
-            {/* Footer */}
+            {/* Footer — hành động tuyến tính */}
             <div className="chat-modal__footer">
               <button className="chat-modal__btn chat-modal__btn--cancel" onClick={handleCloseModal}>
                 Đóng
               </button>
               {!isDone && (
-                <button
-                  className="chat-modal__btn chat-modal__btn--save"
-                  disabled={saving}
-                  onClick={handleSaveAll}
-                >
-                  {saving ? 'Đang lưu...' : 'Lưu thay đổi'}
-                </button>
+                <>
+                  <button
+                    className="chat-modal__btn chat-modal__btn--note-save"
+                    disabled={saving}
+                    onClick={handleSaveNoteOnly}
+                  >
+                    Lưu ghi chú
+                  </button>
+                  {nextAction && (
+                    <button
+                      className="chat-modal__btn chat-modal__btn--save"
+                      disabled={saving}
+                      style={{ backgroundColor: nextAction.color }}
+                      onClick={handleAdvanceStatus}
+                    >
+                      {saving ? 'Đang lưu...' : nextAction.label + ' →'}
+                    </button>
+                  )}
+                </>
               )}
             </div>
 
