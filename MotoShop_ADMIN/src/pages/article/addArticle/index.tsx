@@ -39,7 +39,8 @@ const AddArticle = () => {
   const getAllCategory = async () => {
     if (!!token) {
       try {
-        const url = Api.getAllCategory2();
+        // Dùng API lấy đúng danh mục tin tức (type=2): GET /api/category/type/2
+        const url = Api.getCategoryByType(2);
         const [res] = await Promise.all([
           REQUEST_API({
             url: url,
@@ -48,7 +49,7 @@ const AddArticle = () => {
           }),
         ]);
         if (res.status) {
-          setCategory(res.data);
+          setCategory(Array.isArray(res.data) ? res.data : []);
         } else {
           toast.error(`Có lỗi xảy ra`, {
             position: 'top-right',

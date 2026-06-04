@@ -20,6 +20,13 @@ const EditArticle = () => {
   const location = useLocation();
   const id = location.state;
   const [article, setArticle] = React.useState<Article>();
+
+  // Guard: nếu không có id (truy cập thẳng URL) thì redirect về trang bài viết
+  React.useEffect(() => {
+    if (!id) {
+      navigate(-1);
+    }
+  }, []);
   const [articleName, setArticleName] = React.useState('');
   const [shortContent, setShortContent] = React.useState('');
   const [content, setContent] = React.useState('');
@@ -53,7 +60,9 @@ const EditArticle = () => {
   const getAllCategory = async () => {
     if (!!token) {
       try {
-        const url = Api.getAllCategory2();
+        // Dùng API lấy đúng danh mục tin tức (type=2)
+        // Giống với FE đang dùng: GET /api/category/type/2
+        const url = Api.getCategoryByType(2);
         const [res] = await Promise.all([
           REQUEST_API({
             url: url,
@@ -62,7 +71,8 @@ const EditArticle = () => {
           }),
         ]);
         if (res.status) {
-          setCategory(res.data.data);
+          const all = Array.isArray(res.data) ? res.data : [];
+          setCategory(all);
         } else {
           toast.error(`Có lỗi xảy ra`, {
             position: 'top-right',
@@ -293,9 +303,10 @@ const EditArticle = () => {
               <div className="flex items-center justify-around cursor-pointer">
                 {img ? (
                   <div className="relative">
-                    <img src={`${API_URL_IMAGE}${fileImg?.name}`} className="w-auto h-auto object-contain p-3" />
+                    {/* Dùng img (blob URL hoặc object URL) thay vì ghép API_URL_IMAGE */}
+                    <img src={img} className="w-auto h-auto object-contain p-3" />
                     <div
-                      onClick={() => setFileImg('')}
+                      onClick={() => setFileImg(undefined)}
                       className="absolute w-[20px] h-[20px] rounded items-center justify-center flex bg-[#00000080] top-[6%] right-[6%]"
                     >
                       <img src={Images.iconX} className="w-[10px] h-[10px]" />

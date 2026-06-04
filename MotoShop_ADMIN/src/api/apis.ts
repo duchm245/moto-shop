@@ -29,6 +29,7 @@ const Api = {
   detailCategory: (id) => API_URL + `/api/category/${id}`,
   getAllCategory: (params) => API_URL + `/api/admin/category?${new URLSearchParams (params)}`,
   getAllCategory2: () => API_URL + `/api/admin/category/allCategory`,
+  getCategoryByType: (type: number) => API_URL + `/api/category/type/${type}`,
   getAllCategoryByParentId: (id) => API_URL + `/api/admin/category/parent?parentId=${id}`,
   hideCategory: (id) => API_URL + `/api/admin/category/hideCategory/${id}`,
   showCategory: (id) => API_URL + `/api/admin/category/showCategory/${id}`,
