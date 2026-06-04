@@ -27,10 +27,9 @@ const STATUS_OPTIONS = [
   { value: 2,  label: 'Đã xong',    color: '#27ae60' },
 ];
 
-// Bước tiếp theo theo luồng tuyến tính: 0→1→2, không cho đi ngược
+// Bước thủ công duy nhất: nhân viên xác nhận đã tư vấn xong
 const NEXT_ACTION: Record<number, { label: string; color: string; nextStatus: number }> = {
-  0: { label: 'Tiếp nhận xử lý', color: '#3498db', nextStatus: 1 },
-  1: { label: 'Đánh dấu hoàn thành', color: '#27ae60', nextStatus: 2 },
+  1: { label: 'Đã tư vấn xong', color: '#27ae60', nextStatus: 2 },
 };
 
 const getStatusBadge = (status: number) => {
@@ -89,10 +88,28 @@ const ChatPage = () => {
     fetchData(0, status);
   };
 
-  // Mở modal chi tiết
-  const handleOpenModal = (item: ConsultItem) => {
-    setSelectedItem(item);
+  // Mở modal chi tiết — tự động chuyển Chờ xử lý → Đang xử lý
+  const handleOpenModal = async (item: ConsultItem) => {
+    // Cập nhật local state ngay để UI phản ánh tức thì
+    const updatedItem = item.status === 0 ? { ...item, status: 1 } : item;
+    setSelectedItem(updatedItem);
     setModalNote(item.staffNote || '');
+
+    // Nếu đang Chờ xử lý → tự động chuyển Đang xử lý khi nhân viên mở
+    if (item.status === 0 && token) {
+      try {
+        await REQUEST_API({
+          url: `${API_URL}/api/consult/admin/${item.id}/status?status=1`,
+          method: 'put',
+          token,
+        });
+        // Cập nhật lại danh sách để badge ngoài bảng cũng đổi màu
+        setItems(prev => prev.map(i => i.id === item.id ? { ...i, status: 1 } : i));
+      } catch {
+        // Không block UX nếu lỗi, chỉ log
+        console.warn('Không thể tự động cập nhật trạng thái');
+      }
+    }
   };
 
   // Đóng modal
@@ -386,7 +403,7 @@ const ChatPage = () => {
                 </div>
                 {nextAction && (
                   <p className="chat-modal__note-hint" style={{ marginTop: 8 }}>
-                    Bước tiếp theo: bấm nút <strong style={{ color: nextAction.color }}>"{nextAction.label}"</strong> ở dưới để chuyển trạng thái
+                    Sau khi liên hệ và tư vấn xong cho khách, bấm <strong style={{ color: nextAction.color }}>"{nextAction.label}"</strong> để hoàn tất
                   </p>
                 )}
               </div>
