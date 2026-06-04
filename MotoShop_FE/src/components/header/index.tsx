@@ -145,8 +145,8 @@ const Header = () => {
                       alignItems: 'center',
                       gap: '4px',
                     }}>
-                      <span style={{ color: '#1a1a1a' }}>LT</span>
-                      <span style={{ color: '#c0392b' }}>Motor</span>
+                      <span style={{ color: '#fff' }}>Linh</span>
+                      <span style={{ color: '#fff' }}>Trinh</span>
                     </span>
                   </div>
                 </div>
@@ -194,7 +194,7 @@ const Header = () => {
           </div>
 
           {/* --- BOTTOM BAR --- */}
-          <div className="header-bottom d-none d-lg-block bg-red">
+          <div className="header-bottom d-none d-lg-block">
             <div className="container">
               <nav className="navbar-mainmenu">
                 <ul className="menuList-main">
@@ -350,8 +350,8 @@ const Header = () => {
                       alignItems: 'center',
                       gap: '4px',
                     }}>
-                      <span style={{ color: '#1a1a1a' }}>LT</span>
-                      <span style={{ color: '#c0392b' }}>Motor</span>
+                      <span style={{ color: '#1a1a1a' }}>Linh</span>
+                      <span style={{ color: '#c0392b' }}>Trinh</span>
                     </span>
                   </div>
                 </div>
