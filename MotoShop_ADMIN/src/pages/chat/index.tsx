@@ -17,14 +17,20 @@ interface ConsultItem {
   status: number; // 0: Chờ xử lý, 1: Đang xử lý, 2: Đã xong
   createdDate: string;
   updatedDate: string;
-  staffNote?: string; // Ghi chú nội bộ của nhân viên
+  staffNote?: string;
 }
 
 const STATUS_OPTIONS = [
   { value: -1, label: 'Tất cả',      color: '#6c757d' },
-  { value: 0,  label: 'Chờ xử lý',   color: '#f39c12' },
-  { value: 1,  label: 'Đang xử lý',  color: '#3498db' },
-  { value: 2,  label: 'Đã xong',     color: '#27ae60' },
+  { value: 0,  label: 'Chờ xử lý',  color: '#f39c12' },
+  { value: 1,  label: 'Đang xử lý', color: '#3498db' },
+  { value: 2,  label: 'Đã xong',    color: '#27ae60' },
+];
+
+const STATUS_SELECTABLE = [
+  { value: 0, label: 'Chờ xử lý',  color: '#f39c12' },
+  { value: 1, label: 'Đang xử lý', color: '#3498db' },
+  { value: 2, label: 'Đã xong',    color: '#27ae60' },
 ];
 
 const getStatusBadge = (status: number) => {
@@ -41,15 +47,18 @@ const formatDateStr = (dateStr: string) => {
 const ChatPage = () => {
   const token = useSelector((state: RootState) => state.ReducerAuth.token);
 
-  const [items, setItems]             = React.useState<ConsultItem[]>([]);
-  const [loading, setLoading]         = React.useState(false);
-  const [filterStatus, setFilterStatus] = React.useState<number>(-1);
-  const [page, setPage]               = React.useState(0);
-  const [totalPages, setTotalPages]   = React.useState(0);
-  const [totalElements, setTotalElements] = React.useState(0);
-  const [updatingId, setUpdatingId]   = React.useState<number | null>(null);
-  const [noteMap, setNoteMap]         = React.useState<Record<number, string>>({});
-  const [savingNoteId, setSavingNoteId] = React.useState<number | null>(null);
+  const [items, setItems]                   = React.useState<ConsultItem[]>([]);
+  const [loading, setLoading]               = React.useState(false);
+  const [filterStatus, setFilterStatus]     = React.useState<number>(-1);
+  const [page, setPage]                     = React.useState(0);
+  const [totalPages, setTotalPages]         = React.useState(0);
+  const [totalElements, setTotalElements]   = React.useState(0);
+
+  // Modal state
+  const [selectedItem, setSelectedItem]     = React.useState<ConsultItem | null>(null);
+  const [modalStatus, setModalStatus]       = React.useState<number>(0);
+  const [modalNote, setModalNote]           = React.useState<string>('');
+  const [saving, setSaving]                 = React.useState(false);
 
   const fetchData = async (p = 0, status = filterStatus) => {
     if (!token) return;
@@ -60,15 +69,10 @@ const ChatPage = () => {
       const res = await REQUEST_API({ url, method: 'get', token });
       if (res && res.status) {
         const data = res.data;
-        const list: ConsultItem[] = data.content || [];
-        setItems(list);
+        setItems(data.content || []);
         setTotalPages(data.totalPages || 0);
         setTotalElements(data.totalElements || 0);
         setPage(p);
-        // Khởi tạo noteMap từ dữ liệu server
-        const map: Record<number, string> = {};
-        list.forEach(item => { map[item.id] = item.staffNote || ''; });
-        setNoteMap(prev => ({ ...map, ...Object.fromEntries(Object.entries(prev).filter(([k]) => list.some(i => i.id === Number(k)))) }));
       }
     } catch {
       toast.error('Không thể tải danh sách yêu cầu tư vấn');
@@ -86,41 +90,55 @@ const ChatPage = () => {
     fetchData(0, status);
   };
 
-  const handleUpdateStatus = async (id: number, newStatus: number) => {
-    if (!token) return;
-    setUpdatingId(id);
+  // Mở modal chi tiết
+  const handleOpenModal = (item: ConsultItem) => {
+    setSelectedItem(item);
+    setModalStatus(item.status);
+    setModalNote(item.staffNote || '');
+  };
+
+  // Đóng modal
+  const handleCloseModal = () => {
+    setSelectedItem(null);
+  };
+
+  // Lưu tất cả thay đổi (trạng thái + ghi chú) trong 1 lần
+  const handleSaveAll = async () => {
+    if (!token || !selectedItem) return;
+    setSaving(true);
     try {
-      const url = `${API_URL}/api/consult/admin/${id}/status?status=${newStatus}`;
-      const res = await REQUEST_API({ url, method: 'put', token });
-      if (res && res.status) {
-        toast.success('Cập nhật trạng thái thành công!');
-        fetchData(page, filterStatus);
+      const promises: Promise<any>[] = [];
+
+      // Cập nhật trạng thái nếu thay đổi
+      if (modalStatus !== selectedItem.status) {
+        const urlStatus = `${API_URL}/api/consult/admin/${selectedItem.id}/status?status=${modalStatus}`;
+        promises.push(REQUEST_API({ url: urlStatus, method: 'put', token }));
       }
+
+      // Cập nhật ghi chú nội bộ nếu thay đổi
+      if (modalNote !== (selectedItem.staffNote || '')) {
+        const urlNote = `${API_URL}/api/consult/admin/${selectedItem.id}/note?staffNote=${encodeURIComponent(modalNote)}`;
+        promises.push(REQUEST_API({ url: urlNote, method: 'put', token }));
+      }
+
+      if (promises.length === 0) {
+        toast.info('Không có thay đổi nào để lưu');
+        setSaving(false);
+        return;
+      }
+
+      await Promise.all(promises);
+      toast.success('Đã lưu thay đổi!');
+      handleCloseModal();
+      fetchData(page, filterStatus);
     } catch {
-      toast.error('Cập nhật thất bại');
+      toast.error('Lưu thất bại, vui lòng thử lại');
     } finally {
-      setUpdatingId(null);
+      setSaving(false);
     }
   };
 
-  const handleSaveNote = async (id: number) => {
-    if (!token) return;
-    setSavingNoteId(id);
-    try {
-      const note = noteMap[id] ?? '';
-      const url = `${API_URL}/api/consult/admin/${id}/note?staffNote=${encodeURIComponent(note)}`;
-      const res = await REQUEST_API({ url, method: 'put', token });
-      if (res && res.status) {
-        toast.success('Đã lưu ghi chú nội bộ!');
-      } else {
-        toast.error('Lưu ghi chú thất bại');
-      }
-    } catch {
-      toast.error('Lỗi khi lưu ghi chú');
-    } finally {
-      setSavingNoteId(null);
-    }
-  };
+  const isDone = selectedItem?.status === 2;
 
   return (
     <div className="chat-page">
@@ -131,7 +149,7 @@ const ChatPage = () => {
             <i className="bx bx-chat" style={{ marginRight: 10, color: '#e74c3c' }} />
             Chăm sóc khách hàng
           </h1>
-          <p className="chat-page__subtitle">Quản lý các yêu cầu tư vấn từ khách hàng</p>
+          <p className="chat-page__subtitle">Click vào hàng để xem chi tiết và cập nhật</p>
         </div>
         <div className="chat-page__stat">
           <span className="chat-page__stat-value">{totalElements}</span>
@@ -174,19 +192,22 @@ const ChatPage = () => {
                 <th>#</th>
                 <th>Khách hàng</th>
                 <th>Liên hệ</th>
-                <th>Sản phẩm</th>
-                <th>Ghi chú KH</th>
-                <th>Ghi chú nội bộ</th>
+                <th>Sản phẩm quan tâm</th>
                 <th>Ngày gửi</th>
                 <th>Trạng thái</th>
-                <th>Hành động</th>
+                <th>Ghi chú NB</th>
               </tr>
             </thead>
             <tbody>
               {items.map((item) => {
                 const badge = getStatusBadge(item.status);
                 return (
-                  <tr key={item.id} className={item.status === 2 ? 'chat-page__row--done' : ''}>
+                  <tr
+                    key={item.id}
+                    className={`chat-page__row-clickable${item.status === 2 ? ' chat-page__row--done' : ''}`}
+                    onClick={() => handleOpenModal(item)}
+                    title="Click để xem chi tiết và cập nhật"
+                  >
                     <td className="chat-page__td-id">{item.id}</td>
                     <td>
                       <div className="chat-page__customer">
@@ -198,13 +219,13 @@ const ChatPage = () => {
                     </td>
                     <td>
                       <div className="chat-page__contact">
-                        <a href={`tel:${item.phone}`} className="chat-page__phone">
+                        <span className="chat-page__phone">
                           <i className="bx bx-phone" /> {item.phone}
-                        </a>
+                        </span>
                         {item.email && (
-                          <a href={`mailto:${item.email}`} className="chat-page__email">
+                          <span className="chat-page__email">
                             <i className="bx bx-envelope" /> {item.email}
-                          </a>
+                          </span>
                         )}
                       </div>
                     </td>
@@ -212,32 +233,6 @@ const ChatPage = () => {
                       {item.productName
                         ? <span className="chat-page__product">{item.productName}</span>
                         : <span className="chat-page__no-product">—</span>}
-                    </td>
-                    <td>
-                      <span className="chat-page__note" title={item.note}>
-                        {item.note || '—'}
-                      </span>
-                    </td>
-                    <td>
-                      <div className="chat-page__staff-note">
-                        <textarea
-                          className="chat-page__note-input"
-                          rows={2}
-                          placeholder={item.status === 2 ? 'Đã khóa' : 'Nhập ghi chú nội bộ...'}
-                          value={noteMap[item.id] ?? ''}
-                          disabled={item.status === 2}
-                          onChange={e => setNoteMap(prev => ({ ...prev, [item.id]: e.target.value }))}
-                          title={item.status === 2 ? 'Yêu cầu đã hoàn thành, không thể chỉnh sửa' : ''}
-                        />
-                        <button
-                          className="chat-page__btn chat-page__btn--note"
-                          disabled={savingNoteId === item.id || item.status === 2}
-                          onClick={() => handleSaveNote(item.id)}
-                          title={item.status === 2 ? 'Yêu cầu đã hoàn thành, không thể chỉnh sửa' : 'Lưu ghi chú nội bộ'}
-                        >
-                          {savingNoteId === item.id ? '...' : 'Lưu'}
-                        </button>
-                      </div>
                     </td>
                     <td className="chat-page__date">{formatDateStr(item.createdDate)}</td>
                     <td>
@@ -253,29 +248,9 @@ const ChatPage = () => {
                       </span>
                     </td>
                     <td>
-                      <div className="chat-page__actions">
-                        {item.status === 0 && (
-                          <button
-                            className="chat-page__btn chat-page__btn--process"
-                            disabled={updatingId === item.id}
-                            onClick={() => handleUpdateStatus(item.id, 1)}
-                          >
-                            {updatingId === item.id ? '...' : 'Tiếp nhận'}
-                          </button>
-                        )}
-                        {item.status === 1 && (
-                          <button
-                            className="chat-page__btn chat-page__btn--done"
-                            disabled={updatingId === item.id}
-                            onClick={() => handleUpdateStatus(item.id, 2)}
-                          >
-                            {updatingId === item.id ? '...' : 'Hoàn thành'}
-                          </button>
-                        )}
-                        {item.status === 2 && (
-                          <span className="chat-page__done-label">✓ Xong</span>
-                        )}
-                      </div>
+                      {item.staffNote
+                        ? <span className="chat-page__note" title={item.staffNote}>{item.staffNote}</span>
+                        : <span className="chat-page__action-hint">Chưa có ghi chú</span>}
                     </td>
                   </tr>
                 );
@@ -311,6 +286,124 @@ const ChatPage = () => {
           >
             Sau ›
           </button>
+        </div>
+      )}
+
+      {/* ─── MODAL CHI TIẾT (Slide panel từ phải) ─── */}
+      {selectedItem && (
+        <div className="chat-modal__overlay" onClick={handleCloseModal}>
+          <div className="chat-modal__panel" onClick={e => e.stopPropagation()}>
+
+            {/* Header modal */}
+            <div className="chat-modal__header">
+              <h2 className="chat-modal__title">
+                <i className="bx bx-user-circle" style={{ color: '#e74c3c' }} />
+                Chi tiết yêu cầu #{selectedItem.id}
+              </h2>
+              <button className="chat-modal__close" onClick={handleCloseModal}>×</button>
+            </div>
+
+            <div className="chat-modal__body">
+
+              {/* Thông tin khách hàng */}
+              <div className="chat-modal__section">
+                <p className="chat-modal__section-title">Thông tin khách hàng</p>
+                <div className="chat-modal__info-row">
+                  <span className="chat-modal__info-label">Họ tên</span>
+                  <span className="chat-modal__info-value">{selectedItem.fullName}</span>
+                </div>
+                <div className="chat-modal__info-row">
+                  <span className="chat-modal__info-label">Số điện thoại</span>
+                  <a href={`tel:${selectedItem.phone}`} className="chat-modal__info-link">
+                    <i className="bx bx-phone" /> {selectedItem.phone}
+                  </a>
+                </div>
+                {selectedItem.email && (
+                  <div className="chat-modal__info-row">
+                    <span className="chat-modal__info-label">Email</span>
+                    <a href={`mailto:${selectedItem.email}`} className="chat-modal__info-link">
+                      <i className="bx bx-envelope" /> {selectedItem.email}
+                    </a>
+                  </div>
+                )}
+                {selectedItem.productName && (
+                  <div className="chat-modal__info-row">
+                    <span className="chat-modal__info-label">Quan tâm</span>
+                    <span className="chat-page__product">{selectedItem.productName}</span>
+                  </div>
+                )}
+                {selectedItem.note && (
+                  <div className="chat-modal__info-row">
+                    <span className="chat-modal__info-label">Ghi chú KH</span>
+                    <span className="chat-modal__info-value">{selectedItem.note}</span>
+                  </div>
+                )}
+                <div className="chat-modal__info-row">
+                  <span className="chat-modal__info-label">Ngày gửi</span>
+                  <span className="chat-modal__info-value">{formatDateStr(selectedItem.createdDate)}</span>
+                </div>
+              </div>
+
+              {/* Trạng thái xử lý */}
+              <div className="chat-modal__status-wrap">
+                <p className="chat-modal__status-label">
+                  Trạng thái xử lý
+                  {isDone && <span style={{ color: '#27ae60', fontWeight: 400, marginLeft: 8, fontSize: 12 }}>
+                    (đã hoàn thành — không thể thay đổi)
+                  </span>}
+                </p>
+                <div className="chat-modal__status-options">
+                  {STATUS_SELECTABLE.map(s => (
+                    <button
+                      key={s.value}
+                      className={`chat-modal__status-btn${modalStatus === s.value ? ' selected' : ''}`}
+                      disabled={isDone}
+                      style={modalStatus === s.value ? { backgroundColor: s.color, borderColor: s.color } : {}}
+                      onClick={() => setModalStatus(s.value)}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Ghi chú nội bộ */}
+              <div className="chat-modal__note-wrap">
+                <p className="chat-modal__note-label">
+                  Ghi chú nội bộ
+                  <span className="chat-modal__note-badge">Chỉ nhân viên thấy</span>
+                </p>
+                <textarea
+                  className="chat-modal__note-textarea"
+                  placeholder={isDone ? 'Yêu cầu đã hoàn thành, không thể chỉnh sửa' : 'Ghi lại kết quả tư vấn, thông tin đã trao đổi với khách...'}
+                  value={modalNote}
+                  disabled={isDone}
+                  onChange={e => setModalNote(e.target.value)}
+                />
+                {!isDone && (
+                  <p className="chat-modal__note-hint">Ghi chú này sẽ được lưu cùng với trạng thái khi bấm "Lưu thay đổi"</p>
+                )}
+              </div>
+
+            </div>
+
+            {/* Footer */}
+            <div className="chat-modal__footer">
+              <button className="chat-modal__btn chat-modal__btn--cancel" onClick={handleCloseModal}>
+                Đóng
+              </button>
+              {!isDone && (
+                <button
+                  className="chat-modal__btn chat-modal__btn--save"
+                  disabled={saving}
+                  onClick={handleSaveAll}
+                >
+                  {saving ? 'Đang lưu...' : 'Lưu thay đổi'}
+                </button>
+              )}
+            </div>
+
+          </div>
         </div>
       )}
     </div>
