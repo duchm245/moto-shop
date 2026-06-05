@@ -1,5 +1,16 @@
 
+/* Push content below fixed header */
+.mainWrapper--content {
+  padding-top: 88px; /* header row1 44px + row2 44px */
+}
+@media (max-width: 991px) {
+  .mainWrapper--content {
+    padding-top: 56px; /* mobile header 56px */
+  }
+}
+
 .scroll-to-top-fade {
+
   position: fixed;
   right: 20px;
   bottom: 20px;

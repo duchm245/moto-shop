@@ -559,4 +559,80 @@
   font-size: 0.97rem;
 }
 
+/* ===================================================
+   SWIPER CUSTOMIZATION (LIKE SLICK)
+   =================================================== */
+.section-home-slider {
+  position: relative;
+  line-height: 0; /* Remove gap below img caused by inline baseline */
+}
+
+.home-slider {
+  width: 100%;
+}
+
+/* Make the swiper slide and image fill full width, no gap */
+.home-slider .swiper-slide {
+  line-height: 0;
+}
+
+.banner-home {
+  display: block;
+  width: 100%;
+  /* Fill viewport minus header height (44px topbar + 56px navbar = 100px) */
+  height: calc(100vh - 100px);
+  object-fit: cover;
+  object-position: center center;
+}
+
+/* Pagination Dots */
+.home-slider .swiper-pagination {
+  bottom: 20px;
+}
+
+.home-slider .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  opacity: 1;
+  border-radius: 50%;
+  margin: 0 8px !important;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.home-slider .swiper-pagination-bullet-active {
+  background: transparent;
+  border: 2px solid #d71a21; /* Red outline */
+  position: relative;
+  transform: scale(1.2);
+}
+.home-slider .swiper-pagination-bullet-active::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px; height: 4px;
+  background: #d71a21; /* Red inner dot */
+  border-radius: 50%;
+}
+
+/* Navigation Arrows */
+.home-slider .swiper-button-next,
+.home-slider .swiper-button-prev {
+  color: #d71a21;
+  background: transparent;
+  width: 40px; height: 40px;
+  transition: all 0.2s;
+}
+.home-slider .swiper-button-next::after,
+.home-slider .swiper-button-prev::after {
+  font-size: 24px;
+  font-weight: 900;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+.home-slider .swiper-button-next:hover,
+.home-slider .swiper-button-prev:hover {
+  transform: scale(1.1);
+}
 
