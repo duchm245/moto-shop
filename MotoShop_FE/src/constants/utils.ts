@@ -1,6 +1,22 @@
 export const API_URL = "http://localhost:8081";
 export const API_URL_IMAGE = "http://localhost:8081/src/static/images/";
 
+/**
+ * Chuẩn hóa URL ảnh sản phẩm:
+ * - Nếu đã là URL đầy đủ (http...) thì giữ nguyên
+ * - Nếu là tên file không có extension, thử thêm .png
+ * - Ghép với API_URL_IMAGE
+ */
+export const resolveImageUrl = (filename: string): string => {
+  if (!filename) return '';
+  // Đã là URL đầy đủ
+  if (filename.startsWith('http')) return filename;
+  // Thêm .png nếu chưa có extension
+  const hasExt = /\.[a-zA-Z]{2,5}$/.test(filename);
+  const normalizedName = hasExt ? filename : `${filename}.png`;
+  return `${API_URL_IMAGE}${normalizedName}`;
+};
+
 // ── Thông tin cửa hàng – chỉnh tại đây khi cần thay đổi ──
 export const SHOP_INFO = {
   name:         'LT Motor',
