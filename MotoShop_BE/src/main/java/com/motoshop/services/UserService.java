@@ -23,7 +23,7 @@ public interface UserService {
 //    Object login(LoginRequest loginRequest);
     UserResponse getUser(long userId);
     Object registerUser(RegisterRequest registerRequest);
-    String updateUser(Long userId, UserRequest userRequest);
+    String updateUser(Long userId, Long actorId, UserRequest userRequest);
     String updateProfile(Long userId, UserRequest userRequest);
     String changePassword(Long userId, PasswordRequest passwordRequest);
     String forgotPassword(String username);

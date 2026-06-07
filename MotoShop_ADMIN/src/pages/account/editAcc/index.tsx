@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 
 const EditAcc = () => {
   const token = useSelector((state: RootState) => state.ReducerAuth.token);
+  const currentUser = useSelector((state: RootState) => state.ReducerAuth.user);
   const navigate = useNavigate();
   const location = useLocation();
   const id = location.state;
@@ -60,7 +61,7 @@ const EditAcc = () => {
     if (!!token) {
       try {
         setLoading(true);
-        const url = Api.updateUser(id);
+        const url = Api.updateUser(id, currentUser?.id);
         const body = {
           firstName,
           lastName,
@@ -74,7 +75,7 @@ const EditAcc = () => {
           toast.success('Cập nhật tài khoản thành công', { position: 'top-right', theme: 'dark' });
           navigate(path.accounts);
         } else {
-          toast.error(`Cập nhật thất bại: ${res.data}`, { position: 'top-right', theme: 'dark' });
+          toast.error(res.data || 'Cập nhật thất bại', { position: 'top-right', theme: 'dark' });
         }
       } catch (error) {
         console.error(error);

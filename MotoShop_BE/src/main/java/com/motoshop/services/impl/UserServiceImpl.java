@@ -273,22 +273,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String updateUser(Long userId, UserRequest userRequest) {
-        if (userId != null && userRequest != null) {
-            //thực hiện lấy thông tin cũ
-            User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
-            boolean isAdminOrEmployee = user.getRoles().stream()
+    public String updateUser(Long userId, Long actorId, UserRequest userRequest) {
+        if (userId != null && userRequest != null && actorId != null) {
+            // Lấy thông tin người cần sửa
+            User targetUser = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
+            // Lấy thông tin người thực hiện hành động
+            User actor = userRepository.findById(actorId).orElseThrow(() -> new ResourceNotFoundException("User", "Id", actorId));
+
+            boolean isTargetAdminOrEmployee = targetUser.getRoles().stream()
                     .anyMatch(role -> role.getName().equals("ROLE_ADMIN") || role.getName().equals("ROLE_EMPLOYEE"));
-            if (isAdminOrEmployee) {
-                return "Không thể sửa tài khoản admin và emp";
-            } else {
-                //update thông tin cho user
-                user.setModifiedDate(new Date());
-                userMapper.updateModel(user, userRequest);
-                userRepository.save(user);
-                //trả về thông tin người sử dụng vừa cập nhật
-                return "Cập nhật thành công";
+            boolean isActorAdmin = actor.getRoles().stream()
+                    .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
+
+            // Nếu tài khoản cần sửa là ADMIN hoặc EMPLOYEE → chỉ ADMIN mới được sửa
+            if (isTargetAdminOrEmployee && !isActorAdmin) {
+                return "Bạn không có quyền sửa tài khoản admin hoặc nhân viên";
             }
+
+            // Thực hiện cập nhật
+            targetUser.setModifiedDate(new Date());
+            userMapper.updateModel(targetUser, userRequest);
+            userRepository.save(targetUser);
+            return "Cập nhật thành công";
         }
         return null;
     }

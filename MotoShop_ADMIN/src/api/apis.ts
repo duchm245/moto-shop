@@ -7,7 +7,7 @@ const Api = {
   showUser: (userId, id) => API_URL + `/api/admin/user/show?userId=${userId}&id=${id}`,
   addEmp: () => API_URL + `/api/admin/user/addEmp`,
   detailAcc: (id) => API_URL + `/api/user/${id}`,
-  updateUser: (id) => API_URL +`/api/admin/user/update/${id}`,
+  updateUser: (id, actorId) => API_URL +`/api/admin/user/update/${id}?actorId=${actorId}`,
   changePassword: (id) => API_URL + `/api/user/changePassword/${id}`,
   allUser: () => API_URL + `/api/admin/allUser`,
   //product

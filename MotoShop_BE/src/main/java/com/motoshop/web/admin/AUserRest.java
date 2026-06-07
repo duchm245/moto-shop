@@ -96,15 +96,20 @@ public class AUserRest {
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateUser(@PathVariable(name = "id") Long userId,
+                                        @RequestParam(name = "actorId") Long actorId,
                                         @RequestBody UserRequest userRequest) {
         try {
-            String s = userService.updateUser(userId, userRequest);
+            String s = userService.updateUser(userId, actorId, userRequest);
             if (s != null) {
-                return new ResponseEntity<>(ApiResponse.build(200, true, "thành công", s), HttpStatus.OK);
-            }else {
+                if (s.equals("Cập nhật thành công")) {
+                    return new ResponseEntity<>(ApiResponse.build(200, true, "thành công", s), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(ApiResponse.build(200, false, "thất bại", s), HttpStatus.OK);
+                }
+            } else {
                 return new ResponseEntity<>(ApiResponse.build(201, false, "thành công", "Không thành công"), HttpStatus.OK);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
