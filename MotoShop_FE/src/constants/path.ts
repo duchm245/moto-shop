@@ -7,6 +7,7 @@ const path = {
   //profile
   profile: '/profile',
   address: '/profile-address',
+  changePassword: '/change-password',
   detailOrder: '/detail-order',
   
   //category:

@@ -17,6 +17,7 @@ import DetailProduct from '../detailProduct';
 import SearchProduct from '../searchProduct';
 import DetailArticle from '../detailArticle';
 import DetailOrder from '../profile/detailOrder';
+import ChangePassword from '../profile/changePassword';
 import Contact from '../contact';
 import Articles from '../articles';
 import ConsultPage from '../consult';
@@ -92,6 +93,7 @@ const Layout = () => {
           <Route path={path.searchProduct} element={<SearchProduct />} />
           <Route path={path.detailArticle} element={<DetailArticle />} />
           <Route path={path.detailOrder} element={<DetailOrder />} />
+          <Route path={path.changePassword} element={<ChangePassword />} />
           <Route path={path.contact} element={<Contact />} />
           <Route path={path.article} element={<Articles />} />
           <Route path={path.consult} element={<ConsultPage />} />
