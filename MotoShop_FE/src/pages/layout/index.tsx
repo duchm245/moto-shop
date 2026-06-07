@@ -21,6 +21,7 @@ import Contact from '../contact';
 import Articles from '../articles';
 import ConsultPage from '../consult';
 import ComparePage from '../compare';
+import InstallmentPage from '../staticPages/InstallmentPage';
 import CompareTray from '~/components/compareTray';
 import AboutPage from '../staticPages/AboutPage';
 import FaqPage from '../staticPages/FaqPage';
@@ -95,6 +96,7 @@ const Layout = () => {
           <Route path={path.article} element={<Articles />} />
           <Route path={path.consult} element={<ConsultPage />} />
           <Route path={path.compare} element={<ComparePage />} />
+          <Route path={path.installment} element={<InstallmentPage />} />
           {/* Trang tĩnh footer */}
           <Route path={path.about} element={<AboutPage />} />
           <Route path={path.faq} element={<FaqPage />} />

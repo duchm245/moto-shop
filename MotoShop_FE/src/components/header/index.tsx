@@ -251,7 +251,7 @@ const Header = () => {
                 </div>
 
                 <div className="lt-nav__item"><a className="lt-nav__link" onClick={() => navigate(path.consult)}>TƯ VẤN MUA – BÁN XE</a></div>
-                <div className="lt-nav__item"><a className="lt-nav__link" onClick={() => navigate('#')}>MUA XE TRẢ GÓP</a></div>
+                <div className="lt-nav__item"><a className="lt-nav__link" onClick={() => navigate(path.installment)}>MUA XE TRẢ GÓP</a></div>
                 <div className="lt-nav__item"><a className="lt-nav__link" onClick={() => navigate(path.compare)}>SO SÁNH XE</a></div>
 
                 {/* Dịch Vụ */}
@@ -315,7 +315,7 @@ const Header = () => {
             <li onClick={() => navigate(path.product)}><a>Xe máy</a></li>
             {category.map((item, i) => (<li key={i} className="sub" onClick={() => navigate(path.product, { state: { categoryId: item.id } })}><a>— {item.title}</a></li>))}
             <li onClick={() => navigate(path.consult)}><a>Tư vấn mua – Bán xe</a></li>
-            <li onClick={() => navigate('#')}><a>Mua xe trả góp</a></li>
+            <li onClick={() => navigate(path.installment)}><a>Mua xe trả góp</a></li>
             <li onClick={() => navigate(path.compare)}><a>So sánh xe</a></li>
             <li onClick={() => navigate(path.article)}><a>Tin tức</a></li>
             <li onClick={() => navigate(path.contact)}><a>Hệ thống cửa hàng</a></li>

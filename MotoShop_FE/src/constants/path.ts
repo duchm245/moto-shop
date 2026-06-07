@@ -34,6 +34,9 @@ const path = {
   //so sánh xe
   compare: '/compare',
 
+  //mua xe trả góp
+  installment: '/mua-xe-tra-gop',
+
   // ── Trang tĩnh footer ──────────────────────────────────────
   // Thông tin
   about: '/pages/gioi-thieu',
