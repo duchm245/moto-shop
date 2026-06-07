@@ -256,10 +256,10 @@ const Order = () => {
     }
   }, [orders]);
   const handleEdit = (item) => {
-    if (item.status === 1 || item.status === 2) {
+    if (item.status === 1 || item.status === 2 || item.status === 3) {
       navigate(path.editOrder, { state: item.id });
     } else {
-      toast.error(`Không thể sửa đơn hàng này`, {
+      toast.error(`Không thể sửa đơn hàng này nữa`, {
         pauseOnHover: false,
         theme: 'dark',
       });
