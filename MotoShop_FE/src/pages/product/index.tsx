@@ -35,7 +35,9 @@ const ProductView = () => {
   const state = location.state;
   const categoryId = state?.categoryId;
   const saleId = state?.saleId;
-  const [brand, setBrand] = React.useState('');
+  // Brand & keyword pre-filled from mega menu navigation
+  const [brand, setBrand] = React.useState(state?.brand ?? '');
+  const [keyword, setKeyword] = React.useState(state?.keyword ?? '');
   const [selectedTypeId, setSelectedTypeId] = React.useState<number | null>(null);
   const [typeCategories, setTypeCategories] = React.useState<Category[]>([]);
   const [condition, setCondition] = React.useState('');
@@ -57,6 +59,27 @@ const ProductView = () => {
   const getProduct = async () => {
     try {
       setIsLoading(true);
+
+      // Nếu có keyword từ mega menu → dùng /search?keyword= (tìm theo tên dòng xe)
+      if (keyword) {
+        const params: any = { keyword, pageNo: page, pageSize: 20, sortBy: sortBy || 'name' };
+        const res = await productApi.searchProduct(params);
+        if (res.data.status) {
+          // searchProduct trả về list trực tiếp (không phân trang)
+          const data: Product[] = Array.isArray(res.data.data)
+            ? res.data.data
+            : res.data.data?.data ?? [];
+          // Lọc thêm theo brand nếu có (client-side sau khi nhận data)
+          const filtered = brand ? data.filter((p: any) => p.brand?.toLowerCase() === brand.toLowerCase()) : data;
+          setListProduct(filtered);
+          setTotalPage(1);
+        } else {
+          setListProduct([]);
+        }
+        return;
+      }
+
+      // Không có keyword → dùng getAllProducts với bộ lọc đầy đủ
       const params: Params = {
         minPrice: minPrice,
         maxPrice: maxPrice,
@@ -66,7 +89,6 @@ const ProductView = () => {
       };
       if (brand) params.brand = brand;
       if (condition) params.condition = condition;
-      // selectedTypeId (từ bộ lọc) ưu tiên hơn categoryId từ navigation
       const effectiveCategoryId = selectedTypeId ?? categoryId;
       if (effectiveCategoryId) params.categoryId = effectiveCategoryId;
       if (saleId) params.saleId = saleId;
@@ -88,6 +110,13 @@ const ProductView = () => {
   React.useEffect(() => {
     getProduct();
   }, []);
+
+  // Đồng bộ brand & keyword khi điều hướng từ mega menu đến cùng trang product
+  // (component không re-mount, chỉ location.state thay đổi)
+  React.useEffect(() => {
+    setBrand(location.state?.brand ?? '');
+    setKeyword(location.state?.keyword ?? '');
+  }, [location.state]);
 
   React.useEffect(() => {
     const loadTypeCategories = async () => {
@@ -139,6 +168,7 @@ const ProductView = () => {
   };
   const handleCacelFilter = () => {
     setBrand('');
+    setKeyword('');
     setSelectedTypeId(null);
     setCondition('');
     setMinPrice(0);
@@ -207,7 +237,7 @@ const ProductView = () => {
   };
   React.useEffect(() => {
     getProduct();
-  }, [brand, selectedTypeId, condition, minPrice, maxPrice, categoryId, page, sortBy, sortDirection, saleId]);
+  }, [brand, selectedTypeId, condition, minPrice, maxPrice, categoryId, page, sortBy, sortDirection, saleId, keyword]);
   const getCategory = async (id: number) => {
     if (!!categoryId) {
       try {
@@ -228,8 +258,26 @@ const ProductView = () => {
   return (
     <>
       <div className="layout-collections">
-        <Breadcrum title={categoryId ? category?.title : saleId ? 'Sản phẩm khuyến mãi' : 'Sản phẩm'} />
+        <Breadcrum title={categoryId ? category?.title : saleId ? 'Sản phẩm khuyến mãi' : keyword ? `${brand ? brand + ' ' : ''}${keyword}` : brand ? brand : 'Sản phẩm'} />
         <div className="container">
+          {/* Active filter tags from mega menu */}
+          {(brand || keyword) && (
+            <div style={{ display: 'flex', gap: 8, padding: '10px 0', flexWrap: 'wrap', alignItems: 'center' }}>
+              <span style={{ fontSize: 13, color: '#888' }}>Đang lọc:</span>
+              {brand && (
+                <span style={{ background: '#d71a21', color: '#fff', borderRadius: 4, padding: '3px 10px', fontSize: 13, fontWeight: 600 }}>
+                  {brand}
+                  <span style={{ cursor: 'pointer', marginLeft: 6 }} onClick={() => setBrand('')}>×</span>
+                </span>
+              )}
+              {keyword && (
+                <span style={{ background: '#333', color: '#fff', borderRadius: 4, padding: '3px 10px', fontSize: 13, fontWeight: 600 }}>
+                  {keyword}
+                  <span style={{ cursor: 'pointer', marginLeft: 6 }} onClick={() => setKeyword('')}>×</span>
+                </span>
+              )}
+            </div>
+          )}
           <div className="section-collection">
             <div className="row">
               <div className="col-lg-3 col-md-12 col-12 sidebar sidebar-left">
