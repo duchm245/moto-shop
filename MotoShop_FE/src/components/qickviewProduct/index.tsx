@@ -1,4 +1,5 @@
 import React from 'react';
+import { resolveImageUrl } from '~/constants/utils';
 
 const QuickviewProduct = () => {
   return (
@@ -38,7 +39,7 @@ const QuickviewProduct = () => {
                             <div className="product-gallery__item boxlazy-img">
                               <div className="boxlazy-img__insert lazy-img__prod">
                                 <span className="boxlazy-img__aspect">
-                                  <img src={`${API_URL_IMAGE}${item.url}`} />
+                                  <img src={resolveImageUrl(item.url)} />
                                 </span>
                               </div>
                             </div>
@@ -64,7 +65,7 @@ const QuickviewProduct = () => {
                             <a className="product-thumb__link boxlazy-img">
                               <div className="boxlazy-img__insert lazy-img__prod">
                                 <span className="boxlazy-img__aspect">
-                                  <img className="product-thumb__photo" src={`${API_URL_IMAGE}${item.url}`} />
+                                  <img className="product-thumb__photo" src={resolveImageUrl(item.url)} />
                                 </span>
                               </div>
                             </a>

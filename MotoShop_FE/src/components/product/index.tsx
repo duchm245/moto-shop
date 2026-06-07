@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl, formatPrice } from '~/constants/utils';
 import './styles.css';
 import productApi from '~/apis/product.apis';
 import { Product, ProductImages, Variant } from '~/types/product.type';
@@ -174,10 +174,10 @@ const ItemProduct = (props: IIProduct) => {
           <div className="proloop-image">
             <div className="proloop-image__inner" onClick={() => navigate(path.detailProduct, { state: props.id })}>
               <div className="lazy-img lazy-img__prod first-image">
-                <img className="img-loop lazyloaded img-zoom" src={`${API_URL_IMAGE}${props.img1}`} />
+                <img className="img-loop lazyloaded img-zoom" src={resolveImageUrl(props.img1)} />
               </div>
               <div className="lazy-img lazy-img__prod second-image hovered-img d-none d-lg-block">
-                <img className="img-loop lazyloaded img-zoom" src={`${API_URL_IMAGE}${props.img2}`} />
+                <img className="img-loop lazyloaded img-zoom" src={resolveImageUrl(props.img2)} />
               </div>
             </div>
             <div className="proloop-image__position">
@@ -318,7 +318,7 @@ const ItemProduct = (props: IIProduct) => {
                                 <div className="product-gallery__item boxlazy-img">
                                   <div className="boxlazy-img__insert lazy-img__prod">
                                     <span className="boxlazy-img__aspect">
-                                      <img src={`${API_URL_IMAGE}${item.url}`} />
+                                      <img src={resolveImageUrl(item.url)} />
                                     </span>
                                   </div>
                                 </div>
@@ -344,7 +344,7 @@ const ItemProduct = (props: IIProduct) => {
                                 <a className="product-thumb__link boxlazy-img">
                                   <div className="boxlazy-img__insert lazy-img__prod">
                                     <span className="boxlazy-img__aspect">
-                                      <img className="product-thumb__photo" src={`${API_URL_IMAGE}${item.url}`} />
+                                      <img className="product-thumb__photo" src={resolveImageUrl(item.url)} />
                                     </span>
                                   </div>
                                 </a>
