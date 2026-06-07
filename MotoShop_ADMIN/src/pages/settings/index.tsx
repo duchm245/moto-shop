@@ -97,13 +97,17 @@ const SettingsPage = () => {
 
           <div className="settings-account">
             <div className="settings-account__avatar" style={{ background: `linear-gradient(135deg, ${activeColor?.bg || '#3498db'}, #2c3e50)` }}>
-              {user?.fullName?.charAt(0)?.toUpperCase() || 'A'}
+              {(user?.lastName || user?.firstName || user?.username)?.charAt(0)?.toUpperCase() || 'A'}
             </div>
             <div className="settings-account__info">
-              <p className="settings-account__name">{user?.fullName || '—'}</p>
+              <p className="settings-account__name">
+                {(user?.lastName && user?.firstName)
+                  ? `${user.lastName} ${user.firstName}`
+                  : user?.lastName || user?.firstName || user?.username || '—'}
+              </p>
               <p className="settings-account__email">{user?.email || '—'}</p>
               <span className="settings-account__role">
-                {user?.role === 'ROLE_ADMIN' ? '👑 Admin' : '🧑‍💼 Nhân viên'}
+                {user?.roles?.[0]?.name === 'ROLE_ADMIN' ? '👑 Admin' : '🧑‍💼 Nhân viên'}
               </span>
             </div>
           </div>
