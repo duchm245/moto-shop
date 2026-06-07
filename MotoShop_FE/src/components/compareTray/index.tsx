@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '~/redux/reducers';
 import CompareAction from '~/redux/actions/compareAction';
-import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
+import { formatPrice, resolveImageUrl } from '~/constants/utils';
 import path from '~/constants/path';
 import './styles.css';
 
@@ -29,7 +29,7 @@ const CompareTray = () => {
           {items.map((item) => (
             <div key={item.id} className="compare-tray__item">
               <div className="compare-tray__item-img">
-                <img src={`${API_URL_IMAGE}${item.img}`} alt={item.name} />
+                <img src={resolveImageUrl(item.img)} alt={item.name} />
               </div>
               <div className="compare-tray__item-info">
                 <p className="compare-tray__item-name">{item.name}</p>

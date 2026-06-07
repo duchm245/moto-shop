@@ -5,7 +5,7 @@ import { RootState } from '~/redux/reducers';
 import CompareAction from '~/redux/actions/compareAction';
 import productApi from '~/apis/product.apis';
 import { Product } from '~/types/product.type';
-import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
+import { formatPrice, resolveImageUrl } from '~/constants/utils';
 import path from '~/constants/path';
 import Breadcrum from '~/components/breadcrumb';
 import './styles.css';
@@ -154,7 +154,7 @@ const ComparePage = () => {
                         className="compare-table__product-img"
                         onClick={() => navigate(path.detailProduct, { state: p.id })}
                       >
-                        <img src={`${API_URL_IMAGE}${p.images?.[0]?.url}`} alt={p.name} />
+                        <img src={resolveImageUrl(p.images?.[0]?.url ?? '')} alt={p.name} />
                       </div>
                       <h3
                         className="compare-table__product-name"
