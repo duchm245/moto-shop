@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '~/redux/reducers';
 import { toast } from 'react-toastify';
@@ -7,12 +7,14 @@ import Api from '~/api/apis';
 import { REQUEST_API } from '~/constants/method';
 import path from '~/constants/path';
 import { User } from '~/types/user.type';
+import Types from '~/redux/types';
 
 const EditProfile = () => {
   const token = useSelector((state: RootState) => state.ReducerAuth.token);
   const userId = useSelector((state: RootState) => state.ReducerAuth.user);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [user, setUser] = useState<User>();
   const [firstName, setFirstName] = useState('');
@@ -74,12 +76,19 @@ const EditProfile = () => {
           }),
         ]);
         if (res.status) {
-          navigate(path.home);
-          toast.success(`${res.data}`, {
+          // Cập nhật Redux store và localStorage ngay lập tức
+          dispatch({
+            type: Types.UPDATE_USER,
+            value: { user: data },
+          });
+          toast.success('Cập nhật thông tin thành công!', {
             position: 'top-right',
             pauseOnHover: false,
             theme: 'dark',
           });
+          // Làm mới dữ liệu hiển thị
+          viewDetail();
+          setIsEdit(false);
         } else {
           toast.error(`${res.data}`, {
             position: 'top-right',

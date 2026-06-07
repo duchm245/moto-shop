@@ -21,6 +21,14 @@ const ReducerAuth = (state = initialState, action) => {
         user: null,
         token: null,
       };
+    case Types.UPDATE_USER: {
+      const updatedUser = { ...state.user, ...value.user };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      return {
+        ...state,
+        user: updatedUser,
+      };
+    }
 
     default: {
       return state;
