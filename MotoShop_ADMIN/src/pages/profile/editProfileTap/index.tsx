@@ -67,7 +67,7 @@ const EditProfile = () => {
         };
         const [res] = await Promise.all([
           REQUEST_API({
-            url: Api.updateUser(user?.id),
+            url: Api.updateProfile(user?.id),
             method: 'post',
             data: data,
             token: token,

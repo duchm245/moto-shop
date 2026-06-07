@@ -8,6 +8,7 @@ const Api = {
   addEmp: () => API_URL + `/api/admin/user/addEmp`,
   detailAcc: (id) => API_URL + `/api/user/${id}`,
   updateUser: (id, actorId) => API_URL +`/api/admin/user/update/${id}?actorId=${actorId}`,
+  updateProfile: (id) => API_URL + `/api/user/update/${id}`,
   changePassword: (id) => API_URL + `/api/user/changePassword/${id}`,
   allUser: () => API_URL + `/api/admin/allUser`,
   //product
