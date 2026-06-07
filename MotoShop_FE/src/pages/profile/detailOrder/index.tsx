@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import cartApi from '~/apis/cart.apis';
 import { Order, OrderItem } from '~/types/order.type';
 import path from '~/constants/path';
-import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
+import { formatPrice, resolveImageUrl } from '~/constants/utils';
 import { Product } from '~/types/product.type';
 import productApi from '~/apis/product.apis';
 import provinceApi from '~/apis/province.apis';
@@ -170,7 +170,7 @@ const DetailOrder = () => {
                                         >
                                           <img
                                             alt={item.productName}
-                                            src={`${API_URL_IMAGE}${product?.images[0]?.url}`}
+                                            src={resolveImageUrl(product?.images[0]?.url ?? '')}
                                           />
                                         </a>
                                       </td>

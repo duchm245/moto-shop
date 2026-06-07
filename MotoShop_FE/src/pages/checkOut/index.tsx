@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import Input from './component/input';
 import { Order, OrderItem } from '~/types/order.type';
 import { Product } from '~/types/product.type';
-import { API_URL_IMAGE, formatPrice, SHOP_INFO } from '~/constants/utils';
+import { formatPrice, resolveImageUrl, SHOP_INFO } from '~/constants/utils';
 import { City, District, Ward } from '~/types/province.type';
 import provinceApi from '~/apis/province.apis';
 import { toast } from 'react-toastify';
@@ -590,7 +590,7 @@ const CheckOut = () => {
                                     <div className="product-thumbnail-wrapper">
                                       <img
                                         className="product-thumbnail-image"
-                                        src={`${API_URL_IMAGE}${product?.images[0]?.url}`}
+                                        src={resolveImageUrl(product?.images[0]?.url ?? '')}
                                       />
                                     </div>
                                     <span className="product-thumbnail-quantity" aria-hidden="true">

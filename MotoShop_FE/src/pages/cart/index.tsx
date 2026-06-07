@@ -6,7 +6,7 @@ import cartApi from '~/apis/cart.apis';
 import productApi from '~/apis/product.apis';
 import Breadcrum from '~/components/breadcrumb';
 import path from '~/constants/path';
-import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
+import { formatPrice, resolveImageUrl } from '~/constants/utils';
 import { RootState } from '~/redux/reducers';
 import { Order, OrderItem } from '~/types/order.type';
 import { Product, ProductImages } from '~/types/product.type';
@@ -291,7 +291,7 @@ const Cart = () => {
                                   <div className="media-left">
                                     <div className="item-img">
                                       <Link to={'#'}>
-                                        <img src={`${API_URL_IMAGE}${product?.images?.[0]?.url ?? ''}`} />
+                                        <img src={resolveImageUrl(product?.images?.[0]?.url ?? '')} />
                                       </Link>
                                     </div>
                                     <div className="item-remove" onClick={() => deleteItemFromCart(item.id)}>

@@ -4,7 +4,7 @@ import Images from '~/static';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import path from '~/constants/path';
 import { Order, OrderItem } from '~/types/order.type';
-import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
+import { formatPrice, resolveImageUrl } from '~/constants/utils';
 import { Product } from '~/types/product.type';
 import provinceApi from '~/apis/province.apis';
 import { City, District, Ward } from '~/types/province.type';
@@ -299,7 +299,7 @@ const ThankYou = () => {
                                     <div className="product-thumbnail-wrapper">
                                       <img
                                         className="product-thumbnail-image"
-                                        src={`${API_URL_IMAGE}${product.images?.[0]?.url ?? ''}`}
+                                        src={resolveImageUrl(product.images?.[0]?.url ?? '')}
                                       />
                                     </div>
                                     <span className="product-thumbnail-quantity" aria-hidden="true">
