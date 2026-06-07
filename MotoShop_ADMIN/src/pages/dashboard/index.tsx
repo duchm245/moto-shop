@@ -61,15 +61,29 @@ const Dashboard = () => {
 
   const openDrawer = async (type: DrawerType) => {
     setDrawer(type);
-    if (type === 'delivered' || type === 'pending') {
+    if (type === 'delivered') {
       setDrawerLoading(true);
       try {
-        const statusParam = type === 'delivered' ? 4 : 1;
-        const params = { keyword: '', pageNo: 1, pageSize: 50, sortBy: 'id', sortDirection: 'desc', status: statusParam };
+        const params = { keyword: '', pageNo: 1, pageSize: 50, sortBy: 'id', sortDirection: 'desc', status: 4 };
         const url = Api.getAllOrders(params);
         const res = await REQUEST_API({ url, method: 'get', token });
         if (res?.status) setDrawerOrders(res.data.data || []);
         else setDrawerOrders([]);
+      } catch { setDrawerOrders([]); }
+      setDrawerLoading(false);
+    } else if (type === 'pending') {
+      // "Tổng đơn hàng cần xử lý" = status 1 (Chờ xác nhận) + 2 (Đã xác nhận) + 3 (Đang vận chuyển)
+      setDrawerLoading(true);
+      try {
+        const fetchByStatus = async (status: number) => {
+          const params = { keyword: '', pageNo: 1, pageSize: 100, sortBy: 'id', sortDirection: 'desc', status };
+          const res = await REQUEST_API({ url: Api.getAllOrders(params), method: 'get', token });
+          return res?.status ? (res.data.data || []) : [];
+        };
+        const [s1, s2, s3] = await Promise.all([fetchByStatus(1), fetchByStatus(2), fetchByStatus(3)]);
+        // Gộp và sắp xếp theo id giảm dần
+        const merged = [...s1, ...s2, ...s3].sort((a, b) => b.id - a.id);
+        setDrawerOrders(merged);
       } catch { setDrawerOrders([]); }
       setDrawerLoading(false);
     }
