@@ -4,11 +4,12 @@ import com.motoshop.helper.ApiResponse;
 import com.motoshop.helper.ApiResponsePage;
 import com.motoshop.models.dtos.TopUserDto;
 import com.motoshop.web.dto.request.AddEmpRequest;
+import com.motoshop.web.dto.request.AdminPasswordRequest;
+import com.motoshop.web.dto.request.UserRequest;
 import com.motoshop.web.dto.response.BannerResponse;
 import com.motoshop.web.dto.response.ProductResponse;
 import com.motoshop.web.dto.response.UserResponse;
 import com.motoshop.services.UserService;
-import com.motoshop.web.dto.request.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.util.Pair;
@@ -137,6 +138,24 @@ public class AUserRest {
             }
         } catch (Exception e) {
             return new ResponseEntity<>(ApiResponse.build(404, true, e.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/resetPassword/{id}")
+    public ResponseEntity<?> resetPassword(@PathVariable(name = "id") Long targetUserId,
+                                           @RequestParam(name = "actorId") Long actorId,
+                                           @RequestBody AdminPasswordRequest request) {
+        try {
+            String result = userService.resetPassword(targetUserId, actorId, request);
+            if (result == null) {
+                return new ResponseEntity<>(ApiResponse.build(400, false, "Thất bại", "Dữ liệu không hợp lệ"), HttpStatus.OK);
+            } else if (result.equals("Đặt lại mật khẩu thành công")) {
+                return new ResponseEntity<>(ApiResponse.build(200, true, "Thành công", result), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(ApiResponse.build(200, false, "Thất bại", result), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

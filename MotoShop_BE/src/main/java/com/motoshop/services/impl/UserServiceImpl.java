@@ -376,4 +376,45 @@ public class UserServiceImpl implements UserService {
 
         return userSummaries;
     }
+
+    @Override
+    public String resetPassword(Long targetUserId, Long actorId, AdminPasswordRequest request) {
+        if (targetUserId == null || actorId == null || request == null) {
+            return null;
+        }
+
+        // Kiểm tra mật khẩu mới hợp lệ
+        if (request.getNewPassword() == null || request.getNewPassword().trim().isEmpty()) {
+            return "Mật khẩu mới không được để trống";
+        }
+        if (request.getNewPassword().length() < 6) {
+            return "Mật khẩu mới phải có ít nhất 6 ký tự";
+        }
+        if (!request.getNewPassword().equals(request.getCfNewPassword())) {
+            return "Mật khẩu xác nhận không khớp";
+        }
+
+        // Lấy thông tin tài khoản cần đổi mật khẩu
+        User targetUser = userRepository.findById(targetUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "Id", targetUserId));
+        // Lấy thông tin người thực hiện
+        User actor = userRepository.findById(actorId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "Id", actorId));
+
+        boolean isTargetAdminOrEmployee = targetUser.getRoles().stream()
+                .anyMatch(r -> r.getName().equals("ROLE_ADMIN") || r.getName().equals("ROLE_EMPLOYEE"));
+        boolean isActorAdmin = actor.getRoles().stream()
+                .anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
+
+        // EMPLOYEE không được reset mật khẩu ADMIN/EMPLOYEE khác
+        if (isTargetAdminOrEmployee && !isActorAdmin) {
+            return "Bạn không có quyền đặt lại mật khẩu tài khoản admin hoặc nhân viên";
+        }
+
+        // Thực hiện đặt lại mật khẩu
+        targetUser.setPassword(passwordEncoder().encode(request.getNewPassword()));
+        targetUser.setModifiedDate(new Date());
+        userRepository.save(targetUser);
+        return "Đặt lại mật khẩu thành công";
+    }
 }
