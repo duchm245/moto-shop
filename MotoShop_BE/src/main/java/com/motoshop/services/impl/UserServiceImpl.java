@@ -155,17 +155,18 @@ public class UserServiceImpl implements UserService {
                 .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
 
         if (isAdmin) {
-            boolean isEmployee = adminOrEmp.getRoles().stream()
-                    .anyMatch(role -> role.getName().equals("ROLE_EMPLOYEE"));
+            // Chỉ ADMIN mới được mở khóa tài khoản ADMIN khác
+            boolean isActorAdmin = adminOrEmp.getRoles().stream()
+                    .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
 
-            if (isEmployee) {
+            if (isActorAdmin) {
                 Date date = new Date();
                 userToShow.setStatus(1);
                 userToShow.setModifiedDate(date);
                 userRepository.save(userToShow);
                 return "Người dùng đã được mở khóa";
             } else {
-                return "Bạn phải liên hệ với admin để mở khóa tài khoản này";
+                return "Bạn không có quyền mở khóa tài khoản admin";
             }
         } else {
             Date date = new Date();
