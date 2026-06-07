@@ -1,7 +1,7 @@
 
 /* Push content below fixed header */
 .mainWrapper--content {
-  padding-top: 88px; /* header row1 44px + row2 44px */
+  padding-top: 100px; /* topbar 44px + navbar 56px = 100px */
 }
 @media (max-width: 991px) {
   .mainWrapper--content {

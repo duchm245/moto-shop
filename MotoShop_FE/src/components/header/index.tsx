@@ -20,26 +20,26 @@ const BRAND_DATA: Record<BrandKey, { image: string; categories: { title: string;
   HONDA: {
     image: bannerHonda,
     categories: [
-      { title: 'Xe ga', items: ['SH350i', 'Sh mode 125cc', 'SH160i/125i', 'Honda Vision', 'Vision phiên bản cổ điển', 'ADV350', 'LEAD ABS', 'Air Blade', 'Vario 125', 'Vario160'] },
-      { title: 'Xe côn tay', items: ['CBR150R', 'Winner X 2024', 'Winner R', "CB350 H'ness"] },
-      { title: 'Xe số', items: ['Wave Alpha 110cc', 'Wave Alpha phiên bản cổ điển', 'Future 125 FI', 'Blade 2023', 'Wave RSX', 'Super Cub C125', 'CT125'] },
-      { title: 'Xe điện', items: ['Honda UC3', 'ICON e', 'CUV e'] },
+      { title: 'Xe ga', items: ['SH', 'Vision', 'Lead', 'Air Blade', 'Vario', 'ADV350'] },
+      { title: 'Xe côn tay', items: ['CBR', 'Winner', "CB350 H'ness"] },
+      { title: 'Xe số', items: ['Wave Alpha', 'Future', 'Blade', 'Wave RSX', 'Super Cub', 'CT125'] },
+      { title: 'Xe điện', items: ['UC3', 'ICON e', 'CUV e'] },
     ],
   },
   YAMAHA: {
     image: bannerYamaha,
     categories: [
-      { title: 'Xe ga', items: ['Freego S phiên bản đặc biệt màu mới', 'Freego phiên bản tiêu chuẩn màu mới', 'Janus phiên bản tiêu chuẩn', 'Janus phiên bản đặc biệt', 'Latte tiêu chuẩn', 'Latte phiên bản giới hạn', 'Grande tiêu chuẩn', 'Grande đặc biệt', 'NVX 155', 'Neos'] },
-      { title: 'Xe số', items: ['Jupiter FI màu mới', 'Exciter 155 VVA 60 năm Yamaha', 'Exciter 155 VVA phiên bản giới hạn'] },
-      { title: 'Xe thể thao', items: ['MT-03', 'MT-15 màu mới', 'MT-15', 'XSR155', 'YZF-R15M phiên bản giới hạn 60 năm'] },
+      { title: 'Xe ga', items: ['Freego', 'Janus', 'Latte', 'Grande', 'NVX', 'Neos'] },
+      { title: 'Xe số', items: ['Jupiter', 'Exciter'] },
+      { title: 'Xe thể thao', items: ['MT-03', 'MT-15', 'XSR155', 'YZF-R15M'] },
     ],
   },
   SYM: {
     image: bannerSym,
     categories: [
-      { title: 'Xe ga', items: ['SHARK 50', 'ATTILA 50', 'PASSING 50', 'ELITE 50'] },
-      { title: 'Xe số', items: ['ANGELA 50', 'GALAXY 50', 'HUSKY CLASSIC 125', 'ELEGANT 50'] },
-      { title: 'Xe côn tay', items: ['NEW GALAXY 125', 'STAR SR 125 EFI'] },
+      { title: 'Xe ga', items: ['SHARK', 'ATTILA', 'PASSING', 'ELITE'] },
+      { title: 'Xe số', items: ['ANGELA', 'GALAXY', 'HUSKY CLASSIC', 'ELEGANT'] },
+      { title: 'Xe côn tay', items: ['NEW GALAXY', 'STAR SR'] },
     ],
   },
 };
@@ -211,7 +211,7 @@ const Header = () => {
                                       <h4>{cat.title}</h4>
                                       <ul>
                                         {cat.items.map((item) => (
-                                          <li key={item} onClick={() => navigate(path.product)}>{item}</li>
+                                          <li key={item} onClick={() => { setProductMenuOpen(false); navigate(path.product, { state: { brand: activeBrand.charAt(0) + activeBrand.slice(1).toLowerCase(), keyword: item } }); }}>{item}</li>
                                         ))}
                                       </ul>
                                     </React.Fragment>
@@ -223,7 +223,7 @@ const Header = () => {
                                       <h4>{cat.title}</h4>
                                       <ul>
                                         {cat.items.map((item) => (
-                                          <li key={item} onClick={() => navigate(path.product)}>{item}</li>
+                                          <li key={item} onClick={() => { setProductMenuOpen(false); navigate(path.product, { state: { brand: activeBrand.charAt(0) + activeBrand.slice(1).toLowerCase(), keyword: item } }); }}>{item}</li>
                                         ))}
                                       </ul>
                                     </React.Fragment>
@@ -252,7 +252,7 @@ const Header = () => {
 
                 <div className="lt-nav__item"><a className="lt-nav__link" onClick={() => navigate(path.consult)}>TƯ VẤN MUA – BÁN XE</a></div>
                 <div className="lt-nav__item"><a className="lt-nav__link" onClick={() => navigate('#')}>MUA XE TRẢ GÓP</a></div>
-                <div className="lt-nav__item"><a className="lt-nav__link" onClick={() => navigate(path.consult)}>ĐẶT LỊCH HẸN</a></div>
+                <div className="lt-nav__item"><a className="lt-nav__link" onClick={() => navigate(path.compare)}>SO SÁNH XE</a></div>
 
                 {/* Dịch Vụ */}
                 <div className={`lt-nav__item${serviceMenuOpen ? ' open' : ''}`} onMouseEnter={openServiceMenu} onMouseLeave={scheduleCloseServiceMenu}>
@@ -316,7 +316,7 @@ const Header = () => {
             {category.map((item, i) => (<li key={i} className="sub" onClick={() => navigate(path.product, { state: { categoryId: item.id } })}><a>— {item.title}</a></li>))}
             <li onClick={() => navigate(path.consult)}><a>Tư vấn mua – Bán xe</a></li>
             <li onClick={() => navigate('#')}><a>Mua xe trả góp</a></li>
-            <li onClick={() => navigate(path.consult)}><a>Đặt lịch hẹn</a></li>
+            <li onClick={() => navigate(path.compare)}><a>So sánh xe</a></li>
             <li onClick={() => navigate(path.article)}><a>Tin tức</a></li>
             <li onClick={() => navigate(path.contact)}><a>Hệ thống cửa hàng</a></li>
             <li onClick={() => navigate(path.contact)}><a>Liên hệ</a></li>
