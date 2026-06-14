@@ -328,16 +328,28 @@ const Cart = () => {
                                       <div className="qty quantity-partent qty-click clearfix">
                                         <button
                                           type="button"
-                                          className="qtyminus qty-btn"
+                                          title={item?.quantity === 1 ? 'Xóa sản phẩm' : 'Giảm số lượng'}
+                                          className={`qtyminus qty-btn${item?.quantity === 1 ? ' qty-btn--delete' : ''}`}
                                           onClick={() => {
                                             if (item?.quantity > 1) {
                                               minusItem(item.id);
+                                            } else {
+                                              const confirmed = window.confirm(
+                                                `Bạn có muốn xóa "${item.productName}" khỏi giỏ hàng không?`
+                                              );
+                                              if (confirmed) deleteItemFromCart(item.id);
                                             }
                                           }}
                                         >
-                                          <svg enableBackground="new 0 0 10 10" viewBox="0 0 10 10" x={0} y={0}>
-                                            <polygon points="4.5 4.5 3.5 4.5 0 4.5 0 5.5 3.5 5.5 4.5 5.5 10 5.5 10 4.5" />
-                                          </svg>
+                                          {item?.quantity === 1 ? (
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+                                              <path d="M9 3v1H4v2h1v13a2 2 0 002 2h10a2 2 0 002-2V6h1V4h-5V3H9zm0 5h2v9H9V8zm4 0h2v9h-2V8z"/>
+                                            </svg>
+                                          ) : (
+                                            <svg enableBackground="new 0 0 10 10" viewBox="0 0 10 10" x={0} y={0}>
+                                              <polygon points="4.5 4.5 3.5 4.5 0 4.5 0 5.5 3.5 5.5 4.5 5.5 10 5.5 10 4.5" />
+                                            </svg>
+                                          )}
                                         </button>
                                         <input
                                           type="text"

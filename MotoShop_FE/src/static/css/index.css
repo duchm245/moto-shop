@@ -10549,6 +10549,19 @@ PAGE CART
         margin: 0 auto; }
     .wrapper-mainCart .media-line-item .item-qty .quantity-partent button.qty-btn:focus {
       outline: none; }
+    .wrapper-mainCart .media-line-item .item-qty .quantity-partent button.qty-btn--delete {
+      background: #fff0f0;
+      border-color: #ffcccc;
+      color: #e53935;
+      transition: background 0.2s, color 0.2s; }
+      .wrapper-mainCart .media-line-item .item-qty .quantity-partent button.qty-btn--delete svg {
+        fill: #e53935; }
+    .wrapper-mainCart .media-line-item .item-qty .quantity-partent button.qty-btn--delete:hover {
+      background: #e53935;
+      border-color: #e53935;
+      color: #fff; }
+      .wrapper-mainCart .media-line-item .item-qty .quantity-partent button.qty-btn--delete:hover svg {
+        fill: #fff; }
     .wrapper-mainCart .media-line-item .item-total-price .text {
       font-size: 14px; }
     .wrapper-mainCart .media-line-item .item-total-price .line-item-total {
