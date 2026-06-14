@@ -34,9 +34,14 @@ const EditArticle = () => {
   const [category, setCategory] = React.useState<Category[]>([]);
   const [categoryId, setCategoryId] = React.useState<number>();
   const [fileImg, setFileImg] = React.useState<File>();
-  const img = React.useMemo(() => {
+  // Ảnh hiện tại từ server (tên file, dùng để hiển thị khi chưa chọn ảnh mới)
+  const [existingImage, setExistingImage] = React.useState<string>('');
+  // Blob URL chỉ tạo khi người dùng chọn file mới
+  const newImgPreview = React.useMemo(() => {
     return fileImg ? URL.createObjectURL(fileImg) : '';
   }, [fileImg]);
+  // Ảnh hiển thị: ưu tiên ảnh mới, fallback về ảnh từ server
+  const img = newImgPreview || (existingImage ? API_URL_IMAGE + existingImage : '');
   const refInputImage = React.useRef<HTMLInputElement>(null);
   const handleUpload = () => {
     refInputImage.current?.click();
@@ -54,7 +59,9 @@ const EditArticle = () => {
       setCategoryId(article.categoryId || null || undefined);
       setShortContent(article.shortContent);
       setContent(article.content);
-      setFileImg(new File([], article.image));
+      // Lưu tên ảnh từ server để hiển thị, không tạo File rỗng
+      setExistingImage(article.image || '');
+      setFileImg(undefined);
     }
   }, [article]);
   const getAllCategory = async () => {
@@ -171,16 +178,39 @@ const EditArticle = () => {
         });
         return;
       }
-      const data = {
-        title: articleName,
-        author: author,
-        shortContent: shortContent,
-        content: content,
-        categoryId: categoryId,
-        userId: user.id,
-        image: fileImg?.name,
-      };
+
       try {
+        // Nếu người dùng chọn ảnh mới → upload trước
+        let imageName = existingImage;
+        if (fileImg) {
+          const formData = new FormData();
+          formData.append('file', fileImg);
+          const uploadRes = await fetch(Api.uploadArticleImage(), {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData,
+          });
+          const uploadJson = await uploadRes.json();
+          if (!uploadJson.status) {
+            toast.error(`Upload ảnh thất bại: ${uploadJson.data}`, {
+              position: 'top-right',
+              pauseOnHover: false,
+              theme: 'dark',
+            });
+            return;
+          }
+          imageName = uploadJson.data;
+        }
+
+        const data = {
+          title: articleName,
+          author: author,
+          shortContent: shortContent,
+          content: content,
+          categoryId: categoryId,
+          userId: user.id,
+          image: imageName,
+        };
         const url = Api.updateArticle(id);
         const [res] = await Promise.all([
           REQUEST_API({
@@ -303,10 +333,12 @@ const EditArticle = () => {
               <div className="flex items-center justify-around cursor-pointer">
                 {img ? (
                   <div className="relative">
-                    {/* Dùng img (blob URL hoặc object URL) thay vì ghép API_URL_IMAGE */}
                     <img src={img} className="w-auto h-auto object-contain p-3" />
                     <div
-                      onClick={() => setFileImg(undefined)}
+                      onClick={() => {
+                        setFileImg(undefined);
+                        setExistingImage('');
+                      }}
                       className="absolute w-[20px] h-[20px] rounded items-center justify-center flex bg-[#00000080] top-[6%] right-[6%]"
                     >
                       <img src={Images.iconX} className="w-[10px] h-[10px]" />

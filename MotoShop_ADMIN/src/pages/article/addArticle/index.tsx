@@ -100,7 +100,7 @@ const AddArticle = () => {
         });
         return;
       }
-      if (!img) {
+      if (!fileImg) {
         toast.error(`Chọn ảnh cho bài viết`, {
           position: 'top-right',
           pauseOnHover: false,
@@ -117,16 +117,36 @@ const AddArticle = () => {
         return;
       }
 
-      const data = {
-        title: articleName,
-        author: author,
-        shortContent: shortContent,
-        content: content,
-        categoryId: categoryId,
-        userId: user.id,
-        image: fileImg?.name,
-      };
       try {
+        // Bước 1: Upload file ảnh lên server trước
+        const formData = new FormData();
+        formData.append('file', fileImg);
+        const uploadRes = await fetch(Api.uploadArticleImage(), {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        });
+        const uploadJson = await uploadRes.json();
+        if (!uploadJson.status) {
+          toast.error(`Upload ảnh thất bại: ${uploadJson.data}`, {
+            position: 'top-right',
+            pauseOnHover: false,
+            theme: 'dark',
+          });
+          return;
+        }
+        const uploadedFilename: string = uploadJson.data;
+
+        // Bước 2: Tạo bài viết với tên file đã upload
+        const data = {
+          title: articleName,
+          author: author,
+          shortContent: shortContent,
+          content: content,
+          categoryId: categoryId,
+          userId: user.id,
+          image: uploadedFilename,
+        };
         const url = Api.createArticle();
         const [res] = await Promise.all([
           REQUEST_API({
@@ -136,7 +156,6 @@ const AddArticle = () => {
             data: data,
           }),
         ]);
-        console.log(res);
 
         if (res.status) {
           navigate(-1);

@@ -65,6 +65,7 @@ const Api = {
   showArticle : (id) => API_URL +`/api/admin/article/show/${id}`,
   deleteArticle : (id) => API_URL +`/api/admin/article/delete/${id}`,
   detailArticle: (id) => API_URL + `/api/admin/article/${id}`,
+  uploadArticleImage: () => API_URL + `/api/admin/article/upload`,
   //order
   // getAllOrders: (page, keyword) => API_URL + `/api/admin/order/allOrder?page=${page}&keyword=${keyword}`,
   getAllOrders: (params) => API_URL + `/api/admin/order?${new URLSearchParams(params)}`,
