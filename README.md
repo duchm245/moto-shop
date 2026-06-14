@@ -25,6 +25,7 @@
 11. [Lưu trữ ảnh sản phẩm](#lưu-trữ-ảnh-sản-phẩm)
 12. [Xử lý lỗi thường gặp](#xử-lý-lỗi-thường-gặp)
 13. [Cấu trúc thư mục](#cấu-trúc-thư-mục)
+14. [Sơ đồ ERD](#sơ-đồ-erd)
 
 ---
 
@@ -607,6 +608,92 @@ Moto-shop/
 ├── migrations/             # SQL migration scripts (theo thứ tự)
 ├── motoshop_full_dump.sql  # Full dump — import một lần để có đủ dữ liệu
 └── README.md
+```
+
+---
+
+---
+
+## Sơ đồ ERD
+
+File ảnh sơ đồ ERD nằm trong thư mục `docs/diagrams/`.
+
+| File | Mô tả |
+|---|---|
+| `erd_motoshop.png` | Ảnh ERD gốc ban đầu |
+| `erd_motoshop_final.png` | ✅ **Phiên bản mới nhất** — đúng logic nghiệp vụ + đẹp như ảnh gốc |
+| `erd_motoshop.mmd` | File nguồn Mermaid (có thể dùng để tái tạo / chỉnh sửa) |
+| `erd_motoshop.md` | File Markdown xem trong VS Code (Ctrl+Shift+V) |
+
+### Cách tái tạo ảnh ERD bằng AI (Prompt mẫu)
+
+Nếu cần tạo lại ảnh ERD với phong cách tương tự `erd_motoshop_final.png` (vừa đúng logic vừa đẹp mắt), hãy dùng prompt sau khi làm việc với AI (Antigravity / Gemini / ChatGPT):
+
+<details>
+<summary>📋 Nhấn để xem Prompt mẫu tạo ảnh ERD</summary>
+
+```
+Tạo một ảnh sơ đồ ERD (Entity Relationship Diagram) chuyên nghiệp cho hệ thống cơ sở dữ liệu MotoShop với tiêu đề "SƠ ĐỒ ERD - CƠ SỞ DỮ LIỆU MOTOSHOP".
+
+=== PHONG CÁCH TRỰC QUAN ===
+- Nền trắng sạch
+- Các hộp thực thể màu vàng kem (#FFF2CC)
+- Tiêu đề bảng chữ đậm màu xanh đậm (#1F3864)
+- Viền đen mảnh
+- Đường nối màu đen với ký hiệu Crow's Foot chuẩn tại đầu nhiều (many-end)
+- Font chữ Arial hoặc sans-serif tương tự
+- Các hộp xếp thành lưới ngay ngắn, đường nối không chồng chéo
+
+=== BỐ CỤC LƯỚI (trái sang phải, trên xuống dưới) ===
+Hàng 1: USER | ROLE | CATEGORY | SALE | BANNER
+Hàng 2: ADDRESS | USER_ROLES | PRODUCT | VARIANT
+Hàng 3: ORDERS | | PRODUCT_IMAGE | ARTICLE
+Hàng 4: ORDER_ITEM | NOTIFICATION
+
+=== NỘI DUNG CÁC BẢNG ===
+
+USER: id(PK), username, password, email, firstName, lastName, phone, status, createdDate
+ROLE: id(PK), name
+USER_ROLES: user_id(FK), role_id(FK)
+ADDRESS: id(PK), user_id(FK), province, district, wards, addressDetail, isDefault
+CATEGORY: id(PK), name, image, status, type, parent_id(FK)
+SALE: id(PK), name, discount, startDate, endDate, isActive
+BANNER: id(PK), name, src, createdDate, status, category_id(FK)
+PRODUCT: id(PK), name, sku, price, salePrice, status, brand, vehicleType, displacement, newArrival, product_category_id(FK), sale_id(FK)
+VARIANT: id(PK), name, colorName, colorCode, stock, sold, product_id(FK)
+PRODUCT_IMAGE: id(PK), url, product_id(FK)
+ORDERS: id(PK), codeOrders, fullName, phone, status, totalPrice, paymentMethod, user_id(FK), address_id(FK)
+ORDER_ITEM: id(PK), quantity, sellPrice, productName, variantId, order_id(FK)
+ARTICLE: id(PK), title, shortContent, content, author, createdDate, image, status, user_id(FK), category_id(FK)
+NOTIFICATION: id(PK), content, isRead, type, order_id(FK), product_id(FK)
+
+=== CÁC MỐI QUAN HỆ (Crow's Foot — one-to-many nếu không ghi khác) ===
+- USER → USER_ROLES (1:N)
+- ROLE → USER_ROLES (1:N)
+- USER → ADDRESS (1:N)
+- USER → ORDERS (1:N)
+- USER → ARTICLE (1:N)
+- ADDRESS → ORDERS (1:N)
+- ORDERS → ORDER_ITEM (1:N)
+- ORDERS → NOTIFICATION (1:N)
+- CATEGORY → PRODUCT (1:N)
+- CATEGORY → BANNER (1:N)
+- CATEGORY → ARTICLE (1:N)
+- SALE → PRODUCT (1:N)
+- PRODUCT → VARIANT (1:N)
+- PRODUCT → PRODUCT_IMAGE (1:N)
+- PRODUCT → NOTIFICATION (1:N)
+
+Yêu cầu: Ảnh phải rõ nét, sắc sảo, in được, không bị mờ, độ phân giải cao.
+```
+
+</details>
+
+### Cách tái tạo ảnh ERD bằng Mermaid CLI (Terminal)
+
+```powershell
+# Tạo ảnh mới từ file nguồn (scale 3 = độ phân giải cao, không bị mờ)
+npx @mermaid-js/mermaid-cli -i docs/diagrams/erd_motoshop.mmd -o docs/diagrams/erd_output.png -s 3
 ```
 
 ---
