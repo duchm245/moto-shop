@@ -61,6 +61,6 @@ logging:
 
 app:
   jwt-secret: ${JWT_SECRET:CHANGE_ME}
-  jwt-expiration-milliseconds: ${JWT_EXPIRATION_MS:7200000}
+  jwt-expiration-milliseconds: ${JWT_EXPIRATION_MS:86400000}  # 24 giờ (trước là 7200000 = 2h)
   # Đường dẫn thư mục chứa ảnh tĩnh (tương đối từ nơi chạy BE, hoặc dùng đường dẫn tuyệt đối)
   image-path: ${IMAGE_PATH:../MotoShop_ADMIN/src/static/images/}
