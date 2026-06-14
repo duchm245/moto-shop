@@ -50,7 +50,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT  IGNORE INTO `user` (`id`, `created_date`, `email`, `first_name`, `last_name`, `modified_date`, `otp`, `otp_generated_time`, `password`, `phone`, `status`, `username`) VALUES (1,'2026-06-14 08:00:00','duchm123@gmail.com','Duc','Hoang','2026-06-07 20:23:24',NULL,NULL,'$2a$10$1Xmt73dPIjrpTIFrU04hx.WCLdIjaV9yrCUN6QbhjbT8ntIRuOS.i','0394501601',1,'admin'),(2,'2026-06-14 08:00:00','thangdv007@gmail.com','Th─âng','Nguyß╗àn Kim','2026-06-14 08:00:00',NULL,NULL,'$2a$10$m63ko4f6kfhbsvWl08yOa.rj9QKq0SZFzKpd79Nri4SNZWLV6s/b2','0966821574',1,'thangdev'),(3,'2026-06-14 08:05:00','kimthang@gmail.com','thang','kim','2026-06-14 08:05:00','349757',NULL,'$2a$10$fjxthI7nO/viGEgCuTRitOwjopOdrDBLX10uzOaA8O.GbCWMZjmLu','0966821575',1,'kimthang'),(4,'2026-04-21 21:51:18','duchm245@gmail.com','Duc','Hoang Minh','2026-06-07 20:01:01','506221','2026-04-21 21:51:18','$2a$10$vjwyK/ipG6xJkNv0WGV4o.AjH1WlVi7Il0oipdhgy/HDgCMIZvWOq','0394501605',1,'duchm245');
+INSERT  IGNORE INTO `user` (`id`, `created_date`, `email`, `first_name`, `last_name`, `modified_date`, `otp`, `otp_generated_time`, `password`, `phone`, `status`, `username`) VALUES (1,'2026-06-14 08:00:00','duchm123@gmail.com','Duc','Hoang','2026-06-07 20:23:24',NULL,NULL,'$2a$10$1Xmt73dPIjrpTIFrU04hx.WCLdIjaV9yrCUN6QbhjbT8ntIRuOS.i','0394501601',1,'admin'),(2,'2026-06-14 08:00:00','linhemployee@gmail.com','Linh','Hoàng Quang','2026-06-14 08:00:00',NULL,NULL,'$2a$10$m63ko4f6kfhbsvWl08yOa.rj9QKq0SZFzKpd79Nri4SNZWLV6s/b2','0966821574',1,'linh_employee'),(3,'2026-06-14 08:05:00','linhuser@gmail.com','Linh','Hoàng Quang','2026-06-14 08:05:00','349757',NULL,'$2a$10$fjxthI7nO/viGEgCuTRitOwjopOdrDBLX10uzOaA8O.GbCWMZjmLu','0966821575',1,'linh_user'),(4,'2026-04-21 21:51:18','duchm245@gmail.com','Duc','Hoang Minh','2026-06-07 20:01:01','506221','2026-04-21 21:51:18','$2a$10$vjwyK/ipG6xJkNv0WGV4o.AjH1WlVi7Il0oipdhgy/HDgCMIZvWOq','0394501605',1,'duchm245');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -70,7 +70,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `address` WRITE;
 /*!40000 ALTER TABLE `address` DISABLE KEYS */;
-INSERT  IGNORE INTO `address` (`id`, `address_detail`, `created_date`, `district`, `first_name`, `focus`, `last_name`, `modified_date`, `phone`, `province`, `status`, `wards`, `user_id`) VALUES (1,'Nguyß╗çt ─Éß╗⌐c','2026-06-14 09:00:00','251','Kim Th─âng',0,'Nguyß╗àn ','2026-06-14 09:00:00','0966821574','26',1,'9052',3),(2,'HN','2026-06-04 22:04:50','5','Duc',0,'Hoang','2026-06-04 22:04:50','0394501605','1',1,'172',4);
+INSERT  IGNORE INTO `address` (`id`, `address_detail`, `created_date`, `district`, `first_name`, `focus`, `last_name`, `modified_date`, `phone`, `province`, `status`, `wards`, `user_id`) VALUES (1,'Nguyệt Đức','2026-06-14 09:00:00','251','Linh',0,'Hoàng Quang','2026-06-14 09:00:00','0966821574','26',1,'9052',3),(2,'HN','2026-06-04 22:04:50','5','Duc',0,'Hoang','2026-06-04 22:04:50','0394501605','1',1,'172',4);
 /*!40000 ALTER TABLE `address` ENABLE KEYS */;
 UNLOCK TABLES;
 
