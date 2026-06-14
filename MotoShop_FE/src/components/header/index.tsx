@@ -135,9 +135,9 @@ const Header = () => {
                       </svg>
                     </Link>
                     <div className="lt-topbar__dropdown">
-                      <Link to={path.article} className="lt-topbar__dd-item">Tin sự kiện</Link>
-                      <Link to={path.article} className="lt-topbar__dd-item">Tin khuyến mại</Link>
-                      <Link to={path.article} className="lt-topbar__dd-item">Tin tuyển dụng</Link>
+                      <Link to={`${path.article}?filter=su-kien`} className="lt-topbar__dd-item">Tin sự kiện</Link>
+                      <Link to={`${path.article}?filter=khuyen-mai`} className="lt-topbar__dd-item">Tin khuyến mại</Link>
+                      <Link to={`${path.article}?filter=tuyen-dung`} className="lt-topbar__dd-item">Tin tuyển dụng</Link>
                     </div>
                   </div>
 

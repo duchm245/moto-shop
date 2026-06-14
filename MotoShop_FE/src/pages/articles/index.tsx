@@ -28,8 +28,9 @@ function getTagClass(title: string): string {
  * Hỗ trợ cả DB cũ (Bài viết blog, ID=30) và DB mới (Tin tức xe máy ID=35, Tin khuyến mãi ID=36).
  */
 const FILTER_KEYWORD_MAP: Record<string, string[]> = {
+  'su-kien':    ['sự kiện', 'su kien', 'event', 'tin tức', 'tin tuc', 'news', 'blog'],
   'khuyen-mai': ['khuyến', 'khuyen', 'promo', 'sale', 'giảm', 'ưu đãi'],
-  'tin-tuc':    ['tin tức', 'tin tuc', 'sự kiện', 'su kien', 'event', 'news', 'blog'],
+  'tuyen-dung': ['tuyển', 'tuyen', 'recruit', 'nhân sự', 'việc làm'],
 };
 
 function findCategoryByFilter(
@@ -143,8 +144,9 @@ const Articles = () => {
   };
 
   const pageTitle = React.useMemo(() => {
-    if (filterKeyword === 'khuyen-mai') return 'Khuyến mãi';
-    if (filterKeyword === 'tin-tuc')    return 'Tin tức sự kiện';
+    if (filterKeyword === 'su-kien')    return 'Tin sự kiện';
+    if (filterKeyword === 'khuyen-mai') return 'Tin khuyến mại';
+    if (filterKeyword === 'tuyen-dung') return 'Tin tuyển dụng';
     return 'Tin tức';
   }, [filterKeyword]);
 
