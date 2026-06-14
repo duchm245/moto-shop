@@ -284,8 +284,8 @@ const Dashboard = () => {
         {statusCards.map((item, index) => (
           <div className="col-3" key={index}>
             <div
-              className="status-card cursor-pointer dash-stat-card"
-              style={{ '--card-accent': item.color } as React.CSSProperties}
+              className="status-card card cursor-pointer dash-stat-card"
+              style={{ '--card-accent': item.color, marginBottom: 0 } as React.CSSProperties}
               onClick={item.onClick}
               title={`Xem chi tiết: ${item.title}`}
             >
