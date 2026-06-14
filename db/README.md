@@ -106,18 +106,6 @@ Get-Content .\db\02_data.sql | docker exec -i -e MYSQL_PWD=123456 motorbike-shop
 
 ---
 
-### Khi nào dùng cách nào?
-
-| Tình huống | Cách nên dùng |
-|---|---|
-| Setup lần đầu / máy mới | ✅ **Cách 1** — Xóa trắng & import lại |
-| Dữ liệu local đang cũ / lỗi thời | ✅ **Cách 1** — Xóa trắng & import lại |
-| Schema thay đổi (thêm cột, bảng mới) | ✅ **Cách 1** — Bắt buộc |
-| Chỉ có sản phẩm/bài viết mới được thêm | ⚡ **Cách 2** — Import nhanh |
-| Đang test và không muốn mất dữ liệu | ⚡ **Cách 2** — Import nhanh |
-
----
-
 ## Quy trình đồng bộ dữ liệu trong nhóm
 
 ```
