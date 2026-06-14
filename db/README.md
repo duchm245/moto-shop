@@ -60,41 +60,100 @@ npm run dev   # → http://localhost:3001
 
 ---
 
+## Đồng bộ dữ liệu khi có cập nhật từ nhóm
+
+Khi có thành viên push `02_data.sql` mới lên Git, bạn cần chạy một trong hai cách sau:
+
+---
+
+### ✅ Cách 1 — Xóa trắng & import lại (Khuyên dùng)
+
+> Dùng khi: **setup lần đầu**, dữ liệu local đang lỗi thời, hoặc muốn đồng bộ hoàn toàn giống nhau.
+
+```powershell
+# Bước 1: Pull code mới nhất
+git pull origin dev
+
+# Bước 2: Xóa sạch database cũ, tạo lại từ đầu
+docker exec -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root -e "DROP DATABASE IF EXISTS motorbike_shop; CREATE DATABASE motorbike_shop CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+# Bước 3: Tạo lại toàn bộ bảng
+Get-Content .\db\01_schema.sql | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
+
+# Bước 4: Import dữ liệu mới nhất
+Get-Content .\db\02_data.sql | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
+```
+
+> ✔️ Sau khi xong, **reload trình duyệt** là thấy dữ liệu mới ngay, không cần restart BE.
+
+---
+
+### ⚡ Cách 2 — Chỉ cập nhật dữ liệu mới (Nhanh hơn)
+
+> Dùng khi: Chỉ muốn **thêm data mới** từ đồng nghiệp mà không muốn mất dữ liệu đang test trên máy.  
+> File `02_data.sql` dùng `INSERT IGNORE` nên **bỏ qua bản ghi đã tồn tại**, không ghi đè.
+
+```powershell
+# Bước 1: Pull code mới nhất
+git pull origin dev
+
+# Bước 2: Import thẳng vào DB đang có (không xóa gì cả)
+Get-Content .\db\02_data.sql | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
+```
+
+> ⚠️ **Lưu ý:** Cách này chỉ thêm bản ghi mới, **không cập nhật** bản ghi đã tồn tại.  
+> Nếu muốn cập nhật timestamp hay sửa dữ liệu cũ → dùng **Cách 1**.
+
+---
+
+### Khi nào dùng cách nào?
+
+| Tình huống | Cách nên dùng |
+|---|---|
+| Setup lần đầu / máy mới | ✅ **Cách 1** — Xóa trắng & import lại |
+| Dữ liệu local đang cũ / lỗi thời | ✅ **Cách 1** — Xóa trắng & import lại |
+| Schema thay đổi (thêm cột, bảng mới) | ✅ **Cách 1** — Bắt buộc |
+| Chỉ có sản phẩm/bài viết mới được thêm | ⚡ **Cách 2** — Import nhanh |
+| Đang test và không muốn mất dữ liệu | ⚡ **Cách 2** — Import nhanh |
+
+---
+
 ## Quy trình đồng bộ dữ liệu trong nhóm
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│  QUY TRÌNH KHI CÓ DỮ LIỆU QUAN TRỌNG THAY ĐỔI          │
-│                                                         │
-│  1. Thành viên A thêm/sửa dữ liệu quan trọng trên máy  │
-│  2. Export file 02_data.sql mới (lệnh bên dưới)         │
-│  3. git add db/02_data.sql && git commit && git push     │
-│  4. Thành viên B,C pull code về                         │
-│  5. Chạy lại 02_data.sql để đồng bộ dữ liệu            │
-└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│  QUY TRÌNH KHI CÓ DỮ LIỆU QUAN TRỌNG THAY ĐỔI              │
+│                                                             │
+│  1. Thành viên A thêm/sửa dữ liệu quan trọng trên máy      │
+│  2. Export file 02_data.sql mới (xem lệnh bên dưới)         │
+│  3. git add db/02_data.sql → git commit → git push          │
+│  4. Thành viên B, C: git pull                               │
+│  5. Thành viên B, C chạy Cách 1 hoặc Cách 2 ở trên         │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### Lệnh export dữ liệu mới nhất (khi cần cập nhật)
+### Lệnh export dữ liệu mới nhất (dành cho người cập nhật)
 
 ```powershell
-# Bước 1: Export từ MySQL ra file tạm (UTF-16)
+# Bước 1: Export từ MySQL (file tạm UTF-16)
 docker exec -e MYSQL_PWD=123456 motorbike-shop-mysql mysqldump `
-  -u root --no-create-info --complete-insert `
+  -u root --no-create-info --complete-insert --insert-ignore `
   --skip-triggers --set-charset --single-transaction --disable-keys `
   motorbike_shop `
   role user user_roles address category sales product variant product_image `
   banner article article_image orders order_item notifications company `
   social_media category_policy policy policy_image consult_request product_comment `
-  > db\02_data.sql
+  > db\02_data_raw.sql
 
 # Bước 2: Convert encoding về UTF-8
-$content = Get-Content "db\02_data.sql" -Encoding Unicode
-[System.IO.File]::WriteAllLines("db\02_data.sql", $content, [System.Text.UTF8Encoding]::new($false))
+$raw = Get-Content "db\02_data_raw.sql" -Encoding Unicode
+[System.IO.File]::WriteAllLines("db\02_data.sql", $raw, [System.Text.UTF8Encoding]::new($false))
+Remove-Item "db\02_data_raw.sql"
 
-# Bước 3: Commit
+# Bước 3: Commit & push
 git add db/02_data.sql
 git commit -m "data: update seed data $(Get-Date -Format 'yyyy-MM-dd')"
-git push
+git push origin dev
 ```
 
 ---
@@ -104,4 +163,5 @@ git push
 - ⚠️ `02_data.sql` **KHÔNG được** chứa dữ liệu nhạy cảm (password thật, API key...).  
   Mật khẩu trong file này đã được mã hóa BCrypt, an toàn để commit.
 - ✅ `01_schema.sql` dùng `CREATE TABLE IF NOT EXISTS` — **an toàn để chạy lại nhiều lần**.
-- ✅ Khi schema thay đổi (thêm cột, thêm bảng), cập nhật cả `01_schema.sql`.
+- ✅ `02_data.sql` dùng `INSERT IGNORE` — **an toàn để chạy lại** trên DB đã có dữ liệu.
+- ✅ Khi schema thay đổi (thêm cột, thêm bảng), nhớ cập nhật cả `01_schema.sql`.
