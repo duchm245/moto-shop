@@ -10,12 +10,18 @@ import com.motoshop.web.dto.response.ArticleResponse;
 import com.motoshop.web.dto.response.CategoryResponse;
 import com.motoshop.web.dto.response.OrdersResponse;
 import com.motoshop.web.dto.response.ProductResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +30,34 @@ import java.util.List;
 public class AArticleRest {
     private final ArticleService articleService;
 
+    @Value("${app.image-path:../MotoShop_ADMIN/src/static/images/}")
+    private String imagePath;
+
     public AArticleRest(ArticleService articleService) {
         this.articleService = articleService;
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            if (file == null || file.isEmpty()) {
+                return new ResponseEntity<>(ApiResponse.build(201, false, "Thất bại", "File rỗng"), HttpStatus.OK);
+            }
+            String originalFilename = file.getOriginalFilename();
+            if (originalFilename == null || originalFilename.isBlank()) {
+                return new ResponseEntity<>(ApiResponse.build(201, false, "Thất bại", "Tên file không hợp lệ"), HttpStatus.OK);
+            }
+            String filename = Paths.get(originalFilename).getFileName().toString();
+            Path uploadDir = Paths.get(imagePath).toAbsolutePath().normalize();
+            if (!Files.exists(uploadDir)) {
+                Files.createDirectories(uploadDir);
+            }
+            Path filePath = uploadDir.resolve(filename);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            return new ResponseEntity<>(ApiResponse.build(200, true, "Upload thành công", filename), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Lỗi upload: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("")
