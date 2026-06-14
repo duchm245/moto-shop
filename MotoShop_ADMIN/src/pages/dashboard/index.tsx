@@ -279,37 +279,35 @@ const Dashboard = () => {
       {isLoading && <LoadingPage />}
       <h2 className="page-header text-xl font-bold">Trang tổng quan</h2>
 
-      {/* ── Stat Cards ─────────────────────────────────────────────────── */}
+      {/* ── Row 1: Stat Cards (4 cards ngang hàng) ──────────────────────── */}
       <div className="row">
-        <div className="col-6">
-          <div className="row">
-            {statusCards.map((item, index) => (
-              <div className="col-6" key={index}>
-                <div
-                  className="status-card h-[135px] cursor-pointer dash-stat-card"
-                  style={{ '--card-accent': item.color } as React.CSSProperties}
-                  onClick={item.onClick}
-                  title={`Xem chi tiết: ${item.title}`}
-                >
-                  <div className="status-card__icon" style={{ color: item.color }}>
-                    <i className={item.icon}></i>
-                  </div>
-                  <div className="status-card__info">
-                    <p style={{ color: item.color }}>{item.count}</p>
-                    <span>{item.title}</span>
-                  </div>
-                  <div className="dash-stat-arrow">
-                    <i className="bx bx-chevron-right"></i>
-                  </div>
-                </div>
+        {statusCards.map((item, index) => (
+          <div className="col-3" key={index}>
+            <div
+              className="status-card cursor-pointer dash-stat-card"
+              style={{ '--card-accent': item.color } as React.CSSProperties}
+              onClick={item.onClick}
+              title={`Xem chi tiết: ${item.title}`}
+            >
+              <div className="status-card__icon" style={{ color: item.color }}>
+                <i className={item.icon}></i>
               </div>
-            ))}
+              <div className="status-card__info">
+                <p style={{ color: item.color }}>{item.count}</p>
+                <span>{item.title}</span>
+              </div>
+              <div className="dash-stat-arrow">
+                <i className="bx bx-chevron-right"></i>
+              </div>
+            </div>
           </div>
-        </div>
+        ))}
+      </div>
 
-        {/* Chart */}
-        <div className="col-6">
-          <div className="card full-height">
+      {/* ── Row 2: Chart (toàn bộ chiều rộng) ───────────────────────────── */}
+      <div className="row" style={{ marginTop: 16 }}>
+        <div className="col-12">
+          <div className="card">
             <Chart
               options={
                 themeReducer === 'theme-mode-dark'
@@ -318,11 +316,14 @@ const Dashboard = () => {
               }
               series={chartOptions.series}
               type="line"
-              height="100%"
+              height={300}
             />
           </div>
         </div>
+      </div>
 
+      {/* ── Row 3: Top products + Recent orders ──────────────────────────── */}
+      <div className="row" style={{ marginTop: 16 }}>
         {/* Top products */}
         <div className="col-4">
           <div className="card">
@@ -395,6 +396,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
 
       {/* ── Slide-in Drawer ─────────────────────────────────────────────── */}
       {drawer && (
