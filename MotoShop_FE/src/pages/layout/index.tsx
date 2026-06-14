@@ -23,6 +23,8 @@ import Articles from '../articles';
 import ConsultPage from '../consult';
 import ComparePage from '../compare';
 import InstallmentPage from '../staticPages/InstallmentPage';
+import UsedBikePage from '../usedBike';
+import MaintenancePage from '../maintenance';
 import CompareTray from '~/components/compareTray';
 import AboutPage from '../staticPages/AboutPage';
 import FaqPage from '../staticPages/FaqPage';
@@ -99,6 +101,8 @@ const Layout = () => {
           <Route path={path.consult} element={<ConsultPage />} />
           <Route path={path.compare} element={<ComparePage />} />
           <Route path={path.installment} element={<InstallmentPage />} />
+          <Route path={path.usedBike} element={<UsedBikePage />} />
+          <Route path={path.maintenance} element={<MaintenancePage />} />
           {/* Trang tĩnh footer */}
           <Route path={path.about} element={<AboutPage />} />
           <Route path={path.faq} element={<FaqPage />} />

@@ -261,9 +261,9 @@ const Header = () => {
                     <svg xmlns="http://www.w3.org/2000/svg" width={9} height={9} viewBox="0 0 128 128" fill="#d71a21" style={{ marginLeft: 4 }}><path d="m64 88c-1.023 0-2.047-.391-2.828-1.172l-40-40c-1.563-1.563-1.563-4.094 0-5.656s4.094-1.563 5.656 0l37.172 37.172 37.172-37.172c1.563-1.563 4.094-1.563 5.656 0s1.563 4.094 0 5.656l-40 40c-.781.781-1.805 1.172-2.828 1.172z"/></svg>
                   </a>
                   <div className="lt-nav__dropdown" onMouseEnter={openServiceMenu} onMouseLeave={scheduleCloseServiceMenu}>
-                    <a className="lt-nav__dd-item" onClick={() => navigate(path.consult)}>Mua xe cũ</a>
-                    <a className="lt-nav__dd-item" onClick={() => navigate(path.consult)}>Bảo dưỡng xe máy</a>
-                    <a className="lt-nav__dd-item" onClick={() => navigate(path.consult)}>Tư vấn chọn mua xe</a>
+                    <a className="lt-nav__dd-item" onClick={() => { setServiceMenuOpen(false); navigate(path.usedBike); }}>Mua xe cũ</a>
+                    <a className="lt-nav__dd-item" onClick={() => { setServiceMenuOpen(false); navigate(path.maintenance); }}>Bảo dưỡng xe máy</a>
+                    <a className="lt-nav__dd-item" onClick={() => { setServiceMenuOpen(false); navigate(path.consult); }}>Tư vấn chọn mua xe</a>
                   </div>
                 </div>
               </nav>

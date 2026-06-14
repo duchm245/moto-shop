@@ -3,6 +3,8 @@ const path = {
   login: "/login",
   register: '/register',
   consult: '/tu-van-mua-ban-xe',
+  usedBike: '/mua-xe-cu',
+  maintenance: '/bao-duong-xe',
 
   //profile
   profile: '/profile',
