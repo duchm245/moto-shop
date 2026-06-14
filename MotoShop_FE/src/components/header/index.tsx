@@ -123,7 +123,7 @@ const Header = () => {
                 <div className="lt-topbar__links">
                   <Link to="/" className="lt-topbar__link">LTMoto</Link>
                   <span className="lt-topbar__sep">|</span>
-                  <Link to={path.contact} className="lt-topbar__link">Hệ thống cửa hàng</Link>
+                  <Link to={path.showroom} className="lt-topbar__link">Hệ thống cửa hàng</Link>
                   <span className="lt-topbar__sep">|</span>
                   
                   {/* Tin Tức Dropdown */}
