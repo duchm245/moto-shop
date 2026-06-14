@@ -212,28 +212,36 @@ const Dashboard = () => {
   ];
 
   // ─── Chart ────────────────────────────────────────────────────────────────
-  const startYear = 2023;
-  const endYear = new Date().getFullYear() + 1;
-  const months: string[] = [];
-  for (let y = startYear; y <= endYear; y++)
-    for (let m = 1; m <= 12; m++)
-      months.push(`${y}-${String(m).padStart(2, '0')}`);
+  // Dùng đúng 12 tháng, index 0 = Tháng 1 ... index 11 = Tháng 12
+  const MONTH_LABELS = [
+    'Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6',
+    'Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12',
+  ];
 
   const successData = new Array(12).fill(0);
-  const failData = new Array(12).fill(0);
+  const failData    = new Array(12).fill(0);
+
+  // API trả về { month: "2026-06", orderCount: 3, status: 4 }
+  // Lấy số tháng từ chuỗi "YYYY-MM" hoặc số nguyên
+  const parseMonth = (m: string | number): number => {
+    if (typeof m === 'number') return m;                       // số nguyên 1-12
+    const parts = String(m).split('-');
+    return parts.length === 2 ? Number(parts[1]) : Number(m); // "2026-06" → 6
+  };
+
   orderByMonthSuccess.forEach((item) => {
-    const idx = months.indexOf(item.month);
-    if (idx !== -1) successData[idx] = item.orderCount;
+    const m = parseMonth(item.month as any);
+    if (m >= 1 && m <= 12) successData[m - 1] = item.orderCount;
   });
   orderByMonthUnSuccess.forEach((item) => {
-    const idx = months.indexOf(item.month);
-    if (idx !== -1) failData[idx] = item.orderCount;
+    const m = parseMonth(item.month as any);
+    if (m >= 1 && m <= 12) failData[m - 1] = item.orderCount;
   });
 
   const chartOptions = {
     series: [
-      { name: 'Đơn hàng thành công',       data: successData },
-      { name: 'Đơn hàng không thành công',  data: failData    },
+      { name: 'Đơn hàng thành công',      data: successData },
+      { name: 'Đơn hàng không thành công', data: failData    },
     ],
     options: {
       colors: ['#2999ff', '#ff0000'],
@@ -241,8 +249,11 @@ const Dashboard = () => {
       dataLabels: { enabled: false },
       stroke: { curve: 'smooth' as const },
       xaxis: {
-        categories: ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6',
-                     'Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'],
+        categories: MONTH_LABELS,
+        labels: { style: { fontSize: '12px' } },
+      },
+      tooltip: {
+        x: { formatter: (val: number) => MONTH_LABELS[val - 1] ?? `Tháng ${val}` },
       },
       title: { text: 'Thống kê đơn hàng', align: 'left' as const },
       legend: { position: 'top' as const },
@@ -251,8 +262,8 @@ const Dashboard = () => {
   };
 
   // ─── Income breakdown ─────────────────────────────────────────────────────
-  const incomeByMonth = months.map((m, i) => ({
-    month: m,
+  const incomeByMonth = MONTH_LABELS.map((label, i) => ({
+    month: label,
     success: successData[i] ?? 0,
     fail:    failData[i]    ?? 0,
   })).filter((r) => r.success > 0 || r.fail > 0);
