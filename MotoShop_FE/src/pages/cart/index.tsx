@@ -530,10 +530,12 @@ const Cart = () => {
                       <p className="textmr">
                         <strong>Chính sách mua hàng</strong>:
                       </p>
-                      <p>
-                        Hiện chúng tôi chỉ áp dụng thanh toán với đơn hàng có giá trị tối thiểu <strong>0₫ </strong> trở
-                        lên.
-                      </p>
+                      <ul style={{ paddingLeft: "18px", margin: "6px 0 0 0", lineHeight: "1.8" }}>
+                        <li>Kiểm tra kỹ thông tin sản phẩm trước khi đặt hàng.</li>
+                        <li>Đơn hàng sẽ được nhân viên xác nhận trước khi giao.</li>
+                        <li>Hỗ trợ đổi trả theo chính sách của cửa hàng.</li>
+                        <li>Khách hàng có thể thanh toán khi nhận xe hoặc chuyển khoản.</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
