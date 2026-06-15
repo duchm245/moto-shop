@@ -130,7 +130,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `banner` WRITE;
 /*!40000 ALTER TABLE `banner` DISABLE KEYS */;
-INSERT  IGNORE INTO `banner` (`id`, `created_date`, `modified_date`, `name`, `src`, `status`, `category_id`) VALUES (4,'2026-06-14 09:00:00','2026-06-14 09:00:00','banner_home_1','slide_home_1.jpg',1,NULL),(5,'2026-06-14 09:01:00','2026-06-14 09:01:00','Banner_home_2','slide_home_2.jpg',1,NULL),(6,'2026-06-14 09:02:00','2026-06-04 09:55:24','banner_home_3','banner-bang-gia-xe.jpg',1,NULL);
+INSERT  IGNORE INTO `banner` (`id`, `created_date`, `modified_date`, `name`, `src`, `status`, `category_id`) VALUES (7,'2026-06-15 09:00:00','2026-06-15 09:00:00','Banner FE 1','MEHtA3v6L0sJWfEvo7OO.png',1,NULL),(8,'2026-06-15 09:01:00','2026-06-15 09:01:00','Banner FE 2','VkyJuVLDi2zi1jWpxVTM.png',1,NULL),(9,'2026-06-15 09:02:00','2026-06-15 09:02:00','Banner FE 3','vii.jpg',1,NULL),(10,'2026-06-15 09:03:00','2026-06-15 09:03:00','Banner FE 4','AB-scaled.jpg',1,NULL),(11,'2026-06-15 09:04:00','2026-06-15 09:04:00','Banner FE 5','adv350-scaled.jpg',1,NULL);
 /*!40000 ALTER TABLE `banner` ENABLE KEYS */;
 UNLOCK TABLES;
 
