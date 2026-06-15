@@ -168,14 +168,14 @@ public class AProductRest {
                                             @RequestParam(value = "categoryId", required = false) Long categoryId,
                                             @RequestParam(value = "brand", required = false) String brand,
                                             @RequestParam(value = "vehicleType", required = false) String vehicleType,
-                                            @RequestParam(value = "condition", required = false) String condition,
+                                            @RequestParam(value = "vehicleCondition", required = false) String vehicleCondition,
                                             @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
                                             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
                                             @RequestParam(value = "sortBy", defaultValue = "id") String sortBy,
                                             @RequestParam(value = "sortDirection", defaultValue = "desc") String sortDirection) {
 
         try {
-            Pair<List<ProductResponse>, Integer> result = productService.getALLProductsAdmin(keyword, status, minPrice, maxPrice, categoryId, brand, vehicleType, condition, pageNo, pageSize, sortBy, sortDirection.equals("desc"));
+            Pair<List<ProductResponse>, Integer> result = productService.getALLProductsAdmin(keyword, status, minPrice, maxPrice, categoryId, brand, vehicleType, vehicleCondition, pageNo, pageSize, sortBy, sortDirection.equals("desc"));
             List<ProductResponse> productResponses = result.getFirst();
             int total = result.getSecond();
             if (!productResponses.isEmpty()) {

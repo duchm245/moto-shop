@@ -35,7 +35,7 @@ export interface Product {
   sale: number;
 
   // Tình trạng xe
-  condition: string;          // "new" | "used"
+  vehicleCondition: string;          // "new" | "used"
   manufacturingYear: number;
   mileage: number;
 

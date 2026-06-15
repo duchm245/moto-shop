@@ -339,7 +339,7 @@ const DetailProduct = () => {
                           <div className="info-header">
                             <div className="product-name" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
                               <h1 style={{ margin: 0 }}>{product?.name}</h1>
-                              {product?.condition === 'used' && (
+                              {product?.vehicleCondition === 'used' && (
                                 <span style={{ background: '#e67e22', color: '#fff', fontSize: 12, fontWeight: 600, padding: '3px 10px', borderRadius: 4, whiteSpace: 'nowrap' }}>
                                   Xe cũ
                                 </span>
@@ -356,7 +356,7 @@ const DetailProduct = () => {
                               </span>
                               <span className="pro-state">
                                 Tình trạng:{' '}
-                                <strong>{product?.condition === 'used' ? 'Xe đã qua sử dụng' : 'Xe mới'}</strong>
+                                <strong>{product?.vehicleCondition === 'used' ? 'Xe đã qua sử dụng' : 'Xe mới'}</strong>
                               </span>
                               <span className="pro-vendor">
                                 Thương hiệu:{' '}
@@ -459,10 +459,10 @@ const DetailProduct = () => {
                                     {product.origin && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Xuất xứ</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.origin}</td></tr>}
                                     <tr>
                                       <td style={{ padding: '4px 8px', color: '#666' }}>Tình trạng</td>
-                                      <td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.condition === 'used' ? 'Xe đã qua sử dụng' : 'Xe mới'}</td>
+                                      <td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.vehicleCondition === 'used' ? 'Xe đã qua sử dụng' : 'Xe mới'}</td>
                                     </tr>
                                     {product.manufacturingYear && <tr><td style={{ padding: '4px 8px', color: '#666' }}>Năm sản xuất</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.manufacturingYear}</td></tr>}
-                                    {product.condition === 'used' && product.mileage > 0 && (
+                                    {product.vehicleCondition === 'used' && product.mileage > 0 && (
                                       <tr><td style={{ padding: '4px 8px', color: '#666' }}>Số km đã đi</td><td style={{ padding: '4px 8px', fontWeight: 500 }}>{product.mileage.toLocaleString('vi-VN')} km</td></tr>
                                     )}
                                   </tbody>
@@ -1200,7 +1200,7 @@ const DetailProduct = () => {
                                     img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                                     sale={`${saleRelated[item.sale]}`}
                                     slide
-                                    condition={item.condition}
+                                    vehicleCondition={item.vehicleCondition}
                                     isNew={item.isNew}
                                     displacement={item.displacement}
                                   />

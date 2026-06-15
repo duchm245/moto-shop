@@ -31,7 +31,7 @@ interface IIProduct {
   img2: string;
   sale: string;
   slide: boolean;
-  condition?: string;
+  vehicleCondition?: string;
   isNew?: boolean;
   displacement?: number;
 }
@@ -197,13 +197,13 @@ const ItemProduct = (props: IIProduct) => {
                   </span>
                 </div>
               )}
-              {props.condition === 'used' && (
+              {props.vehicleCondition === 'used' && (
                 <div style={{ position: 'absolute', top: 6, right: 6, zIndex: 3, background: '#e67e22', color: '#fff', fontSize: 11, fontWeight: 600, padding: '5px 10px', borderRadius: 4, lineHeight: 1 }}>
                   Xe cũ
                 </div>
               )}
               {props.isNew && (
-                <div style={{ position: 'absolute', top: props.condition === 'used' ? 38 : 6, right: 6, zIndex: 3, background: '#27ae60', color: '#fff', fontSize: 11, fontWeight: 600, padding: '5px 10px', borderRadius: 4, lineHeight: 1 }}>
+                <div style={{ position: 'absolute', top: props.vehicleCondition === 'used' ? 38 : 6, right: 6, zIndex: 3, background: '#27ae60', color: '#fff', fontSize: 11, fontWeight: 600, padding: '5px 10px', borderRadius: 4, lineHeight: 1 }}>
                   Mới về
                 </div>
               )}

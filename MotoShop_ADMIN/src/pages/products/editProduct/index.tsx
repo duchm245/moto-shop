@@ -37,7 +37,7 @@ const EditProduct = () => {
   const [oldImages, setOldImages] = React.useState<ProductImages[]>([]);
   const [categoryId, setCategoryId] = React.useState<any>();
 
-  const [condition, setCondition] = React.useState('new');
+  const [vehicleCondition, setVehicleCondition] = React.useState('new');
   const [manufacturingYear, setManufacturingYear] = React.useState('');
   const [mileage, setMileage] = React.useState('0');
 
@@ -76,7 +76,7 @@ const EditProduct = () => {
     setSalePrice(product.salePrice ? String(product.salePrice) : '');
     setDescription(product.description || '');
     setCategoryId(product.category || '');
-    setCondition(product.condition || 'new');
+    setVehicleCondition(product.vehicleCondition || 'new');
     setManufacturingYear(product.manufacturingYear ? String(product.manufacturingYear) : '');
     setMileage(String(product.mileage || 0));
     setBrand(product.brand || '');
@@ -248,10 +248,10 @@ const EditProduct = () => {
       salePrice: salePrice ? Number(salePrice) : null,
       categoryId: Number(categoryId),
       userId: user.id,
-      condition,
+      vehicleCondition,
       manufacturingYear: manufacturingYear ? Number(manufacturingYear) : null,
       mileage: Number(mileage) || 0,
-      isNew: condition === 'new',
+      isNew: vehicleCondition === 'new',
       brand,
       vehicleType,
       engineType,
@@ -423,7 +423,7 @@ const EditProduct = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col">
               <span className="font-bold text-sm mb-1">Tình trạng:</span>
-              <select className="h-9 border-black border-[1px] rounded-lg px-2" value={condition} onChange={(e) => setCondition(e.target.value)}>
+              <select className="h-9 border-black border-[1px] rounded-lg px-2" value={vehicleCondition} onChange={(e) => setVehicleCondition(e.target.value)}>
                 <option value="new">Xe mới</option>
                 <option value="used">Xe cũ</option>
               </select>
@@ -432,7 +432,7 @@ const EditProduct = () => {
               <span className="font-bold text-sm mb-1">Năm sản xuất:</span>
               <input className="h-9 pl-2 border-black border-[1px] rounded-lg" placeholder="VD: 2024" value={manufacturingYear} onChange={(e) => setManufacturingYear(e.target.value)} />
             </div>
-            {condition === 'used' && (
+            {vehicleCondition === 'used' && (
               <div className="flex flex-col">
                 <span className="font-bold text-sm mb-1">Số km đã đi:</span>
                 <input className="h-9 pl-2 border-black border-[1px] rounded-lg" placeholder="km" value={mileage} onChange={(e) => setMileage(e.target.value)} />

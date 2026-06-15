@@ -20,7 +20,7 @@ const SPECS: SpecRow[] = [
   { label: 'Giá bán', key: 'salePrice', format: (v) => (v ? formatPrice(v) : '—') },
   { label: 'Hãng xe', key: 'brand' },
   { label: 'Loại xe', key: 'vehicleType' },
-  { label: 'Tình trạng', key: 'condition', format: (v) => (v === 'used' ? 'Xe cũ' : 'Xe mới') },
+  { label: 'Tình trạng', key: 'vehicleCondition', format: (v) => (v === 'used' ? 'Xe cũ' : 'Xe mới') },
   { label: 'Năm sản xuất', key: 'manufacturingYear', format: (v) => (v ? String(v) : '—') },
   { label: 'Số km đã đi', key: 'mileage', format: (v) => (v ? `${v.toLocaleString()} km` : '—') },
   { label: 'Loại động cơ', key: 'engineType' },

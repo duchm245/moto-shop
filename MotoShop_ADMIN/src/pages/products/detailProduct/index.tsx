@@ -185,7 +185,7 @@ const DetailProduct = () => {
           </div>
           <div className="flex items-center pt-5">
             <span className="text-base text-black font-bold">Tình trạng: </span>
-            <span className="text-base ml-5">{product?.condition === 'new' ? 'Xe mới' : 'Xe cũ'}</span>
+            <span className="text-base ml-5">{product?.vehicleCondition === 'new' ? 'Xe mới' : 'Xe cũ'}</span>
           </div>
           <div className="flex items-center pt-5">
             <span className="text-base text-black font-bold">Năm sản xuất: </span>

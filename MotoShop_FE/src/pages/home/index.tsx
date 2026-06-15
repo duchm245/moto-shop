@@ -488,7 +488,7 @@ const Home = () => {
                       img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                       sale=""
                       slide={false}
-                      condition={item.condition}
+                      vehicleCondition={item.vehicleCondition}
                       isNew={item.isNew}
                       displacement={item.displacement}
                     />
@@ -656,7 +656,7 @@ const Home = () => {
                       img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                       sale={`${salesProduct[item.sale]}`}
                       slide={true}
-                      condition={item.condition}
+                      vehicleCondition={item.vehicleCondition}
                       isNew={item.isNew}
                       displacement={item.displacement}
                     />
@@ -699,7 +699,7 @@ const Home = () => {
                     img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                     sale={`${sales[item.sale]}`}
                     slide={false}
-                    condition={item.condition}
+                    vehicleCondition={item.vehicleCondition}
                     isNew={item.isNew}
                     displacement={item.displacement}
                   />

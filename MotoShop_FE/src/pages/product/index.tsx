@@ -19,7 +19,7 @@ import { Category } from '~/types/category.type';
 interface Params {
   brand?: string;
   vehicleType?: string;
-  condition?: string;
+  vehicleCondition?: string;
   minPrice: number;
   maxPrice: number;
   categoryId?: any | undefined;
@@ -40,7 +40,7 @@ const ProductView = () => {
   const [keyword, setKeyword] = React.useState(state?.keyword ?? '');
   const [selectedTypeId, setSelectedTypeId] = React.useState<number | null>(null);
   const [typeCategories, setTypeCategories] = React.useState<Category[]>([]);
-  const [condition, setCondition] = React.useState('');
+  const [vehicleCondition, setVehicleCondition] = React.useState('');
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(200000000);
 
@@ -88,7 +88,7 @@ const ProductView = () => {
         sortDirection: sortDirection,
       };
       if (brand) params.brand = brand;
-      if (condition) params.condition = condition;
+      if (vehicleCondition) params.vehicleCondition = vehicleCondition;
       const effectiveCategoryId = selectedTypeId ?? categoryId;
       if (effectiveCategoryId) params.categoryId = effectiveCategoryId;
       if (saleId) params.saleId = saleId;
@@ -170,7 +170,7 @@ const ProductView = () => {
     setBrand('');
     setKeyword('');
     setSelectedTypeId(null);
-    setCondition('');
+    setVehicleCondition('');
     setMinPrice(0);
     setMaxPrice(200000000);
     setIsShowFilter(false);
@@ -237,7 +237,7 @@ const ProductView = () => {
   };
   React.useEffect(() => {
     getProduct();
-  }, [brand, selectedTypeId, condition, minPrice, maxPrice, categoryId, page, sortBy, sortDirection, saleId, keyword]);
+  }, [brand, selectedTypeId, vehicleCondition, minPrice, maxPrice, categoryId, page, sortBy, sortDirection, saleId, keyword]);
   const getCategory = async (id: number) => {
     if (!!categoryId) {
       try {
@@ -383,9 +383,9 @@ const ProductView = () => {
                                     <input
                                       type="radio"
                                       id={`cond-${c.val}`}
-                                      name="condition"
-                                      onChange={() => setCondition(c.val)}
-                                      checked={condition === c.val}
+                                      name="vehicleCondition"
+                                      onChange={() => setVehicleCondition(c.val)}
+                                      checked={vehicleCondition === c.val}
                                     />
                                     <label htmlFor={`cond-${c.val}`}>{c.label}</label>
                                   </li>
@@ -504,7 +504,7 @@ const ProductView = () => {
                           img2={item.images?.[1]?.url ?? item.images?.[0]?.url ?? ''}
                           sale={`${sales[item.sale]}`}
                           slide={false}
-                          condition={item.condition}
+                          vehicleCondition={item.vehicleCondition}
                           isNew={item.isNew}
                           displacement={item.displacement}
                         />

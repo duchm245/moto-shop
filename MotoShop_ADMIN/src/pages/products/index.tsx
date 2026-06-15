@@ -35,7 +35,7 @@ interface Params {
   categoryId?: number | undefined;
   brand?: string;
   vehicleType?: string;
-  condition?: string;
+  vehicleCondition?: string;
 }
 
 const BRANDS = ['Honda', 'Yamaha', 'Suzuki', 'TVS', 'Vinfast', 'SYM', 'GPX', 'Zontes'];
@@ -153,7 +153,7 @@ const Product = () => {
         }
         if (filterBrand) params.brand = filterBrand;
         if (filterVehicleType) params.vehicleType = filterVehicleType;
-        if (filterCondition) params.condition = filterCondition;
+        if (filterCondition) params.vehicleCondition = filterCondition;
         const url = Api.getAllProduct(params);
         const [res] = await Promise.all([
           REQUEST_API({
@@ -561,7 +561,7 @@ const Product = () => {
                     <td className="text-center">{item.brand || '—'}</td>
                     <td className="text-center">{item.vehicleType || '—'}</td>
                     <td className="text-center">{item.displacement ? `${item.displacement}cc` : '—'}</td>
-                    <td className="text-center">{item.condition === 'new' ? 'Xe mới' : item.condition === 'used' ? 'Xe cũ' : '—'}</td>
+                    <td className="text-center">{item.vehicleCondition === 'new' ? 'Xe mới' : item.vehicleCondition === 'used' ? 'Xe cũ' : '—'}</td>
                     <td className="text-center">{item.sale != 0 ? `${salesMapping[item.sale]}` : `Không có`}</td>
                     {item.status === 1 && (
                       <td className="text-green-500">
