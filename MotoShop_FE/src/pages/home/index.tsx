@@ -1,10 +1,6 @@
 import React from 'react';
 import quyTrinhImg from '~/static/images/quy-trinh-mua-xe-motor.png';
-import banner1 from '~/static/images/banner/MEHtA3v6L0sJWfEvo7OO.png';
-import banner2 from '~/static/images/banner/VkyJuVLDi2zi1jWpxVTM.png';
-import banner3 from '~/static/images/banner/vii.jpg';
-import banner4 from '~/static/images/banner/AB-scaled.jpg';
-import banner5 from '~/static/images/banner/adv350-scaled.jpg';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -394,9 +390,9 @@ const Home = () => {
           modules={[Autoplay, Pagination, Navigation]}
           className="home-slider"
         >
-          {[banner1, banner2, banner3, banner4, banner5].map((src, i) => (
+          {slide.map((item, i) => (
             <SwiperSlide key={i}>
-              <img src={src} className="banner-home" alt={`Banner ${i + 1}`} />
+              <img src={`${API_URL_IMAGE}${item.src}`} className="banner-home" alt={`Banner ${i + 1}`} />
             </SwiperSlide>
           ))}
         </Swiper>
