@@ -60,7 +60,7 @@ public class EmailUtils {
                 <div style="font-family: Arial, sans-serif;">
                   <p>Mật khẩu đã được thay đổi:</p>
                   <h2>%s</h2>
-                  <a href="http://localhost:8080/api/login" target="_blank">Quay lại trang đăng nhập</a>
+                  <a href="https://motoshop-fe.vercel.app/login" target="_blank">Quay lại trang đăng nhập</a>
                 </div>
                 """.formatted(password), true);
         mimeMessageHelper.setSentDate(new Date());
@@ -88,7 +88,7 @@ public class EmailUtils {
                 .append(", " + orders.getDistrict())
                 .append(", " + orders.getProvince()).append("<br/>")
                 .append("Theo dõi trạng thái đơn hàng tại đây: ")
-                .append("http://localhost:3000/order/detail/").append(Base64.getUrlEncoder().encodeToString(String.valueOf(orders.getId()).getBytes()));
+                .append("https://motoshop-fe.vercel.app/order/detail/").append(Base64.getUrlEncoder().encodeToString(String.valueOf(orders.getId()).getBytes()));
         mimeMessageHelper.setText(sb.toString(), true);
         mimeMessageHelper.setSentDate(new Date());
 
@@ -114,7 +114,7 @@ public class EmailUtils {
                 .append(", " + orders.getDistrict())
                 .append(", " + orders.getProvince()).append("<br/>")
                 .append("Tiếp tục mua sắm đơn hàng tại đây: ")
-                .append("http://localhost:3000/").append(Base64.getUrlEncoder().encodeToString(String.valueOf(orders.getId()).getBytes()));
+                .append("https://motoshop-fe.vercel.app/").append(Base64.getUrlEncoder().encodeToString(String.valueOf(orders.getId()).getBytes()));
         mimeMessageHelper.setText(sb.toString(), true);
         mimeMessageHelper.setSentDate(new Date());
 
@@ -140,7 +140,7 @@ public class EmailUtils {
                 .append(", " + orders.getDistrict())
                 .append(", " + orders.getProvince()).append("<br/>")
                 .append("Bạn hãy chú ý điện thoại để nhận hàng sớm nhất. Theo dõi trạng thái đơn hàng tại đây: ")
-                .append("http://localhost:3000/order/detail/").append(Base64.getUrlEncoder().encodeToString(String.valueOf(orders.getId()).getBytes()));
+                .append("https://motoshop-fe.vercel.app/order/detail/").append(Base64.getUrlEncoder().encodeToString(String.valueOf(orders.getId()).getBytes()));
         mimeMessageHelper.setText(sb.toString(), true);
         mimeMessageHelper.setSentDate(new Date());
 
@@ -160,7 +160,7 @@ public class EmailUtils {
                 .append("Bạn có thể đổi trả trong vòng 7 ngày nếu gặp lỗi từ nhà sản xuất.").append("<br/>")
                 .append("Nếu có vấn đề cần thắc mắc hãy liên hệ lại cho chúng tôi 0968886668.").append("<br/>")
                 .append("Tiếp tục mua sắm tại đây: ")
-                .append("http://localhost:3000/").append(Base64.getUrlEncoder().encodeToString(String.valueOf(orders.getId()).getBytes()));
+                .append("https://motoshop-fe.vercel.app/").append(Base64.getUrlEncoder().encodeToString(String.valueOf(orders.getId()).getBytes()));
         mimeMessageHelper.setText(sb.toString(), true);
         mimeMessageHelper.setSentDate(new Date());
 

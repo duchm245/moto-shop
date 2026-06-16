@@ -26,3 +26,11 @@ dist-ssr
 # Temporary/test screenshots - do not commit
 src/static/images/Screenshot*.png
 src/static/images/Screenshot*.jpg
+
+# Environment variables (contain secrets - never commit)
+.env
+.env.development
+.env.production
+.env.local
+# Keep .env.example (template without real values)
+!.env.example
