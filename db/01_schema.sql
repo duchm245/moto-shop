@@ -3,11 +3,21 @@
 --  File : db/01_schema.sql
 --  Mục đích : Tạo toàn bộ bảng nếu chưa tồn tại.
 --             Chạy file này TRƯỚC file 02_data.sql.
---  Cách dùng:
---    PowerShell:
---      Get-Content .\db\01_schema.sql | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
---    CMD:
---      docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop < db\01_schema.sql
+--
+--  ⚠️  LƯU Ý QUAN TRỌNG VỀ ENCODING:
+--  File này chứa ký tự UTF-8. KHÔNG dùng PowerShell pipe (|)
+--  vì PowerShell tự động convert sang mã hóa console (CP437/CP1252)
+--  làm hỏng tiếng Việt. Hãy dùng CMD redirect (<) như hướng dẫn bên dưới.
+--
+--  Cách dùng ĐÚNG:
+--    CMD (Windows - khuyên dùng):
+--      cmd /c "docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root --default-character-set=utf8mb4 motorbike_shop < db\01_schema.sql"
+--
+--    Linux / macOS:
+--      docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root --default-character-set=utf8mb4 motorbike_shop < db/01_schema.sql
+--
+--  Cách dùng SAI (gây lỗi font chữ):
+--    ❌ Get-Content .\db\01_schema.sql | docker exec -i ... mysql ...
 -- =============================================================
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -59,15 +69,22 @@ CREATE TABLE IF NOT EXISTS `user_roles` (
 -- -------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `address` (
     `id`             BIGINT       NOT NULL AUTO_INCREMENT,
+    `first_name`     VARCHAR(255) NULL,
+    `last_name`      VARCHAR(255) NULL,
+    `phone`          VARCHAR(255) NULL,
+    `address_detail` VARCHAR(255) NULL,
     `province`       VARCHAR(255) NULL,
     `district`       VARCHAR(255) NULL,
     `wards`          VARCHAR(255) NULL,
-    `address_detail` VARCHAR(255) NULL,
-    `is_default`     BIT(1)       NULL,
+    `created_date`   DATETIME(6)  NULL,
+    `modified_date`  DATETIME(6)  NULL,
+    `focus`          INT          NULL DEFAULT 0,
+    `status`         INT          NULL DEFAULT 1,
     `user_id`        BIGINT       NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_address_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 -- -------------------------------------------------------------
 -- 5. category
