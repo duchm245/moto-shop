@@ -15,13 +15,13 @@ import java.util.*;
 
 @Component
 public class VnpayConfig {
-    public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_ReturnUrl = "http://localhost:3000/thank-you";
-    public static String vnp_TmnCode = "UH9Q5WZ0";
-    public static String secretKey = "AXMYCMIVEZIASLDLZHSREYKXEKCZIIYA";
-    public static String vnp_Version = "2.1.0";
-    public static String vnp_Command = "pay";
-    public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+    public static String vnp_PayUrl    = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    public static String vnp_ReturnUrl = System.getenv().getOrDefault("VNPAY_RETURN_URL", "http://localhost:3000/thank-you");
+    public static String vnp_TmnCode   = System.getenv().getOrDefault("VNPAY_TMN_CODE", "");
+    public static String secretKey     = System.getenv().getOrDefault("VNPAY_SECRET_KEY", "");
+    public static String vnp_Version   = "2.1.0";
+    public static String vnp_Command   = "pay";
+    public static String vnp_ApiUrl    = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
 //    public static String md5(String message) {
 //        String digest = null;
