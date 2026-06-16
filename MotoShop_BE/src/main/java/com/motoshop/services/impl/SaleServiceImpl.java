@@ -1,17 +1,11 @@
 package com.motoshop.services.impl;
 
 import com.motoshop.config.Constants;
-import com.motoshop.mapper.ArticleMapper;
 import com.motoshop.mapper.SaleMapper;
 import com.motoshop.models.*;
 import com.motoshop.repositories.*;
-import com.motoshop.services.ArticleService;
 import com.motoshop.services.SaleService;
-import com.motoshop.web.dto.request.ArticleImageRequest;
-import com.motoshop.web.dto.request.ArticleRequest;
 import com.motoshop.web.dto.request.SaleRequest;
-import com.motoshop.web.dto.response.ArticleResponse;
-import com.motoshop.web.dto.response.OrdersResponse;
 import com.motoshop.web.dto.response.SaleResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;

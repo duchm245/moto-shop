@@ -1,14 +1,10 @@
 package com.motoshop.services.impl;
 
 import com.motoshop.mapper.ProductImageMapper;
-import com.motoshop.mapper.SizeMapper;
 import com.motoshop.models.Product;
 import com.motoshop.models.ProductImage;
-import com.motoshop.models.dtos.SizeDto;
 import com.motoshop.repositories.ProductImageRepository;
-import com.motoshop.repositories.SizeRepository;
 import com.motoshop.services.ProductImageService;
-import com.motoshop.services.SizeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

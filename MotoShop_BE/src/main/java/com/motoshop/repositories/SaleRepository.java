@@ -1,9 +1,6 @@
 package com.motoshop.repositories;
 
-import com.motoshop.models.Banner;
-import com.motoshop.models.Color;
 import com.motoshop.models.Sale;
-import com.motoshop.models.Size;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,5 @@
 package com.motoshop.models.dtos;
 
-import com.motoshop.web.dto.response.ColorResponse;
 import com.motoshop.web.dto.response.ProductImageResponse;
 import lombok.*;
 

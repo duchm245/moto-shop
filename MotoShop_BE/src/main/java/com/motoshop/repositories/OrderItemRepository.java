@@ -1,6 +1,5 @@
 package com.motoshop.repositories;
 
-import com.motoshop.models.Size;
 import com.motoshop.models.OrderItem;
 import com.motoshop.models.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;

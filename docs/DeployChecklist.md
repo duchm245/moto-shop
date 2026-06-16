@@ -32,22 +32,17 @@
 
 ### 0.1 — Xóa file credential khỏi git tracking
 
-- [ ] Chạy lệnh xóa file khỏi git (giữ lại file trên máy):
+- [x] Chạy lệnh xóa file khỏi git (giữ lại file trên máy):
   ```bash
   git rm --cached MotoShop_BE/src/main/resources/application-local.yaml
   ```
+  > ✅ File đã được ignore bởi `MotoShop_BE/.gitignore` (pattern `application-*.yaml` dòng 40) — chưa bao giờ được track.
 
-- [ ] Kiểm tra `.gitignore` đã có entry chưa — nếu chưa thêm vào:
-  ```
-  MotoShop_BE/src/main/resources/application-local.yaml
-  MotoShop_BE/src/main/resources/application-local.yaml.example
-  ```
+- [x] Kiểm tra `.gitignore` đã có entry chưa — nếu chưa thêm vào:
+  > ✅ Đã có: `src/main/resources/application-*.yaml` trong `MotoShop_BE/.gitignore`
 
-- [ ] Commit thay đổi:
-  ```bash
-  git add .gitignore
-  git commit -m "chore: remove local credentials from git tracking"
-  ```
+- [x] Commit thay đổi:
+  > ✅ Không cần commit — file chưa bao giờ bị track.
 
 ---
 
@@ -62,11 +57,12 @@
 
 ### 0.3 — Generate JWT Secret mới
 
-- [ ] Chạy trong PowerShell:
+- [x] Chạy trong PowerShell:
   ```powershell
   [Convert]::ToBase64String((1..64 | ForEach-Object { Get-Random -Maximum 256 }))
   ```
-- [ ] Lưu lại chuỗi output để dùng ở Giai đoạn 2
+- [x] Lưu lại chuỗi output để dùng ở Giai đoạn 2
+  > ✅ JWT Secret mới đã generate: `ZQs+M2i1fQMIncW+PE9U4Fg963foh5HW6rJ8PyYKYTDo2iQDkHNk3fh6di/sLEkkBGZg9xIJsQC52rZmU4JO3Q==`
 
 ---
 
@@ -81,29 +77,9 @@
 
 **File cần sửa**: `MotoShop_BE/src/main/java/com/motoshop/config/VnpayConfig.java`
 
-- [ ] Sửa 2 dòng hardcode thành đọc từ env var:
-  ```java
-  // TRƯỚC (dòng 20-21 — key đang lộ trong source code!)
-  public static String vnp_TmnCode = "UH9Q5WZ0";
-  public static String secretKey   = "AXMYCMIVEZIASLDLZHSREYKXEKCZIIYA";
-
-  // SAU — đọc từ biến môi trường
-  public static String vnp_TmnCode = System.getenv().getOrDefault("VNPAY_TMN_CODE", "");
-  public static String secretKey   = System.getenv().getOrDefault("VNPAY_SECRET_KEY", "");
-  ```
-
-- [ ] Cũng sửa `vnp_ReturnUrl` (dòng 19) sang env var:
-  ```java
-  // TRƯỚC
-  public static String vnp_ReturnUrl = "http://localhost:3000/thank-you";
-
-  // SAU
-  public static String vnp_ReturnUrl = System.getenv().getOrDefault(
-      "VNPAY_RETURN_URL", "http://localhost:3000/thank-you"
-  );
-  ```
-
-- [ ] Ghi lại giá trị key hiện tại vào chỗ an toàn (password manager / notepad riêng)
+- [x] Sửa 2 dòng hardcode thành đọc từ env var — **DONE** (commit `c7c89b8`)
+- [x] Cũng sửa `vnp_ReturnUrl` (dòng 19) sang env var — **DONE**
+- [x] Ghi lại giá trị key hiện tại vào chỗ an toàn (password manager / notepad riêng)
   - `VNPAY_TMN_CODE` = `UH9Q5WZ0`
   - `VNPAY_SECRET_KEY` = `AXMYCMIVEZIASLDLZHSREYKXEKCZIIYA`
 
@@ -115,32 +91,8 @@
 
 **File cần sửa**: `MotoShop_BE/src/main/java/com/motoshop/config/ZaloPayConfig.java`
 
-- [ ] Sửa toàn bộ file (chỉ có 11 dòng, rất đơn giản):
-  ```java
-  // TRƯỚC
-  public class ZaloPayConfig {
-      public static String APP_ID = "553";
-      public static String KEY1   = "9phuAOYhan4urywHTh0ndEXiV3pKHr5Q"; // lộ key!
-      public static String KEY2   = "Iyz2habzyr7AG8SgvoBCbKwKi3UzlLi3"; // lộ key!
-      public static String CREATE_ORDER_URL   = "https://sandbox.zalopay.com.vn/v001/tpe/createorder";
-      public static String GET_STATUS_PAY_URL = "https://sandbox.zalopay.com.vn/v001/tpe/getstatusbyapptransid";
-      public static String REDIRECT_URL       = "http://localhost:3000/thank-you";
-  }
-
-  // SAU
-  public class ZaloPayConfig {
-      public static String APP_ID = System.getenv().getOrDefault("ZALOPAY_APP_ID", "553");
-      public static String KEY1   = System.getenv().getOrDefault("ZALOPAY_KEY1", "");
-      public static String KEY2   = System.getenv().getOrDefault("ZALOPAY_KEY2", "");
-      public static String CREATE_ORDER_URL   = "https://sandbox.zalopay.com.vn/v001/tpe/createorder";
-      public static String GET_STATUS_PAY_URL = "https://sandbox.zalopay.com.vn/v001/tpe/getstatusbyapptransid";
-      public static String REDIRECT_URL       = System.getenv().getOrDefault(
-          "ZALOPAY_REDIRECT_URL", "http://localhost:3000/thank-you"
-      );
-  }
-  ```
-
-- [ ] Ghi lại giá trị key hiện tại vào chỗ an toàn:
+- [x] Sửa toàn bộ file — **DONE** (commit `c7c89b8`)
+- [x] Ghi lại giá trị key hiện tại vào chỗ an toàn:
   - `ZALOPAY_APP_ID` = `553`
   - `ZALOPAY_KEY1`   = `9phuAOYhan4urywHTh0ndEXiV3pKHr5Q`
   - `ZALOPAY_KEY2`   = `Iyz2habzyr7AG8SgvoBCbKwKi3UzlLi3`

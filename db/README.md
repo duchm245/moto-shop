@@ -23,8 +23,8 @@ docker start motorbike-shop-mysql
 
 ### Bước 2 — Tạo schema (các bảng)
 ```powershell
-# PowerShell
-Get-Content .\db\01_schema.sql | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
+# PowerShell — bắt buộc dùng -Encoding UTF8 để tránh lỗi tiếng Việt
+Get-Content .\db\01_schema.sql -Encoding UTF8 | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
 ```
 ```cmd
 :: CMD
@@ -33,13 +33,15 @@ docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_
 
 ### Bước 3 — Import dữ liệu mẫu
 ```powershell
-# PowerShell
-Get-Content .\db\02_data.sql | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
+# PowerShell — bắt buộc dùng -Encoding UTF8 để tránh lỗi tiếng Việt
+Get-Content .\db\02_data.sql -Encoding UTF8 | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
 ```
 ```cmd
 :: CMD
 docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop < db\02_data.sql
 ```
+
+> ⚠️ **Lỗi thường gặp:** Nếu tiếng Việt hiển thị `???` trong DB, nguyên nhân là thiếu `-Encoding UTF8` ở lệnh trên. Xem mục [Sửa lỗi font tiếng Việt](#sửa-lỗi-font-tiếng-việt) phía dưới.
 
 ### Bước 4 — Chạy ứng dụng
 ```powershell
@@ -78,10 +80,10 @@ git pull origin dev
 docker exec -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root -e "DROP DATABASE IF EXISTS motorbike_shop; CREATE DATABASE motorbike_shop CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
 # Bước 3: Tạo lại toàn bộ bảng
-Get-Content .\db\01_schema.sql | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
+Get-Content .\db\01_schema.sql -Encoding UTF8 | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
 
 # Bước 4: Import dữ liệu mới nhất
-Get-Content .\db\02_data.sql | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
+Get-Content .\db\02_data.sql -Encoding UTF8 | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
 ```
 
 > ✔️ Sau khi xong, **reload trình duyệt** là thấy dữ liệu mới ngay, không cần restart BE.
@@ -98,7 +100,7 @@ Get-Content .\db\02_data.sql | docker exec -i -e MYSQL_PWD=123456 motorbike-shop
 git pull origin dev
 
 # Bước 2: Import thẳng vào DB đang có (không xóa gì cả)
-Get-Content .\db\02_data.sql | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
+Get-Content .\db\02_data.sql -Encoding UTF8 | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
 ```
 
 > ⚠️ **Lưu ý:** Cách này chỉ thêm bản ghi mới, **không cập nhật** bản ghi đã tồn tại.  
@@ -123,26 +125,23 @@ Get-Content .\db\02_data.sql | docker exec -i -e MYSQL_PWD=123456 motorbike-shop
 ### Lệnh export dữ liệu mới nhất (dành cho người cập nhật)
 
 ```powershell
-# Bước 1: Export từ MySQL (file tạm UTF-16)
+# Bước 1: Export từ MySQL và lưu thẳng ra UTF-8 (KHÔNG dùng > để tránh lỗi encoding)
 docker exec -e MYSQL_PWD=123456 motorbike-shop-mysql mysqldump `
   -u root --no-create-info --complete-insert --insert-ignore `
   --skip-triggers --set-charset --single-transaction --disable-keys `
   motorbike_shop `
   role user user_roles address category sales product variant product_image `
   banner article article_image orders order_item notifications company `
-  social_media category_policy policy policy_image consult_request product_comment `
-  > db\02_data_raw.sql
+  social_media consult_request product_comment `
+  | Out-String | % { [System.IO.File]::WriteAllText("db\02_data.sql", $_, [System.Text.UTF8Encoding]::new($false)) }
 
-# Bước 2: Convert encoding về UTF-8
-$raw = Get-Content "db\02_data_raw.sql" -Encoding Unicode
-[System.IO.File]::WriteAllLines("db\02_data.sql", $raw, [System.Text.UTF8Encoding]::new($false))
-Remove-Item "db\02_data_raw.sql"
-
-# Bước 3: Commit & push
+# Bước 2: Commit & push
 git add db/02_data.sql
 git commit -m "data: update seed data $(Get-Date -Format 'yyyy-MM-dd')"
 git push origin dev
 ```
+
+> ⚠️ **QUAN TRỌNG:** KHÔNG dùng `> db\02_data.sql` để redirect output — PowerShell sẽ tự động convert sang CP437/OEM làm hỏng tiếng Việt.
 
 ---
 
@@ -153,3 +152,19 @@ git push origin dev
 - ✅ `01_schema.sql` dùng `CREATE TABLE IF NOT EXISTS` — **an toàn để chạy lại nhiều lần**.
 - ✅ `02_data.sql` dùng `INSERT IGNORE` — **an toàn để chạy lại** trên DB đã có dữ liệu.
 - ✅ Khi schema thay đổi (thêm cột, thêm bảng), nhớ cập nhật cả `01_schema.sql`.
+- ⚠️ **PowerShell và encoding:** Luôn dùng `-Encoding UTF8` khi `Get-Content` để tránh lỗi tiếng Việt. KHÔNG dùng `>` (redirect) để ghi file SQL vì PowerShell tự động convert sang OEM/CP437.
+
+---
+
+## Sửa lỗi font tiếng Việt
+
+Nếu sau khi import, tiếng Việt trong DB hiển thị dạng `???` hoặc ký tự lạ:
+
+```powershell
+# Xóa toàn bộ và import lại đúng cách
+docker exec -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root -e "DROP DATABASE IF EXISTS motorbike_shop; CREATE DATABASE motorbike_shop CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+Get-Content .\db\01_schema.sql -Encoding UTF8 | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
+Get-Content .\db\02_data.sql -Encoding UTF8 | docker exec -i -e MYSQL_PWD=123456 motorbike-shop-mysql mysql -u root motorbike_shop
+```
+
+> ✅ Chú ý `-Encoding UTF8` trong lệnh `Get-Content` — đây là điểm mấu chốt.

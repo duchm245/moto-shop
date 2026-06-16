@@ -36,8 +36,6 @@ public class OrdersServiceImpl implements OrdersService {
     private final OrderItemRepository orderItemRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-    private final SizeRepository sizeRepository;
-    private final ColorRepository colorRepository;
     private final VariantRepository variantRepository;
     private final NotificationService notificationService;
     private final OrdersMapper ordersMapper;
@@ -48,7 +46,6 @@ public class OrdersServiceImpl implements OrdersService {
     public OrdersServiceImpl(OrdersRepository ordersRepository,
                              OrderItemRepository orderItemRepository,
                              UserRepository userRepository,
-                             SizeRepository sizeRepository, ColorRepository colorRepository,
                              VariantRepository variantRepository,
                              OrdersMapper ordersMapper,
                              OrderItemMapper orderItemMapper, ProductMapper productMapper, ProductRepository productRepository,
@@ -57,8 +54,6 @@ public class OrdersServiceImpl implements OrdersService {
         this.ordersRepository = ordersRepository;
         this.orderItemRepository = orderItemRepository;
         this.userRepository = userRepository;
-        this.sizeRepository = sizeRepository;
-        this.colorRepository = colorRepository;
         this.variantRepository = variantRepository;
         this.ordersMapper = ordersMapper;
         this.orderItemMapper = orderItemMapper;

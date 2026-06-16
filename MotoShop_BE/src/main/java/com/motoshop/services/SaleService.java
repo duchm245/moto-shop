@@ -1,7 +1,6 @@
 package com.motoshop.services;
 
 import com.motoshop.models.Product;
-import com.motoshop.models.dtos.SizeDto;
 import com.motoshop.web.dto.request.SaleRequest;
 import com.motoshop.web.dto.response.OrdersResponse;
 import com.motoshop.web.dto.response.SaleResponse;

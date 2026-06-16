@@ -319,46 +319,7 @@ CREATE TABLE IF NOT EXISTS `social_media` (
     CONSTRAINT `fk_social_media_company` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- -------------------------------------------------------------
--- 18. category_policy
--- -------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `category_policy` (
-    `category_policy_id`   BIGINT       NOT NULL AUTO_INCREMENT,
-    `category_policy_name` VARCHAR(255) NOT NULL,
-    `status`               INT          NOT NULL DEFAULT 1,
-    `created_date`         DATETIME(6)  NULL,
-    `modified_date`        DATETIME(6)  NULL,
-    PRIMARY KEY (`category_policy_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- -------------------------------------------------------------
--- 19. policy
--- -------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `policy` (
-    `policy_id`          BIGINT       NOT NULL AUTO_INCREMENT,
-    `name`               VARCHAR(255) NOT NULL,
-    `content`            VARCHAR(255) NULL,
-    `status`             INT          NOT NULL DEFAULT 1,
-    `created_date`       DATETIME(6)  NULL,
-    `modified_date`      DATETIME(6)  NULL,
-    `category_policy_id` BIGINT       NOT NULL,
-    PRIMARY KEY (`policy_id`),
-    CONSTRAINT `fk_policy_category_policy` FOREIGN KEY (`category_policy_id`) REFERENCES `category_policy` (`category_policy_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- -------------------------------------------------------------
--- 20. policy_image
--- -------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `policy_image` (
-    `policy_image_id` BIGINT      NOT NULL AUTO_INCREMENT,
-    `img`             VARCHAR(255) NULL,
-    `status`          INT          NULL DEFAULT 1,
-    `created_date`    DATETIME(6)  NULL,
-    `modified_date`   DATETIME(6)  NULL,
-    `policy_id`       BIGINT       NOT NULL,
-    PRIMARY KEY (`policy_image_id`),
-    CONSTRAINT `fk_policy_image_policy` FOREIGN KEY (`policy_id`) REFERENCES `policy` (`policy_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- NOTE: category_policy, policy, policy_image đã bị xóa (không có data, không có API endpoint)
 
 -- -------------------------------------------------------------
 -- 21. consult_request
