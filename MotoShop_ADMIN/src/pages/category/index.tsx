@@ -9,7 +9,7 @@ import path from '~/constants/path';
 import SpinLoading from '~/components/loading/spinLoading';
 import Modal from 'react-modal';
 import { Category } from '~/types/category.type';
-import { API_URL_IMAGE } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
 import Pagination from '~/components/paginationItems';
 
 const customStyles = {
@@ -405,7 +405,7 @@ const Category = () => {
                     <td className="text-center">{item.title}</td>
                     <td className="">
                       {item.urlImage ? (
-                        <img src={`${API_URL_IMAGE}${item.urlImage}`} className="w-20 h-20 object-contain" />
+                        <img src={resolveImageUrl(item.urlImage)} className="w-20 h-20 object-contain" />
                       ) : (
                         <></>
                       )}

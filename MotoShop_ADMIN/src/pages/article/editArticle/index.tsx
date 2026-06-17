@@ -11,7 +11,7 @@ import { Category } from '~/types/category.type';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Editor from '~/components/quill';
 import { Article } from '~/types/article.type';
-import { API_URL_IMAGE } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl$1 , uploadToCloudinary} from '~/constants/utils';
 
 const EditArticle = () => {
   const token = useSelector((state: RootState) => state.ReducerAuth.token);
@@ -41,7 +41,7 @@ const EditArticle = () => {
     return fileImg ? URL.createObjectURL(fileImg) : '';
   }, [fileImg]);
   // Ảnh hiển thị: ưu tiên ảnh mới, fallback về ảnh từ server
-  const img = newImgPreview || (existingImage ? API_URL_IMAGE + existingImage : '');
+  const img = newImgPreview || (existingImage ? resolveImageUrl(existingImage) : '');
   const refInputImage = React.useRef<HTMLInputElement>(null);
   const handleUpload = () => {
     refInputImage.current?.click();
@@ -185,21 +185,7 @@ const EditArticle = () => {
         if (fileImg) {
           const formData = new FormData();
           formData.append('file', fileImg);
-          const uploadRes = await fetch(Api.uploadArticleImage(), {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData,
-          });
-          const uploadJson = await uploadRes.json();
-          if (!uploadJson.status) {
-            toast.error(`Upload ảnh thất bại: ${uploadJson.data}`, {
-              position: 'top-right',
-              pauseOnHover: false,
-              theme: 'dark',
-            });
-            return;
-          }
-          imageName = uploadJson.data;
+          imageName = await uploadToCloudinary(fileImg, 'dq7k5wv8t', 'motoshop_preset');
         }
 
         const data = {

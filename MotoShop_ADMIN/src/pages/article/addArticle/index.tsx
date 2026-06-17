@@ -121,21 +121,7 @@ const AddArticle = () => {
         // Bước 1: Upload file ảnh lên server trước
         const formData = new FormData();
         formData.append('file', fileImg);
-        const uploadRes = await fetch(Api.uploadArticleImage(), {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData,
-        });
-        const uploadJson = await uploadRes.json();
-        if (!uploadJson.status) {
-          toast.error(`Upload ảnh thất bại: ${uploadJson.data}`, {
-            position: 'top-right',
-            pauseOnHover: false,
-            theme: 'dark',
-          });
-          return;
-        }
-        const uploadedFilename: string = uploadJson.data;
+        const uploadedFilename = await uploadToCloudinary(fileImg, 'dq7k5wv8t', 'motoshop_preset');
 
         // Bước 2: Tạo bài viết với tên file đã upload
         const data = {

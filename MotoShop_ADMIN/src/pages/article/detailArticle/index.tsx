@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { RootState } from '~/redux/reducers';
 import 'react-quill/dist/quill.snow.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { API_URL_IMAGE } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
 import { Category } from '~/types/category.type';
 import { User } from '~/types/user.type';
 
@@ -128,7 +128,7 @@ const DetailArticle = () => {
               <span className="text-sm text-black">Ảnh đại diện</span>
             </div>
             <div className="w-full h-auto border-black border border-dashed rounded-lg mt-2">
-              <img src={`${API_URL_IMAGE}${item.image}`} className="w-auto, h-auto object-contain p-3" />
+              <img src={resolveImageUrl(item.image)} className="w-auto, h-auto object-contain p-3" />
             </div>
           </div>
         </div>

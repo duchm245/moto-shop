@@ -8,7 +8,7 @@ import { Category } from '~/types/category.type';
 import { toast } from 'react-toastify';
 import path from '~/constants/path';
 import Images from '~/assets';
-import { API_URL_IMAGE } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl, uploadToCloudinary } from '~/constants/utils';
 
 const EditCategory = () => {
   const token = useSelector((state: RootState) => state.ReducerAuth.token);
@@ -107,11 +107,21 @@ const EditCategory = () => {
           });
           return;
         }
+        let uploadedFilename = '';
+        if (fileImg) {
+          try {
+            uploadedFilename = await uploadToCloudinary(fileImg, 'dq7k5wv8t', 'motoshop_preset');
+          } catch (error) {
+            toast.error('Upload ảnh thất bại', { position: 'top-right', pauseOnHover: false, theme: 'dark' });
+            return;
+          }
+        }
+
         const data = {
           title: title,
           description: description,
           type: typeId,
-          urlImage: fileImg?.name,
+          urlImage: uploadedFilename || fileImg?.name,
           parentCategoryId: parentId,
         };
         const url = Api.updateCategory(categoryId);
@@ -274,7 +284,7 @@ const EditCategory = () => {
             <div className="flex items-center justify-around cursor-pointer">
               {img ? (
                 <div className="relative">
-                  <img src={`${API_URL_IMAGE}${fileImg?.name}`} className="w-auto h-auto object-contain" />
+                  <img src={resolveImageUrl(fileImg?.name)} className="w-auto h-auto object-contain" />
                   <div
                     onClick={() => setFileImg('')}
                     className="absolute w-[20px] h-[20px] rounded items-center justify-center flex bg-[#00000080] top-0 right-0"

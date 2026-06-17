@@ -11,8 +11,6 @@ import java.nio.file.Paths;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Value("${app.image-path:../MotoShop_ADMIN/src/static/images/}")
-    private String imagePath;
 
     /**
      * Cho phép backend serve ảnh tĩnh từ thư mục Admin/src/static/images/.
@@ -23,12 +21,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Resolve to absolute path để đảm bảo Spring Boot serve đúng trên mọi môi trường
-        Path absolutePath = Paths.get(imagePath).toAbsolutePath().normalize();
-        // Dùng forward slash và đảm bảo kết thúc bằng /
-        String location = "file:" + absolutePath.toString().replace("\\", "/") + "/";
-
+        // Serve static images packed inside the jar (from src/main/resources/static/images/)
         registry.addResourceHandler("/src/static/images/**")
-                .addResourceLocations(location);
+                .addResourceLocations("classpath:/static/images/");
     }
 }

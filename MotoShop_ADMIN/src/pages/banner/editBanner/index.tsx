@@ -8,7 +8,7 @@ import { RootState } from '~/redux/reducers';
 import { toast } from 'react-toastify';
 import path from '~/constants/path';
 import Images from '~/assets';
-import { API_URL_IMAGE } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl$1 , uploadToCloudinary} from '~/constants/utils';
 import { Banner } from '~/types/banner.type';
 import { Category } from '~/types/category.type';
 
@@ -37,7 +37,7 @@ const EditBanner = () => {
     }
     if (fileImg.size === 0) {
       // File rỗng = ảnh cũ từ server
-      setImg(`${API_URL_IMAGE}${fileImg.name}`);
+      setImg(`${resolveImageUrl(fileImg.name)}`);
       setIsLocalFile(false);
     } else {
       // File mới được chọn từ máy

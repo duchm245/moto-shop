@@ -7,7 +7,7 @@ import { RootState } from '~/redux/reducers';
 import { useNavigate } from 'react-router-dom';
 import path from '~/constants/path';
 import { Product, ProductImages } from '~/types/product.type';
-import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
 import SpinLoading from '~/components/loading/spinLoading';
 import Modal from 'react-modal';
 import { Banner } from '~/types/banner.type';
@@ -380,7 +380,7 @@ const Banners = () => {
                     <td>{item.id}</td>
                     <td className="text-center">{item.name}</td>
                     <td className="">
-                      <img src={`${API_URL_IMAGE}${item?.src}`} className="w-auto h-auto object-contain" />
+                      <img src={resolveImageUrl(item?.src)} className="w-auto h-auto object-contain" />
                     </td>
                     <td className="text-center">
                       {item.categoryId === 0 ? 'Banner home' : `${categoriesMapping[item.categoryId]}`}

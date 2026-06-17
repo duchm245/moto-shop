@@ -7,7 +7,7 @@ import { RootState } from '~/redux/reducers';
 import { toast } from 'react-toastify';
 import { Sale } from '~/types/sale.type';
 import { Product } from '~/types/product.type';
-import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
 import path from '~/constants/path';
 
 const DetailSale = () => {
@@ -168,7 +168,7 @@ const DetailSale = () => {
                       <td className="text-left text-sm py-2 font-medium">{prod.name}</td>
                       <td className="flex justify-center py-2">
                         <img
-                          src={`${API_URL_IMAGE}${prod?.images?.[0]?.url}`}
+                          src={resolveImageUrl(prod?.images?.[0]?.url)}
                           className="w-16 h-16 object-contain rounded"
                           onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.png'; }}
                         />

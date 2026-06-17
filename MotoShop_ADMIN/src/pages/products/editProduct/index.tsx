@@ -10,7 +10,7 @@ import Images from '~/assets';
 import { Category } from '~/types/category.type';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Product, ProductImages } from '~/types/product.type';
-import { API_URL_IMAGE } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl, uploadToCloudinary } from '~/constants/utils';
 import path from '~/constants/path';
 
 interface VariantForm {
@@ -238,8 +238,16 @@ const EditProduct = () => {
       stock: parseInt(v.stock, 10) || 0,
     }));
 
-    const imagesData = newImages.map((item) => ({ url: item.name }));
-
+    let imagesData = [];
+    try {
+      const uploadedUrls = await Promise.all(
+        newImages.map((file) => uploadToCloudinary(file, 'dq7k5wv8t', 'motoshop_preset'))
+      );
+      imagesData = uploadedUrls.map((url) => ({ url }));
+    } catch (error) {
+      toast.error('Upload ảnh thất bại', { position: 'top-right', pauseOnHover: false, theme: 'dark' });
+      return;
+    }
     const data = {
       id: productId,
       name: productName,
@@ -383,7 +391,7 @@ const EditProduct = () => {
             <div className="grid grid-cols-4 gap-4 items-center justify-around cursor-pointer">
               {oldImages.map((image, index) => (
                 <div key={index} className="relative">
-                  <img src={`${API_URL_IMAGE}${image?.url}`} className="w-40 h-40 object-contain" />
+                  <img src={resolveImageUrl(image?.url)} className="w-40 h-40 object-contain" />
                   <div
                     onClick={() => handleDeleteImage(image.id)}
                     className="absolute w-[20px] h-[20px] rounded items-center justify-center flex bg-[#00000080] top-0 right-0"

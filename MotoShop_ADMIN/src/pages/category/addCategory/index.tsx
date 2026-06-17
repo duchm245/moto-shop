@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Api from '~/api/apis';
 import { REQUEST_API } from '~/constants/method';
+import { API_URL_IMAGE, resolveImageUrl, uploadToCloudinary } from '~/constants/utils';
 import { RootState } from '~/redux/reducers';
 import { Category } from '~/types/category.type';
 import { toast } from 'react-toastify';
@@ -89,11 +90,21 @@ const AddCategory = () => {
           });
           return;
         }
+        let uploadedFilename = '';
+        if (fileImg) {
+          try {
+            uploadedFilename = await uploadToCloudinary(fileImg, 'dq7k5wv8t', 'motoshop_preset');
+          } catch (error) {
+            toast.error('Upload ảnh thất bại', { position: 'top-right', pauseOnHover: false, theme: 'dark' });
+            return;
+          }
+        }
+
         const data = {
           title: title,
           description: description,
           type: typeId,
-          urlImage: fileImg?.name,
+          urlImage: uploadedFilename || fileImg?.name,
           parentCategoryId: parentId,
         };
         const url = Api.createCategory();

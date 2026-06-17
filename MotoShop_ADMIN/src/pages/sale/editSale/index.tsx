@@ -10,7 +10,7 @@ import { Product } from '~/types/product.type';
 import { formatDate } from '~/constants/formatDate';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
 import path from '~/constants/path';
 
 // Parse "HH:mm:ss dd-MM-yyyy" → Date
@@ -382,7 +382,7 @@ const EditSale = () => {
                       <td className="text-center">{item.sku}</td>
                       <td className="text-center">{item.name}</td>
                       <td className="flex justify-center">
-                        <img src={`${API_URL_IMAGE}${item?.images[0]?.url}`} className="w-20 h-20 object-contain" />
+                        <img src={resolveImageUrl(item?.images[0]?.url)} className="w-20 h-20 object-contain" />
                       </td>
                       <td className="text-center">{formatPrice(item.price)}</td>
                       {item.status === 1 && <td className="text-green-500 text-center">Hoạt động</td>}

@@ -7,7 +7,7 @@ import { RootState } from '~/redux/reducers';
 import { useNavigate } from 'react-router-dom';
 import path from '~/constants/path';
 import { Product, ProductImages } from '~/types/product.type';
-import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
 import SpinLoading from '~/components/loading/spinLoading';
 import Modal from 'react-modal';
 import Pagination from '~/components/paginationItems';
@@ -554,7 +554,7 @@ const Product = () => {
                     <td className="text-center">{item.sku}</td>
                     <td className="text-center">{item.name}</td>
                     <td className="">
-                      <img src={`${API_URL_IMAGE}${item?.images?.[0]?.url}`} className="w-20 h-20 object-contain" />
+                      <img src={resolveImageUrl(item?.images?.[0]?.url)} className="w-20 h-20 object-contain" />
                     </td>
                     <td className="text-center">{formatPrice(item.price)}</td>
                     <td className="text-center">{formatPrice(item.salePrice)}</td>

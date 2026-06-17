@@ -8,7 +8,7 @@ import { Category } from '~/types/category.type';
 import { toast } from 'react-toastify';
 import path from '~/constants/path';
 import { Banner } from '~/types/banner.type';
-import { API_URL_IMAGE } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
 
 const DetailCategory = () => {
   const token = useSelector((state: RootState) => state.ReducerAuth.token);
@@ -117,7 +117,7 @@ const DetailCategory = () => {
             {!!banners &&
               !!banners.length &&
               banners.map((item, i) => (
-                <img src={`${API_URL_IMAGE}${item.src}`} className="w-40 h-40 object-contain" key={i} />
+                <img src={resolveImageUrl(item.src)} className="w-40 h-40 object-contain" key={i} />
               ))}
           </div>
         </div>
@@ -138,7 +138,7 @@ const DetailCategory = () => {
         </div>
         <div className="flex flex-col mt-3">
           <div className="w-[30%] text-black font-bold">Hình ảnh :</div>
-          <img src={`${API_URL_IMAGE}${categrory?.urlImage}`} className="object-contain" />
+          <img src={resolveImageUrl(categrory?.urlImage)} className="object-contain" />
         </div>
         <div className="flex items-center justify-center mt-3 ml-[70%]">
           <div

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Api from '~/api/apis';
 import { REQUEST_API } from '~/constants/method';
-import { API_URL_IMAGE, formatPrice } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
 import { RootState } from '~/redux/reducers';
 import { Category } from '~/types/category.type';
 import { Product, ProductImages, Variant } from '~/types/product.type';
@@ -303,7 +303,7 @@ const DetailProduct = () => {
               images.map((item, i) => (
                 <img
                   key={i}
-                  src={`${API_URL_IMAGE}${item.url}`}
+                  src={resolveImageUrl(item.url)}
                   alt="ảnh 1"
                   className="w-40 h-40 object-contain rounded"
                 />

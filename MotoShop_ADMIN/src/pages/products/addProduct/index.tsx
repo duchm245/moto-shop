@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Api from '~/api/apis';
+import { API_URL_IMAGE, resolveImageUrl, formatPrice, uploadToCloudinary } from '~/constants/utils';
 import { REQUEST_API } from '~/constants/method';
 import { toast } from 'react-toastify';
 import { RootState } from '~/redux/reducers';
@@ -150,7 +151,17 @@ const AddProduct = () => {
       stock: parseInt(v.stock, 10) || 0,
     }));
 
-    const imagesData = selectedImages.map((item) => ({ url: item.name }));
+    // Upload tất cả ảnh lên Cloudinary
+    let imagesData = [];
+    try {
+      const uploadedUrls = await Promise.all(
+        selectedImages.map((file) => uploadToCloudinary(file, 'dq7k5wv8t', 'motoshop_preset'))
+      );
+      imagesData = uploadedUrls.map((url) => ({ url }));
+    } catch (error) {
+      toast.error('Upload ảnh thất bại', { position: 'top-right', pauseOnHover: false, theme: 'dark' });
+      return;
+    }
 
     const data = {
       name: productName,
