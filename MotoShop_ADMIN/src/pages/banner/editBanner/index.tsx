@@ -8,7 +8,7 @@ import { RootState } from '~/redux/reducers';
 import { toast } from 'react-toastify';
 import path from '~/constants/path';
 import Images from '~/assets';
-import { API_URL_IMAGE, resolveImageUrl$1 , uploadToCloudinary} from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl , uploadToCloudinary} from '~/constants/utils';
 import { Banner } from '~/types/banner.type';
 import { Category } from '~/types/category.type';
 

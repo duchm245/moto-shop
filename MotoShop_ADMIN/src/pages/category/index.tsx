@@ -9,7 +9,7 @@ import path from '~/constants/path';
 import SpinLoading from '~/components/loading/spinLoading';
 import Modal from 'react-modal';
 import { Category } from '~/types/category.type';
-import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl } from '~/constants/utils';
 import Pagination from '~/components/paginationItems';
 
 const customStyles = {

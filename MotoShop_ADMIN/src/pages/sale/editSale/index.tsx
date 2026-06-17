@@ -10,7 +10,7 @@ import { Product } from '~/types/product.type';
 import { formatDate } from '~/constants/formatDate';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl } from '~/constants/utils';
 import path from '~/constants/path';
 
 // Parse "HH:mm:ss dd-MM-yyyy" → Date

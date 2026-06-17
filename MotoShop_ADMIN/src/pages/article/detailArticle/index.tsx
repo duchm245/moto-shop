@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { RootState } from '~/redux/reducers';
 import 'react-quill/dist/quill.snow.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl } from '~/constants/utils';
 import { Category } from '~/types/category.type';
 import { User } from '~/types/user.type';
 

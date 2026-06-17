@@ -7,7 +7,7 @@ import { RootState } from '~/redux/reducers';
 import { toast } from 'react-toastify';
 import { Sale } from '~/types/sale.type';
 import { Product } from '~/types/product.type';
-import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl } from '~/constants/utils';
 import path from '~/constants/path';
 
 const DetailSale = () => {

@@ -11,7 +11,7 @@ import { Category } from '~/types/category.type';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Editor from '~/components/quill';
 import { Article } from '~/types/article.type';
-import { API_URL_IMAGE, resolveImageUrl$1 , uploadToCloudinary} from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl , uploadToCloudinary} from '~/constants/utils';
 
 const EditArticle = () => {
   const token = useSelector((state: RootState) => state.ReducerAuth.token);

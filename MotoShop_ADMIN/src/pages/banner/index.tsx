@@ -7,7 +7,7 @@ import { RootState } from '~/redux/reducers';
 import { useNavigate } from 'react-router-dom';
 import path from '~/constants/path';
 import { Product, ProductImages } from '~/types/product.type';
-import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl } from '~/constants/utils';
 import SpinLoading from '~/components/loading/spinLoading';
 import Modal from 'react-modal';
 import { Banner } from '~/types/banner.type';

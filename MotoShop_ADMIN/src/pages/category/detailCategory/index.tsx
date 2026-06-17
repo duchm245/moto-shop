@@ -8,7 +8,7 @@ import { Category } from '~/types/category.type';
 import { toast } from 'react-toastify';
 import path from '~/constants/path';
 import { Banner } from '~/types/banner.type';
-import { API_URL_IMAGE, resolveImageUrl$1 } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl } from '~/constants/utils';
 
 const DetailCategory = () => {
   const token = useSelector((state: RootState) => state.ReducerAuth.token);
