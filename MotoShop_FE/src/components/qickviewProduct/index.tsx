@@ -1,5 +1,5 @@
 import React from 'react';
-import { resolveImageUrl } from '~/constants/utils';
+import { resolveImageUrl , formatPrice} from '~/constants/utils';
 
 const QuickviewProduct = () => {
   return (

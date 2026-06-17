@@ -8,7 +8,7 @@ import 'swiper/css/navigation';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import homeApi from '~/apis/home.apis';
 import { Banner, Category } from '~/types/category.type';
-import { API_URL_IMAGE, resolveImageUrl } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl , SHOP_INFO} from '~/constants/utils';
 import './styles.css';
 import { toast } from 'react-toastify';
 import SwiperCore from 'swiper/core';
