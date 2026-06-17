@@ -1,5 +1,5 @@
 const ItemArticle = () => {
-  return (  );
+  return (<></>);
 }
  
 export default ItemArticle;
