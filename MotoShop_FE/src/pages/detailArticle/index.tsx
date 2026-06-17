@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import articleApi from '~/apis/article.apis';
 import Breadcrum from '~/components/breadcrumb';
 import { formatDateNumber, formatDateString } from '~/constants/formatDate';
-import { API_URL_IMAGE } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl } from '~/constants/utils';
 import { Article } from '~/types/article.type';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -88,7 +88,7 @@ const DetailArticle = () => {
                   <div className="wrapper-content">
                     <div className="article-image">
                       <img
-                        src={`${API_URL_IMAGE}${article?.image}`}
+                        src={resolveImageUrl(article?.image)}
                         alt={article?.title}
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = `${API_URL_IMAGE}slide_home_1.jpg`;
@@ -164,7 +164,7 @@ const DetailArticle = () => {
                                     <a className="blog-post-thumbnail cursor-pointer">
                                       <img
                                         className="ls-is-cached lazyloaded"
-                                        src={`${API_URL_IMAGE}${item.image}`}
+                                        src={resolveImageUrl(item.image)}
                                         alt={item.title}
                                         onError={(e) => {
                                           const idx = (item.id ?? 0) % 3 + 1;
@@ -228,7 +228,7 @@ const DetailArticle = () => {
                                   <a className="cursor-pointer">
                                     <img
                                       className="lazyloaded"
-                                      src={`${API_URL_IMAGE}${item.image}`}
+                                      src={resolveImageUrl(item.image)}
                                       alt={item.title}
                                       onError={(e) => {
                                         const idx = (item.id ?? 0) % 3 + 1;

@@ -8,7 +8,7 @@ import 'swiper/css/navigation';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import homeApi from '~/apis/home.apis';
 import { Banner, Category } from '~/types/category.type';
-import { API_URL_IMAGE, SHOP_INFO } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl } from '~/constants/utils';
 import './styles.css';
 import { toast } from 'react-toastify';
 import SwiperCore from 'swiper/core';
@@ -392,7 +392,7 @@ const Home = () => {
         >
           {slide.map((item, i) => (
             <SwiperSlide key={i}>
-              <img src={`${API_URL_IMAGE}${item.src}`} className="banner-home" alt={`Banner ${i + 1}`} />
+              <img src={resolveImageUrl(item.src)} className="banner-home" alt={`Banner ${i + 1}`} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -849,7 +849,7 @@ const Home = () => {
                             className="cursor-pointer"
                             onClick={() => navigate(path.detailArticle, { state: item.id })}
                           >
-                            <img className=" lazyloaded" src={`${API_URL_IMAGE}${item.image}`} />
+                            <img className=" lazyloaded" src={resolveImageUrl(item.image)} />
                           </a>
                         </div>
                       </div>

@@ -7,7 +7,7 @@ import Pagination from '~/components/paginationItems';
 import SpinLoading from '~/components/spinloading';
 import { formatDateNumber, formatDateString } from '~/constants/formatDate';
 import path from '~/constants/path';
-import { API_URL_IMAGE } from '~/constants/utils';
+import { API_URL_IMAGE, resolveImageUrl } from '~/constants/utils';
 import { Article } from '~/types/article.type';
 import { Category } from '~/types/category.type';
 import './styles.css';
@@ -195,7 +195,7 @@ const Articles = () => {
                           rel="nofollow"
                         >
                           <img
-                            src={`${API_URL_IMAGE}${item.image}`}
+                            src={resolveImageUrl(item.image)}
                             className="lazyloaded"
                             alt={item.title}
                             onError={(e) => {
@@ -289,7 +289,7 @@ const Articles = () => {
                                 <a className="cursor-pointer">
                                   <img
                                     className="lazyloaded"
-                                    src={`${API_URL_IMAGE}${item.image}`}
+                                    src={resolveImageUrl(item.image)}
                                     alt={item.title}
                                     onError={(e) => {
                                       const idx = (item.id ?? 0) % 3 + 1;
