@@ -1,5 +1,5 @@
 const ItemArticle = () => {
-  return (  );
+  return null;
 }
  
 export default ItemArticle;

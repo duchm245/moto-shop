@@ -43,5 +43,8 @@ build/
 # Temp folders
 pptx_temp/
 
+# Sensitive docs (env vars, credentials)
+docs/
+
 # npm/yarn lock (optional - keep if you want reproducible builds)
 # package-lock.json
