@@ -1,0 +1,101 @@
+services:
+  # ─── Database ───────────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: motoshop-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: MotoDB@2026
+      MYSQL_DATABASE: motorbike_shop
+      MYSQL_CHARACTER_SET_SERVER: utf8mb4
+      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
+    command: >
+      --innodb-buffer-pool-size=128M
+      --innodb-log-file-size=32M
+      --max-connections=50
+      --performance-schema=OFF
+      --skip-name-resolve
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./db/02_data.sql:/docker-entrypoint-initdb.d/02_data.sql
+    networks:
+      - motoshop-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pMotoDB@2026"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+
+  # ─── Backend (Spring Boot) ───────────────────────────────────
+  be:
+    build: ./MotoShop_BE
+    container_name: motoshop-be
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:mysql://db:3306/motorbike_shop?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8
+      DB_USERNAME: root
+      DB_PASSWORD: MotoDB@2026
+      SECURITY_USER_NAME: admin
+      SECURITY_USER_PASSWORD: Admin@2026
+      MAIL_USERNAME: duchm245@gmail.com
+      MAIL_PASSWORD: cjsizpzongnmvtua
+      JWT_SECRET: ZQs+M2i1fQMIncW+PE9U4Fg963foh5HW6rJ8PyYKYTDo2iQDkHNk3fh6di/sLEkkBGZg9xIJsQC52rZmU4JO3Q==
+      IMAGE_PATH: /app/images/
+      LOG_LEVEL_SECURITY: INFO
+      JAVA_OPTS: "-Xmx384m -Xms192m"
+    deploy:
+      resources:
+        limits:
+          memory: 450M
+    volumes:
+      - images_data:/app/images
+    ports:
+      - "8081:8081"
+    networks:
+      - motoshop-net
+
+  # ─── Frontend (React → Nginx) ────────────────────────────────
+  fe:
+    build: ./MotoShop_FE
+    container_name: motoshop-fe
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+    ports:
+      - "80:80"
+    networks:
+      - motoshop-net
+
+  # ─── Admin (React → Nginx) ───────────────────────────────────
+  admin:
+    build: ./MotoShop_ADMIN
+    container_name: motoshop-admin
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+    ports:
+      - "81:81"
+    networks:
+      - motoshop-net
+
+# ─── Volumes & Networks ──────────────────────────────────────
+volumes:
+  db_data:
+  images_data:
+
+networks:
+  motoshop-net:
+    driver: bridge
