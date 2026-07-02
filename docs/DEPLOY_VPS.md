@@ -228,6 +228,52 @@ echo '/swapfile none swap sw 0 0' >> /etc/fstab
 free -h
 ```
 > ✅ Sau khi tạo swap 2GB: tổng bộ nhớ ảo = 3GB, đủ để chạy ổn định.
+### ❌ Backend restart-loop do giới hạn heap lớn hơn RAM container
+> **Dấu hiệu:** Container `motoshop-be` liên tục chuyển sang trạng thái `Restarting`, API không truy cập được hoặc log cho thấy tiến trình Java bị hệ điều hành dừng vì thiếu bộ nhớ (OOM/OOMKilled).
+
+**Nguyên nhân:** Docker image trước đây hard-code JVM heap tối đa là `512 MB`:
+
+```dockerfile
+ENTRYPOINT ["java", "-Xmx512m", "-Xms256m", "-jar", "app.jar"]
+```
+
+Trong khi `docker-compose.yml` chỉ cấp tối đa `450 MB` cho container backend. Ngoài heap, JVM còn cần RAM cho Metaspace, thread stack, code cache và thư viện native. Vì vậy, heap `512 MB` không thể nằm trong container `450 MB`; khi Java sử dụng nhiều bộ nhớ, container có thể bị OOMKilled và Docker lại tự khởi động nó do chính sách `restart: unless-stopped`, tạo thành restart-loop.
+
+**Giải pháp đã áp dụng:** Không hard-code heap trong image. `Dockerfile` đọc `JAVA_OPTS` do Docker Compose truyền vào:
+
+```dockerfile
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]
+```
+
+Giới hạn JVM và container trong `docker-compose.yml`:
+
+```yaml
+environment:
+  JAVA_OPTS: "-Xmx384m -Xms192m"
+deploy:
+  resources:
+    limits:
+      memory: 450M
+```
+
+`-Xmx384m` chừa khoảng `66 MB` trong giới hạn container cho phần bộ nhớ ngoài heap. Từ khóa `exec` giúp tiến trình Java nhận tín hiệu dừng trực tiếp từ Docker và thoát đúng cách.
+
+Sau khi sửa, rebuild riêng backend và kiểm tra:
+
+```bash
+cd /opt/motoshop
+docker compose up -d --build be
+
+# Container phải ở trạng thái Up, không phải Restarting
+docker compose ps be
+
+# RestartCount phải là 0 và log phải có "Started MotoShopApplication"
+docker inspect -f '{{.RestartCount}}' motoshop-be
+docker logs --tail 100 motoshop-be
+```
+
+> **Lưu ý:** `JAVA_OPTS` phải luôn nhỏ hơn giới hạn `memory` của container. Nếu tăng heap, cần tăng giới hạn container tương ứng và bảo đảm VPS vẫn còn đủ RAM/swap.
+
 
 ### ❌ Ảnh không hiển thị (403 Permission denied)
 > **Nguyên nhân:** File upload từ Windows có thể bị sai quyền trong container Nginx.
