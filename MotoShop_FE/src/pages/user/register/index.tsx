@@ -14,9 +14,7 @@ const Register = () => {
   const [password, setPassword] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [phone, setPhone] = React.useState('');
-  const [otp, setOtp] = React.useState('');
   const [loading, setLoading] = React.useState(false);
-  const [loading1, setLoading1] = React.useState(false);
 
   const handleRegister = async () => {
     try {
@@ -72,14 +70,6 @@ const Register = () => {
         });
         return;
       }
-      if (!otp) {
-        toast.error('Hãy nhập otp', {
-          position: 'top-right',
-          pauseOnHover: false,
-          theme: 'dark',
-        });
-        return;
-      }
       if (!usernameRegex.test(username)) {
         toast.error('Tên tài khoản không được chứa ký tự đặc biệt', {
           position: 'top-right',
@@ -121,7 +111,6 @@ const Register = () => {
         lastName,
         email,
         phone,
-        otp,
       };
       setLoading(true);
       const res = await authApi.register(data);
@@ -145,54 +134,6 @@ const Register = () => {
       console.error(error);
     } finally {
       setLoading(false);
-    }
-  };
-  const handleGetOtp = async () => {
-    try {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!email) {
-        toast.error(`Vui lòng nhập email để lấy otp`, {
-          position: 'top-right',
-          pauseOnHover: false,
-          theme: 'dark',
-        });
-        return;
-      }
-      if (!emailRegex.test(email)) {
-        toast.error('Email không hợp lệ', {
-          position: 'top-right',
-          pauseOnHover: false,
-          theme: 'dark',
-        });
-        setEmail('');
-        return;
-      }
-      const data = {
-        email,
-      };
-      setLoading1(true);
-      const res = await authApi.getOtp(data);
-      if (res.data.status) {
-        setLoading1(false);
-
-        toast.success(`${res.data.data}`, {
-          position: 'top-right',
-          pauseOnHover: false,
-          theme: 'dark',
-        });
-      } else {
-        setLoading1(false);
-        toast.error(`${res.data.data}`, {
-          position: 'top-right',
-          pauseOnHover: false,
-          theme: 'dark',
-        });
-      }
-    } catch (error) {
-      setLoading1(true);
-      console.error(error);
-    } finally {
-      setLoading1(false);
     }
   };
 
@@ -294,22 +235,6 @@ const Register = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-              </div>
-              <div className="clearfix large_form large_form-mrb otp">
-                <div className="otp-1">
-                  <input
-                    type="text"
-                    placeholder="Nhập otp"
-                    className="text"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                  />
-                </div>
-                <div className="action_bottom button otp-2">
-                  <div className="button btn-signin" onClick={handleGetOtp}>
-                    {loading1 ? <SpinText /> : <span>Gửi</span>}
-                  </div>
-                </div>
               </div>
               <div className="clearfix custommer_account_action">
                 <div className="action_bottom button">

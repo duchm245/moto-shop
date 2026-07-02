@@ -8,8 +8,6 @@ import com.motoshop.repositories.UserRepository;
 import com.motoshop.securities.JwtConfig;
 import com.motoshop.services.UserService;
 import com.motoshop.utils.EmailUtils;
-import com.motoshop.utils.OtpService;
-import com.motoshop.utils.OtpUtil;
 import com.motoshop.utils.Utils;
 import com.motoshop.web.dto.request.*;
 import com.motoshop.web.dto.response.LoginResponse;
@@ -35,8 +33,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,27 +46,20 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtConfig jwtConfig;
     @Autowired
-    private OtpUtil otpUtil;
-    @Autowired
-    private OtpService otpService;
-    @Autowired
     private EmailUtils emailUtils;
     @Autowired
     private Utils utils;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper, OtpUtil otpUtil,
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper,
                            EmailUtils emailUtils,
-                           OtpService otpService,
                            Utils utils,
                            AuthenticationManager authenticationManager,
                            JwtConfig jwtConfig) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.userMapper = userMapper;
-        this.otpUtil = otpUtil;
         this.emailUtils = emailUtils;
-        this.otpService = otpService;
         this.utils = utils;
         this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;
@@ -211,65 +200,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String generateOtp(RegisterRequest registerRequest) {
-        String email = registerRequest.getEmail();
-        User user = userRepository.findByEmail(email);
-        if(user == null){
-            try {
-                emailUtils.sendOtpEmail(email);
-            } catch (MessagingException e) {
-                throw new RuntimeException("Không thể gửi otp vui lòng thử lại", e);
-            }
-            return "Đã lấy mã OTP... Vui lòng xác minh tài khoản trong vòng 5 phút";
-        }else{
-            return null;
-        }
-    }
-
-    @Override
     @Transactional
     public Object registerUser(RegisterRequest registerRequest) {
-        // Kiểm tra trong csdl đã tồn tại người sử dụng có username tương tự user của yêu cầu đăng kí chưa
         User checkUser = userRepository.findByUsername(registerRequest.getUsername());
         User checkUser2 = userRepository.findByEmail(registerRequest.getEmail());
-        String otp = otpService.getOtp(registerRequest.getEmail());
-        // Kiểm tra mã OTP trong yêu cầu với mã OTP được gửi qua email
-        if (registerRequest.getOtp().equals(otp)) {
-            if (checkUser == null) {
-                if (checkUser2 == null) {
-                    registerRequest.setPassword(passwordEncoder().encode(registerRequest.getPassword()));
-                    User user = userMapper.mapSignupToModel(registerRequest);
-                    user.setOtpGeneratedTime(LocalDateTime.now());
-                    if (Duration.between(user.getOtpGeneratedTime(),
-                            LocalDateTime.now()).getSeconds() < (1 * 300)) {
-                        Date currentDate = new Date();
-                        user.setCreatedDate(currentDate);
-                        user.setModifiedDate(currentDate);
-                        user.setStatus(1);
-                        user.setOtp(otp);
-                        // Set default role_id = 2 (ROLE_USER)
-                        long defaultRoleId = 2;
-                        Role role = roleRepository.findById(defaultRoleId);
-                        user.getRoles().add(role);
-
-                        // Lưu thông tin tài khoản mới
-                        User newUser = userRepository.save(user);
-                        // Xóa mã OTP sau khi đăng ký thành công
-                        otpService.removeOtp(registerRequest.getEmail());
-                        return userMapper.mapModelToResponse(newUser);
-                    } else {
-                        return "Mã OTP đã hết hạn. Vui lòng lấy lại mã OTP!";
-                    }
-                } else {
-                    return "Email đã tồn tại .";
-                }
-            } else {
-                return "Tài khoản đã tồn tại.";
-            }
-
-        } else {
-            return "Mã OTP Không hợp lệ!";
+        if (checkUser != null) {
+            return "Tài khoản đã tồn tại.";
         }
+        if (checkUser2 != null) {
+            return "Email đã tồn tại .";
+        }
+        registerRequest.setPassword(passwordEncoder().encode(registerRequest.getPassword()));
+        User user = userMapper.mapSignupToModel(registerRequest);
+        Date currentDate = new Date();
+        user.setCreatedDate(currentDate);
+        user.setModifiedDate(currentDate);
+        user.setStatus(1);
+        long defaultRoleId = 2;
+        Role role = roleRepository.findById(defaultRoleId);
+        user.getRoles().add(role);
+        User newUser = userRepository.save(user);
+        return userMapper.mapModelToResponse(newUser);
     }
 
     @Override

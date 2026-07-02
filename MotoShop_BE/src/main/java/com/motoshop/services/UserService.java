@@ -28,6 +28,5 @@ public interface UserService {
     String changePassword(Long userId, PasswordRequest passwordRequest);
     String resetPassword(Long targetUserId, Long actorId, AdminPasswordRequest request);
     String forgotPassword(String username);
-    String generateOtp (RegisterRequest registerRequest);
     List<TopUserDto> findTopUser();
 }

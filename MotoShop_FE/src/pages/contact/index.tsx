@@ -1,8 +1,45 @@
 import React from 'react';
 import Breadcrum from '~/components/breadcrumb';
+import { toast } from 'react-toastify';
+import consultApi, { ConsultRequestPayload } from '~/apis/consult.apis';
 import { SHOP_INFO } from '~/constants/utils';
 
 const Contact = () => {
+  const [fullName, setFullName] = React.useState('');
+  const [phone, setPhone] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [note, setNote] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [submitted, setSubmitted] = React.useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!fullName.trim()) {
+      toast.error('Vui lòng nhập họ tên', { theme: 'dark', position: 'top-right' });
+      return;
+    }
+    const phoneRegex = /^0[0-9]{9}$/;
+    if (!phoneRegex.test(phone.trim())) {
+      toast.error('Số điện thoại không hợp lệ (VD: 0901234567)', { theme: 'dark', position: 'top-right' });
+      return;
+    }
+    try {
+      setLoading(true);
+      const payload: ConsultRequestPayload = {
+        fullName: fullName.trim(),
+        phone: phone.trim(),
+        email: email.trim() || undefined,
+        note: note.trim() || undefined,
+      };
+      await consultApi.create(payload);
+      setSubmitted(true);
+    } catch {
+      toast.error('Gửi yêu cầu thất bại, vui lòng thử lại.', { theme: 'dark', position: 'top-right' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="layout-pageContact">
       <Breadcrum title={'Liên hệ'} />
@@ -33,50 +70,68 @@ const Contact = () => {
                 <div className="contact-form">
                   <div className="contact-form">
                     <div className="contact-form">
-                      <div className="row">
-                        <div className="col-lg-12 col-md-12 col-12">
-                          <div className="input-group">
-                            <input
-                              type="text"
-                              name="contact[name]"
-                              className="form-control"
-                              placeholder="Tên của bạn"
-                              aria-describedby="basic-addon1"
-                            />
+                      {submitted ? (
+                        <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+                          <div style={{ fontSize: 48, marginBottom: 16 }}>✅</div>
+                          <h3>Cảm ơn bạn đã liên hệ!</h3>
+                          <p>Chúng tôi sẽ liên hệ lại với bạn trong thời gian sớm nhất.</p>
+                          <button
+                            className="button"
+                            style={{ marginTop: 16 }}
+                            onClick={() => { setSubmitted(false); setFullName(''); setPhone(''); setEmail(''); setNote(''); }}
+                          >
+                            Gửi yêu cầu khác
+                          </button>
+                        </div>
+                      ) : (
+                        <form onSubmit={handleSubmit}>
+                          <div className="row">
+                            <div className="col-lg-12 col-md-12 col-12">
+                              <div className="input-group">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="Tên của bạn"
+                                  value={fullName}
+                                  onChange={e => setFullName(e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-lg-6 col-md-6 col-12">
+                              <div className="input-group">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="Email của bạn"
+                                  value={email}
+                                  onChange={e => setEmail(e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-lg-6 col-md-6 col-12">
+                              <div className="input-group">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="Số điện thoại của bạn"
+                                  value={phone}
+                                  onChange={e => setPhone(e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-lg-12 col-md-12 col-12">
+                              <div className="input-group">
+                                <textarea placeholder="Nội dung" value={note} onChange={e => setNote(e.target.value)} />
+                              </div>
+                            </div>
+                            <div className="col-lg-12 col-md-12 col-12">
+                              <button type="submit" className="button" disabled={loading}>
+                                {loading ? 'Đang gửi...' : 'Gửi cho chúng tôi'}
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-lg-6 col-md-6 col-12">
-                          <div className="input-group">
-                            <input
-                              type="text"
-                              name="contact[email]"
-                              className="form-control"
-                              placeholder="Email của bạn"
-                              aria-describedby="basic-addon1"
-                            />
-                          </div>
-                        </div>
-                        <div className="col-lg-6 col-md-6 col-12">
-                          <div className="input-group">
-                            <input
-                              pattern="[0-9]{10,12}"
-                              type="text"
-                              name="contact[phone]"
-                              className="form-control"
-                              placeholder="Số điện thoại của bạn"
-                              aria-describedby="basic-addon1"
-                            />
-                          </div>
-                        </div>
-                        <div className="col-lg-12 col-md-12 col-12">
-                          <div className="input-group">
-                            <textarea name="contact[body]" placeholder="Nội dung" defaultValue={''} />
-                          </div>
-                        </div>
-                        <div className="col-lg-12 col-md-12 col-12">
-                          <button className="button">Gửi cho chúng tôi</button>
-                        </div>
-                      </div>
+                        </form>
+                      )}
                     </div>
                   </div>
                 </div>

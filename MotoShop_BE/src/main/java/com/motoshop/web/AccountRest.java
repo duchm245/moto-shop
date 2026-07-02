@@ -117,20 +117,6 @@ public class AccountRest {
         }
     }
 
-    @PutMapping("/generate-otp")
-    public ResponseEntity<?> regenerateOtp(@RequestBody RegisterRequest registerRequest) {
-        try {
-            String s = userService.generateOtp(registerRequest);
-            if(s == null ){
-                return new ResponseEntity<>(ApiResponse.build(201, false, "Thất bại", "Email đã được sử dụng"), HttpStatus.OK);
-            }else{
-                return new ResponseEntity<>(ApiResponse.build(200, true, "Thành công", s), HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @PutMapping("user/forgotPass")
     public ResponseEntity<?> forgotPassword(@RequestParam String username) {
         try {
