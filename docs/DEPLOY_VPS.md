@@ -1,9 +1,10 @@
 # 🚀 Hướng dẫn Triển khai MotoShop lên VPS (Docker)
 
-> **VPS**: DigitalOcean Droplet Singapore | IP: `143.198.223.132`  
+> **VPS**: DigitalOcean Droplet Singapore | IP: `152.42.189.255`  
 > **OS**: Ubuntu 24.04 LTS | **RAM**: 1GB | **Disk**: 25GB  
 > **Phương pháp**: Docker Compose (4 containers)
-
+## SSH USERNAME: root
+## SSH PASS: HoangMinhDuc@2451998a
 ---
 
 ## Kiến trúc hệ thống
@@ -49,7 +50,7 @@ cd MotoShop_BE
 
 SSH vào VPS:
 ```powershell
-ssh root@143.198.223.132
+ssh root@152.42.189.255
 ```
 
 Cài Docker (1 lệnh):
@@ -75,7 +76,7 @@ Mở **PowerShell mới** (không phải cửa sổ SSH), chạy từ thư mục
 scp -r -o "StrictHostKeyChecking=no" `
   --exclude=node_modules `
   "C:\Users\Thinkpad T14 G3\Desktop\doan\Moto-shop" `
-  root@143.198.223.132:/opt/motoshop
+  root@152.42.189.255:/opt/motoshop
 ```
 
 > ⚠️ Nếu lệnh trên không hỗ trợ `--exclude`, dùng `rsync` hoặc tạo file zip:
@@ -88,7 +89,7 @@ Compress-Archive -Path "C:\Users\Thinkpad T14 G3\Desktop\doan\Moto-shop\*" `
   -Force
 
 # Upload lên VPS
-scp "C:\Users\Thinkpad T14 G3\Desktop\motoshop.zip" root@143.198.223.132:/opt/
+scp "C:\Users\Thinkpad T14 G3\Desktop\motoshop.zip" root@152.42.189.255:/opt/
 
 # Trên VPS: giải nén
 mkdir -p /opt/motoshop
@@ -149,7 +150,7 @@ motoshop-admin    Up
 
 **Bước 5.1** – Upload ảnh lên VPS (PowerShell local):
 ```powershell
-scp -r "C:\Users\Thinkpad T14 G3\Desktop\doan\Moto-shop\MotoShop_ADMIN\src\static\images" root@143.198.223.132:/tmp/
+scp -r "C:\Users\Thinkpad T14 G3\Desktop\doan\Moto-shop\MotoShop_ADMIN\src\static\images" root@152.42.189.255:/tmp/
 ```
 
 **Bước 5.2** – Copy ảnh vào Docker container (Web Console / SSH):
@@ -168,9 +169,9 @@ docker exec motoshop-be ls /app/images/ | head -10
 
 | Trang | URL |
 |---|---|
-| 🌍 **Frontend** | http://143.198.223.132 |
-| 🔐 **Admin** | http://143.198.223.132:81 |
-| 🔌 **API** | http://143.198.223.132:8081 |
+| 🌍 **Frontend** | http://152.42.189.255 |
+| 🔐 **Admin** | http://152.42.189.255:81 |
+| 🔌 **API** | http://152.42.189.255:8081 |
 
 ---
 
@@ -228,6 +229,7 @@ echo '/swapfile none swap sw 0 0' >> /etc/fstab
 free -h
 ```
 > ✅ Sau khi tạo swap 2GB: tổng bộ nhớ ảo = 3GB, đủ để chạy ổn định.
+
 ### ❌ Backend restart-loop do giới hạn heap lớn hơn RAM container
 > **Dấu hiệu:** Container `motoshop-be` liên tục chuyển sang trạng thái `Restarting`, API không truy cập được hoặc log cho thấy tiến trình Java bị hệ điều hành dừng vì thiếu bộ nhớ (OOM/OOMKilled).
 
@@ -274,7 +276,6 @@ docker logs --tail 100 motoshop-be
 
 > **Lưu ý:** `JAVA_OPTS` phải luôn nhỏ hơn giới hạn `memory` của container. Nếu tăng heap, cần tăng giới hạn container tương ứng và bảo đảm VPS vẫn còn đủ RAM/swap.
 
-
 ### ❌ Ảnh không hiển thị (403 Permission denied)
 > **Nguyên nhân:** File upload từ Windows có thể bị sai quyền trong container Nginx.
 
@@ -288,14 +289,14 @@ docker exec motoshop-admin chmod -R 755 /usr/share/nginx/html/
 
 Sửa file `MotoShop_BE/src/main/java/com/motoshop/config/CorsConfig.java`, thêm vào `allowedOrigins`:
 ```java
-"http://143.198.223.132",    // VPS Frontend
-"http://143.198.223.132:81" // VPS Admin
+"http://152.42.189.255",    // VPS Frontend
+"http://152.42.189.255:81" // VPS Admin
 ```
 Sau đó rebuild JAR và redeploy:
 ```bash
 # Local
 .\mvnw.cmd package -DskipTests
-scp target/motoshop-0.0.1-SNAPSHOT.jar root@143.198.223.132:/opt/motoshop/MotoShop_BE/target/
+scp target/motoshop-0.0.1-SNAPSHOT.jar root@152.42.189.255:/opt/motoshop/MotoShop_BE/target/
 
 # VPS
 cd /opt/motoshop && docker compose build be && docker compose up -d be

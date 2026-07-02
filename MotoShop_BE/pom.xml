@@ -15,6 +15,7 @@
     <description>Motorbike Shop - Online motorcycle sales platform</description>
     <properties>
         <java.version>17</java.version>
+        <lombok.version>1.18.30</lombok.version>
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
         <mapstruct-lombok.version>0.2.0</mapstruct-lombok.version>
     </properties>

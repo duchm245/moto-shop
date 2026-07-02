@@ -3,4 +3,4 @@ WORKDIR /app
 COPY target/motoshop-0.0.1-SNAPSHOT.jar app.jar
 RUN mkdir -p /app/images
 EXPOSE 8081
-ENTRYPOINT ["java", "-Xmx512m", "-Xms256m", "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]

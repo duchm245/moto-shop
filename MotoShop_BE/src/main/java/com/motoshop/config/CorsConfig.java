@@ -19,8 +19,8 @@ public class CorsConfig implements WebMvcConfigurer {
         "http://localhost:3001",
         "http://localhost:5173",   // MotoShop_FE (Vite)
         "http://localhost:5174",   // MotoShop_ADMIN (Vite)
-        "http://143.198.223.132",  // VPS FE (port 80)
-        "http://143.198.223.132:81" // VPS Admin (port 81)
+        "http://152.42.189.255",  // VPS FE (port 80)
+        "http://152.42.189.255:81" // VPS Admin (port 81)
     );
 
     /**
